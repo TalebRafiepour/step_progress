@@ -38,6 +38,7 @@ import 'package:step_progress/src/step_progress_widgets/step_progress_widget.dar
 ///   currentStep: 2,
 ///   stepSize: 30.0,
 ///   visibilityOptions: StepProgressVisibilityOptions.both,
+///   lineLabels: ['Line1', 'Line2', 'Line3', 'Line4' ],
 ///   titles: ['Step 1', 'Step 2', 'Step 3', 'Step 4', 'Step 5'],
 ///   subTitles: ['Description 1', 'Description 2', 'Description 3',
 ///    'Description 4', 'Description 5'],
@@ -63,6 +64,7 @@ class VerticalStepProgress extends StepProgressWidget {
     required super.visibilityOptions,
     super.titles,
     super.subTitles,
+    super.lineLabels,
     super.onStepNodeTapped,
     super.onStepLineTapped,
     super.nodeIconBuilder,
@@ -143,6 +145,7 @@ class VerticalStepProgress extends StepProgressWidget {
         children: List.generate(totalStep - 1, (index) {
           return StepLine(
             axis: Axis.vertical,
+            label: lineLabels?.elementAtOrNull(index),
             isActive:
                 highlightCompletedSteps
                     ? index < currentStep

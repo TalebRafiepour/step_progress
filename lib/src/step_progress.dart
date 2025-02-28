@@ -58,6 +58,9 @@ typedef OnStepNodeTapped = void Function(int index);
 ///
 /// The [subTitles] parameter can be used to specify subtitles for each step.
 ///
+/// The [lineLabels] parameter can be used to specify labels for each step line
+/// segment.
+///
 /// The [visibilityOptions] parameter can be used to control the visibility of
 /// step progress elements.
 ///
@@ -95,6 +98,7 @@ class StepProgress extends StatefulWidget {
     this.visibilityOptions = StepProgressVisibilityOptions.both,
     this.titles,
     this.subTitles,
+    this.lineLabels,
     this.onStepNodeTapped,
     this.onStepLineTapped,
     this.onStepChanged,
@@ -112,6 +116,10 @@ class StepProgress extends StatefulWidget {
        assert(
          subTitles == null || subTitles.length <= totalSteps,
          'subTitles must be equals to or less than total steps',
+       ),
+       assert(
+         lineLabels == null || lineLabels.length < totalSteps,
+         'lineLabels must be less than total steps',
        );
 
   /// Titles for each step in the progress
@@ -119,6 +127,9 @@ class StepProgress extends StatefulWidget {
 
   /// Subtitles for each step in the progress
   final List<String>? subTitles;
+
+  /// Optional list of labels for the line segments in the progress indicator.
+  final List<String>? lineLabels;
 
   /// Options to control the visibility of step progress elements.
   final StepProgressVisibilityOptions visibilityOptions;
@@ -257,6 +268,7 @@ class _StepProgressState extends State<StepProgress>
                   currentStep: _currentStep,
                   titles: widget.titles,
                   subTitles: widget.subTitles,
+                  lineLabels: widget.lineLabels,
                   stepSize: widget.stepSize,
                   onStepNodeTapped: widget.onStepNodeTapped,
                   onStepLineTapped: widget.onStepLineTapped,
@@ -269,6 +281,7 @@ class _StepProgressState extends State<StepProgress>
                   currentStep: _currentStep,
                   titles: widget.titles,
                   subTitles: widget.subTitles,
+                  lineLabels: widget.lineLabels,
                   stepSize: widget.stepSize,
                   onStepNodeTapped: widget.onStepNodeTapped,
                   onStepLineTapped: widget.onStepLineTapped,

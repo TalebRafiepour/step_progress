@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:step_progress/src/step_line/step_line_label_style.dart';
 import 'package:step_progress/step_progress.dart';
 
 /// A class that defines the theme data for the Step Progress widget.
@@ -38,6 +39,7 @@ class StepProgressThemeData {
     this.stepLineSpacing = 0,
     this.stepLabelAlignment,
     this.labelStyle = const StepLabelStyle(),
+    this.lineLabelStyle = const StepLineLabelStyle(),
     this.stepNodeStyle = const StepNodeStyle(),
     this.stepLineStyle = const StepLineStyle(),
     this.rippleEffectStyle = const RippleEffectStyle(),
@@ -73,6 +75,9 @@ class StepProgressThemeData {
   /// The style to be applied to the step labels.
   final StepLabelStyle labelStyle;
 
+  /// A style configuration for the line label of the step progress indicator.
+  final StepLineLabelStyle lineLabelStyle;
+
   /// The style configuration for the step node.
   final StepNodeStyle stepNodeStyle;
 
@@ -107,6 +112,7 @@ class StepProgressThemeData {
   /// - [shape]: The shape of the step nodes.
   /// - [stepLineSpacing]: The spacing between step lines.
   /// - [labelStyle]: The style of the step labels.
+  /// - [lineLabelStyle]: The style for the line labels.
   /// - [stepNodeStyle]: The style of the step nodes.
   /// - [stepLineStyle]: The style of the step lines.
   /// - [rippleEffectStyle]: The style of the ripple effect.
@@ -125,6 +131,7 @@ class StepProgressThemeData {
     StepNodeShape? shape,
     double? stepLineSpacing,
     StepLabelStyle? labelStyle,
+    StepLineLabelStyle? lineLabelStyle,
     StepNodeStyle? stepNodeStyle,
     StepLineStyle? stepLineStyle,
     RippleEffectStyle? rippleEffectStyle,
@@ -145,6 +152,7 @@ class StepProgressThemeData {
       shape: shape ?? this.shape,
       stepLineSpacing: stepLineSpacing ?? this.stepLineSpacing,
       labelStyle: labelStyle ?? this.labelStyle,
+      lineLabelStyle: lineLabelStyle ?? this.lineLabelStyle,
       stepNodeStyle: stepNodeStyle ?? this.stepNodeStyle,
       stepLineStyle: stepLineStyle ?? this.stepLineStyle,
       rippleEffectStyle: rippleEffectStyle ?? this.rippleEffectStyle,

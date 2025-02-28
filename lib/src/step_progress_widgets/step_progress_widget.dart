@@ -20,6 +20,7 @@ import 'package:step_progress/src/step_progress_visibility_options.dart';
 /// - [currentStep]: The current step in the progress indicator.
 /// - [stepSize]: The size of each step in the progress indicator.
 /// - [titles]: An optional list of titles for each step.
+/// - [lineLabels]: An optional list of labels for each line segment.
 /// - [axis]: The axis in which the step progress is laid out.
 /// - [visibilityOptions]: The options to control the visibility of elements.
 /// - [subTitles]: An optional list of subtitles for each step.
@@ -39,6 +40,7 @@ abstract class StepProgressWidget extends StatelessWidget {
     required this.visibilityOptions,
     this.titles,
     this.subTitles,
+    this.lineLabels,
     this.onStepNodeTapped,
     this.onStepLineTapped,
     this.nodeIconBuilder,
@@ -50,7 +52,11 @@ abstract class StepProgressWidget extends StatelessWidget {
        ),
        assert(
          subTitles == null || subTitles.length <= totalStep,
-         'subTitles lenght must be equals to less than total steps',
+         'subTitles lenght must be equals to or less than total steps',
+       ),
+       assert(
+         lineLabels == null || lineLabels.length < totalStep,
+         'lineLabels lenght must be less than total steps',
        );
 
   /// The total number of steps in the progress indicator.
@@ -67,6 +73,9 @@ abstract class StepProgressWidget extends StatelessWidget {
 
   /// The subtitles for each step, if any.
   final List<String>? subTitles;
+
+  /// The labels for each line segment in the progress indicator.
+  final List<String>? lineLabels;
 
   /// Callback function when a step is tapped.
   final OnStepNodeTapped? onStepNodeTapped;

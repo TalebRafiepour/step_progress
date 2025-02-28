@@ -20,6 +20,7 @@ import 'package:step_progress/step_progress.dart';
 /// Optional parameters include:
 /// - [titles]: A list of titles for each step.
 /// - [subTitles]: A list of subtitles for each step.
+/// - [lineLabels]: A list of labels for each line segment of progress.
 /// - [onStepNodeTapped]: A callback function that is called when a step is
 /// tapped.
 /// - [onStepLineTapped]: A callback function that is called when a line is
@@ -37,6 +38,7 @@ class HorizontalStepProgress extends StepProgressWidget {
     required super.visibilityOptions,
     super.titles,
     super.subTitles,
+    super.lineLabels,
     super.onStepNodeTapped,
     super.onStepLineTapped,
     super.nodeIconBuilder,
@@ -118,6 +120,7 @@ class HorizontalStepProgress extends StepProgressWidget {
       child: Row(
         children: List.generate(totalStep - 1, (index) {
           return StepLine(
+            label: lineLabels?.elementAtOrNull(index),
             isActive:
                 highlightCompletedSteps
                     ? index < currentStep
