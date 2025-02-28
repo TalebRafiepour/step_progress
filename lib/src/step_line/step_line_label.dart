@@ -13,7 +13,7 @@ class StepLineLabel extends StatelessWidget {
         themeData.lineLabelStyle.textStyle ??
         Theme.of(context).textTheme.labelMedium ??
         const TextStyle(fontSize: 14);
-        //
+    //
     return Text(label, style: stepLineLabelStyle);
   }
 }

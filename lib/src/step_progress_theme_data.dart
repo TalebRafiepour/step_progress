@@ -21,6 +21,7 @@ import 'package:step_progress/step_progress.dart';
 /// transitions.
 /// * [stepLineSpacing]: The spacing between step lines.
 /// * [stepLabelAlignment]: The alignment of the labels for the step nodes.
+/// * [lineLabelAlignment]: The alignment of the labels for line segment.
 /// * [labelStyle]: The style of the labels for the step nodes.
 /// * [stepNodeStyle]: The style of the step nodes.
 /// * [stepLineStyle]: The style of the lines connecting the step nodes.
@@ -38,6 +39,7 @@ class StepProgressThemeData {
     this.stepAnimationDuration = const Duration(milliseconds: 150),
     this.stepLineSpacing = 0,
     this.stepLabelAlignment,
+    this.lineLabelAlignment,
     this.labelStyle = const StepLabelStyle(),
     this.lineLabelStyle = const StepLineLabelStyle(),
     this.stepNodeStyle = const StepNodeStyle(),
@@ -77,6 +79,10 @@ class StepProgressThemeData {
 
   /// A style configuration for the line label of the step progress indicator.
   final StepLineLabelStyle lineLabelStyle;
+
+  /// Specifies the alignment of labels along the progress indicator's
+  /// line segments.
+  final Alignment? lineLabelAlignment;
 
   /// The style configuration for the step node.
   final StepNodeStyle stepNodeStyle;
@@ -118,6 +124,7 @@ class StepProgressThemeData {
   /// - [rippleEffectStyle]: The style of the ripple effect.
   /// - [highlightCompletedSteps]: Whether to highlight completed steps.
   /// - [stepLabelAlignment]: The alignment of the step labels.
+  /// - [lineLabelAlignment]: The alignment of the line segment labels.
   ///
   /// Returns a new instance of [StepProgressThemeData] with the updated values.
   StepProgressThemeData copyWith({
@@ -137,6 +144,7 @@ class StepProgressThemeData {
     RippleEffectStyle? rippleEffectStyle,
     bool? highlightCompletedSteps,
     StepLabelAlignment? stepLabelAlignment,
+    Alignment? lineLabelAlignment,
   }) {
     return StepProgressThemeData(
       defaultForegroundColor:
@@ -159,6 +167,7 @@ class StepProgressThemeData {
       highlightCompletedSteps:
           highlightCompletedSteps ?? this.highlightCompletedSteps,
       stepLabelAlignment: stepLabelAlignment ?? this.stepLabelAlignment,
+      lineLabelAlignment: lineLabelAlignment ?? this.lineLabelAlignment,
     );
   }
 }
