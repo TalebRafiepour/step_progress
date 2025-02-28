@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:step_progress/src/helpers/keep_size_visibility.dart';
 import 'package:step_progress/src/step_label/step_label.dart';
 import 'package:step_progress/src/step_node/step_node.dart';
 import 'package:step_progress/src/step_node/step_node_ripple.dart';
-import 'package:step_progress/src/step_progress_widgets/keep_size_visibility.dart';
 import 'package:step_progress/step_progress.dart';
 
 /// A widget that generates a step in a step progress indicator.

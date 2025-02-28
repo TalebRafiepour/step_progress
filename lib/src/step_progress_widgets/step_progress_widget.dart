@@ -147,7 +147,9 @@ abstract class StepProgressWidget extends StatelessWidget {
     final theme = StepProgressTheme.of(context)!.data;
     final stepLineStyle = theme.stepLineStyle;
     final highlightCompletedSteps = theme.highlightCompletedSteps;
-    final labelAlignment =
+    //
+    final stepNodeLabelExist = titles != null || subTitles != null;
+    final stepNodeLabelAlignment =
         theme.stepLabelAlignment ??
         (axis == Axis.horizontal
             ? StepLabelAlignment.top
@@ -179,8 +181,11 @@ abstract class StepProgressWidget extends StatelessWidget {
                 : null;
 
         Alignment alignment() {
+          if (!stepNodeLabelExist) {
+            return Alignment.center;
+          }
           if (axis == Axis.horizontal) {
-            switch (labelAlignment) {
+            switch (stepNodeLabelAlignment) {
               case StepLabelAlignment.top:
                 return Alignment.bottomCenter;
               case StepLabelAlignment.bottom:
@@ -194,7 +199,7 @@ abstract class StepProgressWidget extends StatelessWidget {
                 return Alignment.center;
             }
           } else {
-            switch (labelAlignment) {
+            switch (stepNodeLabelAlignment) {
               case StepLabelAlignment.right:
                 return Alignment.centerLeft;
               case StepLabelAlignment.left:
@@ -224,7 +229,7 @@ abstract class StepProgressWidget extends StatelessWidget {
               if (visibilityOptions != StepProgressVisibilityOptions.lineOnly)
                 buildStepNodes(
                   highlightCompletedSteps: highlightCompletedSteps,
-                  labelAlignment: labelAlignment,
+                  labelAlignment: stepNodeLabelAlignment,
                 ),
             ],
           ),
