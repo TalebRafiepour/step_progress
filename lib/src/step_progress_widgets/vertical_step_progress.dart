@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:step_progress/src/step_label_alignment.dart';
 import 'package:step_progress/src/step_line/step_line.dart';
+import 'package:step_progress/src/step_line/step_line_label.dart';
 import 'package:step_progress/src/step_line/step_line_style.dart';
+import 'package:step_progress/src/step_progress_theme.dart';
+import 'package:step_progress/src/step_progress_visibility_options.dart';
 import 'package:step_progress/src/step_progress_widgets/step_generator.dart';
 import 'package:step_progress/src/step_progress_widgets/step_progress_widget.dart';
 
@@ -134,6 +137,7 @@ class VerticalStepProgress extends StepProgressWidget {
     required StepLineStyle style,
     required double maxStepSize,
     required bool highlightCompletedSteps,
+    Key? key,
   }) {
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -141,11 +145,11 @@ class VerticalStepProgress extends StepProgressWidget {
         horizontal: stepSize / 2 - style.lineThickness / 2,
       ),
       child: Column(
+        key: key,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: List.generate(totalStep - 1, (index) {
           return StepLine(
             axis: Axis.vertical,
-            label: lineLabels?.elementAtOrNull(index),
             isActive:
                 highlightCompletedSteps
                     ? index < currentStep
@@ -155,6 +159,188 @@ class VerticalStepProgress extends StepProgressWidget {
           );
         }),
       ),
+    );
+  }
+
+  @override
+  Widget buildStepLineLabels(double lineThickness, double maxStepSize) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: stepSize / 2),
+      child: Column(
+        children: List.generate(totalStep - 1, (index) {
+          return StepLineLabel(
+            axis: Axis.vertical,
+            label: lineLabels?.elementAtOrNull(index),
+          );
+        }),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = StepProgressTheme.of(context)!.data;
+    final stepLineStyle = theme.stepLineStyle;
+    final highlightCompletedSteps = theme.highlightCompletedSteps;
+
+    // Determine if the step nodes have associated labels.
+    final hasNodeLabels = titles != null || subTitles != null;
+    final nodeLabelAlignment =
+        theme.stepLabelAlignment ?? StepLabelAlignment.right;
+    final labelPadding = theme.labelStyle.padding;
+    final labelMargin = theme.labelStyle.margin;
+    final labelMaxWidth =
+        theme.labelStyle.maxWidth +
+        labelPadding.left +
+        labelPadding.right +
+        labelMargin.left +
+        labelMargin.right;
+
+    // Calculate the maximum size for the step node.
+    final maxStepSize =
+        ((titles != null || subTitles != null) &&
+                labelMaxWidth.isFinite &&
+                labelMaxWidth > stepSize)
+            ? labelMaxWidth
+            : stepSize;
+
+    // Widget that builds nodes and lines.
+    Widget buildNodesAndLines({GlobalKey? wholeKey, GlobalKey? lineKey}) {
+      return LayoutBuilder(
+        builder: (context, constraints) {
+          final height =
+              !constraints.hasBoundedHeight
+                  ? totalStep * 1.45 * stepSize
+                  : null;
+
+          Alignment getStackAlignment() {
+            if (!hasNodeLabels) return Alignment.center;
+            if (nodeLabelAlignment == StepLabelAlignment.right) {
+              return Alignment.centerLeft;
+            } else if (nodeLabelAlignment == StepLabelAlignment.left) {
+              return Alignment.centerRight;
+            } else {
+              return Alignment.center;
+            }
+          }
+
+          return ConstrainedBox(
+            key: wholeKey,
+            constraints: BoxConstraints.tightFor(height: height),
+            child: Stack(
+              alignment: getStackAlignment(),
+              children: [
+                if (visibilityOptions != StepProgressVisibilityOptions.nodeOnly)
+                  buildStepLines(
+                    key: lineKey,
+                    style: stepLineStyle,
+                    maxStepSize: maxStepSize,
+                    highlightCompletedSteps: highlightCompletedSteps,
+                  ),
+                if (visibilityOptions != StepProgressVisibilityOptions.lineOnly)
+                  buildStepNodes(
+                    highlightCompletedSteps: highlightCompletedSteps,
+                    labelAlignment: nodeLabelAlignment,
+                  ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+
+    // If there are no line labels or we only want nodes, simply build nodes/lines.
+    if (lineLabels == null ||
+        lineLabels!.isEmpty ||
+        visibilityOptions == StepProgressVisibilityOptions.nodeOnly) {
+      return buildNodesAndLines();
+    }
+
+    // Define keys to obtain widget sizes.
+    final wholeWidgetKey = GlobalKey();
+    final lineWidgetKey = GlobalKey();
+
+    // Determine the alignment for the line labels.
+    final lineLabelAlignment =
+        theme.lineLabelAlignment ?? Alignment.centerRight;
+    bool isLeftAligned() =>
+        lineLabelAlignment == Alignment.topLeft ||
+        lineLabelAlignment == Alignment.centerLeft ||
+        lineLabelAlignment == Alignment.bottomLeft;
+    bool isRightAligned() =>
+        lineLabelAlignment == Alignment.topRight ||
+        lineLabelAlignment == Alignment.centerRight ||
+        lineLabelAlignment == Alignment.bottomRight;
+
+    Alignment getLineStackAlignment() {
+      if (isLeftAligned()) return Alignment.centerRight;
+      if (isRightAligned()) return Alignment.centerLeft;
+      return Alignment.center;
+    }
+
+    Widget buildLineLabelWidget() =>
+        buildStepLineLabels(stepLineStyle.lineThickness, maxStepSize);
+
+    return Stack(
+      alignment: getLineStackAlignment(),
+      children: [
+        buildNodesAndLines(wholeKey: wholeWidgetKey, lineKey: lineWidgetKey),
+        FutureBuilder<void>(
+          future: Future.delayed(Duration.zero),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState != ConnectionState.done) {
+              return const SizedBox.shrink();
+            }
+
+            final wholeBox =
+                wholeWidgetKey.currentContext!.findRenderObject()! as RenderBox;
+            final lineBox =
+                lineWidgetKey.currentContext!.findRenderObject()! as RenderBox;
+            final wholeSize = wholeBox.size;
+            final lineSize = lineBox.size;
+            final linePosition = lineBox.localToGlobal(
+              Offset.zero,
+              ancestor: wholeBox,
+            );
+
+            if (isLeftAligned()) {
+              final gap = (wholeSize.width - linePosition.dx).abs();
+              return Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [buildLineLabelWidget(), SizedBox(width: gap)],
+              );
+            } else if (isRightAligned()) {
+              final gap = (linePosition.dx + lineSize.width).abs();
+              return Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [SizedBox(width: gap), buildLineLabelWidget()],
+              );
+            } else {
+              final wholeCenter = wholeSize.width / 2;
+              final lineCenter = linePosition.dx + lineSize.width / 2;
+              if (wholeCenter == lineCenter) {
+                return buildLineLabelWidget();
+              } else if (wholeCenter < lineCenter) {
+                final gap =
+                    (2 * linePosition.dx + lineSize.width - wholeSize.width)
+                        .abs();
+                return Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [SizedBox(width: gap), buildLineLabelWidget()],
+                );
+              } else {
+                final gap =
+                    (wholeSize.width - (2 * linePosition.dx + lineSize.width))
+                        .abs();
+                return Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [buildLineLabelWidget(), SizedBox(width: gap)],
+                );
+              }
+            }
+          },
+        ),
+      ],
     );
   }
 }

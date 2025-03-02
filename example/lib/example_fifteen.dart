@@ -17,7 +17,7 @@ class ExampleFifteen extends StatelessWidget {
           children: [
             StepProgress(
               totalSteps: 4,
-              lineLabels: const ['line 1', 'line 2', 'line 3'],
+              lineLabels: const ['top 1', 'top 2', 'top 3'],
               controller: stepProgressController,
               theme: const StepProgressThemeData(
                 lineLabelAlignment: Alignment.topCenter,
@@ -25,12 +25,216 @@ class ExampleFifteen extends StatelessWidget {
             ),
             StepProgress(
               totalSteps: 4,
-              height: 390,
-              axis: Axis.vertical,
-              lineLabels: const ['line 1', 'line 2', 'line 3'],
+              lineLabels: const ['center 1', 'center 2', 'center 3'],
               controller: stepProgressController,
               theme: const StepProgressThemeData(
-                lineLabelAlignment: Alignment.centerLeft,
+                lineLabelAlignment: Alignment.center,
+              ),
+            ),
+            StepProgress(
+              totalSteps: 4,
+              //stepSize: 60,
+              lineLabels: const ['bottom 1', 'bottom 2', 'bottom 3'],
+              titles: const [
+                'title 1',
+                'title 2',
+                'title 3',
+                'title 4',
+              ],
+              controller: stepProgressController,
+              theme: const StepProgressThemeData(
+                lineLabelAlignment: Alignment.bottomCenter,
+              ),
+            ),
+            StepProgress(
+              totalSteps: 4,
+              lineLabels: const ['bottom 1', 'bottom 2', 'bottom 3'],
+              titles: const [
+                'title 1',
+                'title 2',
+                'title 3',
+                'title 4 longe title here',
+              ],
+              controller: stepProgressController,
+              theme: const StepProgressThemeData(
+                lineLabelAlignment: Alignment.bottomCenter,
+                stepLabelAlignment: StepLabelAlignment.bottomTop,
+              ),
+            ),
+            SizedBox(
+              height: 400,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  spacing: 30,
+                  children: [
+                    StepProgress(
+                      totalSteps: 4,
+                      height: 390,
+                      axis: Axis.vertical,
+                      lineLabels: const [
+                        'left 1',
+                        'left 2',
+                        'left 3',
+                      ],
+                      controller: stepProgressController,
+                      theme: const StepProgressThemeData(
+                        lineLabelAlignment: Alignment.centerLeft,
+                      ),
+                    ),
+                    StepProgress(
+                      totalSteps: 4,
+                      height: 390,
+                      axis: Axis.vertical,
+                      lineLabels: const [
+                        'right 1',
+                        'right 2',
+                        'right 3',
+                      ],
+                      titles: const [
+                        'step 1',
+                        'step 2',
+                        'step 3',
+                        'step 4',
+                      ],
+                      controller: stepProgressController,
+                      theme: const StepProgressThemeData(
+                        stepLabelAlignment: StepLabelAlignment.left,
+                        lineLabelAlignment: Alignment.centerRight,
+                      ),
+                    ),
+                    StepProgress(
+                      totalSteps: 4,
+                      height: 390,
+                      axis: Axis.vertical,
+                      lineLabels: const [
+                        'right 1',
+                        'right 2',
+                        'right 3',
+                      ],
+                      titles: const [
+                        'step 1',
+                        'step 2',
+                        'step 3',
+                        'step 4',
+                      ],
+                      controller: stepProgressController,
+                      theme: const StepProgressThemeData(
+                        stepLabelAlignment: StepLabelAlignment.right,
+                        lineLabelAlignment: Alignment.centerRight,
+                      ),
+                    ),
+                    StepProgress(
+                      totalSteps: 4,
+                      height: 390,
+                      axis: Axis.vertical,
+                      lineLabels: const [
+                        'right 1',
+                        'right 2',
+                        'right 3',
+                      ],
+                      titles: const [
+                        'step 1',
+                        'step 2',
+                        'step 3',
+                        'step 4',
+                      ],
+                      controller: stepProgressController,
+                      theme: const StepProgressThemeData(
+                        stepLabelAlignment: StepLabelAlignment.leftRight,
+                        lineLabelAlignment: Alignment.centerRight,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 400,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  spacing: 30,
+                  children: [
+                    StepProgress(
+                      totalSteps: 4,
+                      height: 390,
+                      axis: Axis.vertical,
+                      lineLabels: const [
+                        'center 1',
+                        'center 2',
+                        'center 3',
+                      ],
+                      controller: stepProgressController,
+                      theme: const StepProgressThemeData(
+                        lineLabelAlignment: Alignment.center,
+                      ),
+                    ),
+                    StepProgress(
+                      totalSteps: 4,
+                      height: 390,
+                      axis: Axis.vertical,
+                      lineLabels: const [
+                        'center 1',
+                        'center 2',
+                        'center 3',
+                      ],
+                      titles: const [
+                        'step 1',
+                        'step 2',
+                        'step 3',
+                        'step 4',
+                      ],
+                      controller: stepProgressController,
+                      theme: const StepProgressThemeData(
+                        stepLabelAlignment: StepLabelAlignment.left,
+                        lineLabelAlignment: Alignment.center,
+                      ),
+                    ),
+                    StepProgress(
+                      totalSteps: 4,
+                      height: 390,
+                      axis: Axis.vertical,
+                      lineLabels: const [
+                        'center 1',
+                        'center 2',
+                        'center 3',
+                      ],
+                      titles: const [
+                        'step 1',
+                        'step 2',
+                        'step 3',
+                        'step 4',
+                      ],
+                      controller: stepProgressController,
+                      theme: const StepProgressThemeData(
+                        stepLabelAlignment: StepLabelAlignment.right,
+                        lineLabelAlignment: Alignment.center,
+                      ),
+                    ),
+                    StepProgress(
+                      totalSteps: 4,
+                      height: 390,
+                      axis: Axis.vertical,
+                      lineLabels: const [
+                        'center 1',
+                        'center 2',
+                        'center 3',
+                      ],
+                      titles: const [
+                        'step 1',
+                        'step 2',
+                        'step 3',
+                        'step 4',
+                      ],
+                      controller: stepProgressController,
+                      theme: const StepProgressThemeData(
+                        stepLabelAlignment: StepLabelAlignment.leftRight,
+                        lineLabelAlignment: Alignment.center,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -38,7 +242,7 @@ class ExampleFifteen extends StatelessWidget {
       ),
       bottomNavigationBar: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        spacing: 38,
+        spacing: 40,
         children: [
           ElevatedButton(
             onPressed: stepProgressController.previousStep,

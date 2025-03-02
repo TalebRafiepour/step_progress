@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:step_progress/src/step_line/step_line.dart';
+import 'package:step_progress/src/step_line/step_line_label.dart';
 import 'package:step_progress/src/step_progress_widgets/step_generator.dart';
 import 'package:step_progress/src/step_progress_widgets/step_progress_widget.dart';
 import 'package:step_progress/step_progress.dart';
@@ -111,6 +112,7 @@ class HorizontalStepProgress extends StepProgressWidget {
     required StepLineStyle style,
     required double maxStepSize,
     required bool highlightCompletedSteps,
+    Key? key,
   }) {
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -120,7 +122,6 @@ class HorizontalStepProgress extends StepProgressWidget {
       child: Row(
         children: List.generate(totalStep - 1, (index) {
           return StepLine(
-            label: lineLabels?.elementAtOrNull(index),
             isActive:
                 highlightCompletedSteps
                     ? index < currentStep
@@ -130,6 +131,104 @@ class HorizontalStepProgress extends StepProgressWidget {
           );
         }),
       ),
+    );
+  }
+
+  @override
+  Widget buildStepLineLabels(double lineThickness, double maxStepSize) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: maxStepSize / 2),
+      child: Row(
+        children: List.generate(totalStep - 1, (index) {
+          return StepLineLabel(
+            axis: Axis.horizontal,
+            label: lineLabels?.elementAtOrNull(index),
+          );
+        }),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = StepProgressTheme.of(context)!.data;
+    final stepLineStyle = theme.stepLineStyle;
+    final highlightCompletedSteps = theme.highlightCompletedSteps;
+    //
+    final stepNodeLabelExist = titles != null || subTitles != null;
+    final stepNodeLabelAlignment =
+        theme.stepLabelAlignment ?? StepLabelAlignment.top;
+
+    final labelMaxWidth =
+        (theme.labelStyle.maxWidth) +
+        theme.labelStyle.padding.left +
+        theme.labelStyle.padding.right +
+        theme.labelStyle.margin.left +
+        theme.labelStyle.margin.right;
+    // The maximum size of a step node.
+    final maxStepSize =
+        ((titles != null || subTitles != null) &&
+                labelMaxWidth.isFinite &&
+                labelMaxWidth > stepSize)
+            ? labelMaxWidth
+            : stepSize;
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final width =
+            axis == Axis.horizontal && !constraints.hasBoundedWidth
+                ? totalStep * 1.45 * stepSize
+                : null;
+
+        Alignment alignment() {
+          if (!stepNodeLabelExist) {
+            return Alignment.center;
+          }
+          switch (stepNodeLabelAlignment) {
+            case StepLabelAlignment.top:
+              return Alignment.bottomCenter;
+            case StepLabelAlignment.bottom:
+              return Alignment.topCenter;
+            case StepLabelAlignment.left:
+            case StepLabelAlignment.right:
+            case StepLabelAlignment.topBottom:
+            case StepLabelAlignment.bottomTop:
+            case StepLabelAlignment.rightLeft:
+            case StepLabelAlignment.leftRight:
+              return Alignment.center;
+          }
+        }
+
+        return ConstrainedBox(
+          constraints: BoxConstraints.tightFor(width: width),
+          child: Stack(
+            alignment: alignment(),
+            children: [
+              if (visibilityOptions != StepProgressVisibilityOptions.nodeOnly)
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    buildStepLines(
+                      style: stepLineStyle,
+                      maxStepSize: maxStepSize,
+                      highlightCompletedSteps: highlightCompletedSteps,
+                    ),
+                    if (lineLabels != null)
+                      buildStepLineLabels(
+                        stepLineStyle.lineThickness,
+                        maxStepSize,
+                      ),
+                  ],
+                ),
+              if (visibilityOptions != StepProgressVisibilityOptions.lineOnly)
+                buildStepNodes(
+                  highlightCompletedSteps: highlightCompletedSteps,
+                  labelAlignment: stepNodeLabelAlignment,
+                ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

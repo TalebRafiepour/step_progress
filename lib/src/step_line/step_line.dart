@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:step_progress/src/helpers/keep_size_visibility.dart';
-import 'package:step_progress/src/step_line/step_line_label.dart';
 import 'package:step_progress/src/step_line/step_line_style.dart';
 import 'package:step_progress/src/step_progress_theme.dart';
 
@@ -22,10 +20,6 @@ import 'package:step_progress/src/step_progress_theme.dart';
 /// The [isActive] parameter indicates whether the step line is active. It
 /// defaults to `false`.
 ///
-/// The [label] parameter provides a brief label that gives additional context
-/// for the step line, such as a description of its purpose or status. It is
-/// optional and defaults to `null`.
-///
 /// The [onTap] parameter is a callback function that is executed when the step
 /// line is tapped. It is optional and defaults to `null`.
 ///
@@ -34,7 +28,6 @@ import 'package:step_progress/src/step_progress_theme.dart';
 /// ```dart
 /// StepLine(
 ///   axis: Axis.vertical,
-///   label: 'Step 1',
 ///   style: StepLineStyle(
 ///     color: Colors.blue,
 ///     thickness: 2.0,
@@ -50,16 +43,9 @@ class StepLine extends StatelessWidget {
     this.axis = Axis.horizontal,
     this.style = const StepLineStyle(),
     this.isActive = false,
-    this.label,
     this.onTap,
     super.key,
   });
-
-  /// A brief label that is displayed on the step line.
-  ///
-  /// This label helps indicate the purpose or status of the step line,
-  /// providing additional context to the user.
-  final String? label;
 
   /// The axis in which the step line is oriented.
   final Axis axis;
@@ -79,9 +65,7 @@ class StepLine extends StatelessWidget {
     final borderWidth = theme.borderWidth;
     final borderColor = theme.borderColor;
     final activeBorderColor = theme.activeBorderColor;
-    final Alignment lineLabelAlignment =
-        theme.lineLabelAlignment ??
-        (_isHorizontal ? Alignment.topCenter : Alignment.centerRight);
+
     //
     return Expanded(
       child: LayoutBuilder(
@@ -124,125 +108,26 @@ class StepLine extends StatelessWidget {
 
           final animationDuration =
               style.animationDuration ?? theme.stepAnimationDuration;
-          Widget buildLineWidget() {
-            return Padding(
-              padding: padding,
-              child: GestureDetector(
-                onTap: onTap,
-                child: Container(
-                  width: _width(constraint),
-                  height: _height(constraint),
-                  decoration: containerDecoration,
-                  alignment: AlignmentDirectional.centerStart,
-                  child: AnimatedContainer(
-                    width: animatedContainerWidth,
-                    height: animatedContainerHeight,
-                    decoration: animatedContainerDecoration,
-                    curve: Curves.fastLinearToSlowEaseIn,
-                    duration: animationDuration,
-                  ),
+
+          return Padding(
+            padding: padding,
+            child: GestureDetector(
+              onTap: onTap,
+              child: Container(
+                width: _width(constraint),
+                height: _height(constraint),
+                decoration: containerDecoration,
+                alignment: AlignmentDirectional.centerStart,
+                child: AnimatedContainer(
+                  width: animatedContainerWidth,
+                  height: animatedContainerHeight,
+                  decoration: animatedContainerDecoration,
+                  curve: Curves.fastLinearToSlowEaseIn,
+                  duration: animationDuration,
                 ),
               ),
-            );
-          }
-
-          if (label == null) {
-            return buildLineWidget();
-          } else if (_isHorizontal) {
-            if (lineLabelAlignment == Alignment.topCenter ||
-                lineLabelAlignment == Alignment.topRight ||
-                lineLabelAlignment == Alignment.topLeft) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Align(
-                    alignment: lineLabelAlignment,
-                    child: StepLineLabel(label: label!),
-                  ),
-                  buildLineWidget(),
-                  KeepSizeVisibility(
-                    visible: false,
-                    child: StepLineLabel(label: label!),
-                  ),
-                ],
-              );
-            } else if (lineLabelAlignment == Alignment.bottomCenter ||
-                lineLabelAlignment == Alignment.bottomRight ||
-                lineLabelAlignment == Alignment.bottomLeft) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  KeepSizeVisibility(
-                    visible: false,
-                    child: StepLineLabel(label: label!),
-                  ),
-                  buildLineWidget(),
-                  Align(
-                    alignment: lineLabelAlignment,
-                    child: StepLineLabel(label: label!),
-                  ),
-                ],
-              );
-            } else {
-              return Stack(
-                alignment: Alignment.center,
-                children: [
-                  buildLineWidget(),
-                  Align(
-                    alignment: lineLabelAlignment,
-                    child: StepLineLabel(label: label!),
-                  ),
-                ],
-              );
-            }
-          } else {
-            if (lineLabelAlignment == Alignment.centerLeft ||
-                lineLabelAlignment == Alignment.topLeft ||
-                lineLabelAlignment == Alignment.bottomLeft) {
-              return Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Align(
-                    alignment: lineLabelAlignment,
-                    child: StepLineLabel(label: label!),
-                  ),
-                  buildLineWidget(),
-                  KeepSizeVisibility(
-                    visible: false,
-                    child: StepLineLabel(label: label!),
-                  ),
-                ],
-              );
-            } else if (lineLabelAlignment == Alignment.topRight ||
-                lineLabelAlignment == Alignment.bottomRight ||
-                lineLabelAlignment == Alignment.centerRight) {
-              return Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  KeepSizeVisibility(
-                    visible: false,
-                    child: StepLineLabel(label: label!),
-                  ),
-                  buildLineWidget(),
-                  Align(
-                    alignment: lineLabelAlignment,
-                    child: StepLineLabel(label: label!),
-                  ),
-                ],
-              );
-            } else {
-              return Stack(
-                alignment: Alignment.center,
-                children: [
-                  buildLineWidget(),
-                  Align(
-                    alignment: lineLabelAlignment,
-                    child: StepLineLabel(label: label!),
-                  ),
-                ],
-              );
-            }
-          }
+            ),
+          );
         },
       ),
     );
