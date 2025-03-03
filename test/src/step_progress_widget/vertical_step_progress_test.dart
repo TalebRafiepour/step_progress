@@ -24,8 +24,14 @@ void main() {
               currentStep: 1,
               stepSize: 30,
               visibilityOptions: StepProgressVisibilityOptions.both,
-              titles: const ['Step 1', 'Step 2', 'Step 3', 'Step 4', 'Step 5'],
-              subTitles: const [
+              nodeTitles: const [
+                'Step 1',
+                'Step 2',
+                'Step 3',
+                'Step 4',
+                'Step 5',
+              ],
+              nodeSubTitles: const [
                 'Description 1',
                 'Description 2',
                 'Description 3',
@@ -94,8 +100,11 @@ void main() {
             currentStep: -1,
             stepSize: 30,
             visibilityOptions: StepProgressVisibilityOptions.both,
-            titles: List.generate(5, (index) => 'Step ${index + 1}'),
-            subTitles: List.generate(5, (index) => 'Description ${index + 1}'),
+            nodeTitles: List.generate(5, (index) => 'Step ${index + 1}'),
+            nodeSubTitles: List.generate(
+              5,
+              (index) => 'Description ${index + 1}',
+            ),
             onStepNodeTapped: (_) {},
             onStepLineTapped: (_) {},
             nodeIconBuilder: (step) {
@@ -136,8 +145,11 @@ void main() {
             currentStep: currentStep,
             stepSize: 30,
             visibilityOptions: StepProgressVisibilityOptions.both,
-            titles: List.generate(totalSteps, (index) => 'Step ${index + 1}'),
-            subTitles: List.generate(
+            nodeTitles: List.generate(
+              totalSteps,
+              (index) => 'Step ${index + 1}',
+            ),
+            nodeSubTitles: List.generate(
               totalSteps,
               (index) => 'Desc ${index + 1}',
             ),
@@ -185,8 +197,8 @@ void main() {
             currentStep: 3,
             stepSize: 40,
             visibilityOptions: StepProgressVisibilityOptions.both,
-            titles: List.generate(5, (index) => 'Step ${index + 1}'),
-            subTitles: List.generate(5, (index) => 'Detail ${index + 1}'),
+            nodeTitles: List.generate(5, (index) => 'Step ${index + 1}'),
+            nodeSubTitles: List.generate(5, (index) => 'Detail ${index + 1}'),
             onStepNodeTapped: (_) {},
             onStepLineTapped: (step) {
               tappedLineIndex = step;
@@ -229,11 +241,11 @@ void main() {
             currentStep: 1,
             stepSize: 30,
             visibilityOptions: StepProgressVisibilityOptions.both,
-            titles: const [
+            nodeTitles: const [
               'Only Title 1',
               'Only Title 2',
             ], // fewer titles than steps
-            subTitles: const ['SubTitle 1'], // fewer subtitles than steps
+            nodeSubTitles: const ['SubTitle 1'], // fewer subtitles than steps
             onStepNodeTapped: (_) {},
             onStepLineTapped: (_) {},
             nodeIconBuilder: (step) {

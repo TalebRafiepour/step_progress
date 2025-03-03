@@ -21,7 +21,7 @@ void main() {
               totalSteps: 3,
               currentStep: 1,
               axis: Axis.horizontal,
-              titles: const ['Step 1', 'Step 2', 'Step 3'],
+              nodeTitles: const ['Step 1', 'Step 2', 'Step 3'],
             ),
           ),
         ),
@@ -45,7 +45,7 @@ void main() {
               totalSteps: 4,
               currentStep: 2,
               axis: Axis.vertical,
-              subTitles: const ['A', 'B', 'C', 'D'],
+              nodeSubTitles: const ['A', 'B', 'C', 'D'],
             ),
           ),
         ),
@@ -229,7 +229,7 @@ void main() {
         expect(
           () => StepProgress(
             totalSteps: 2,
-            titles: const ['Step 1', 'Step 2', 'Step 3'],
+            nodeTitles: const ['Step 1', 'Step 2', 'Step 3'],
           ),
           throwsAssertionError,
         );
@@ -241,7 +241,8 @@ void main() {
       ' greater than totalSteps',
       (tester) async {
         expect(
-          () => StepProgress(totalSteps: 2, subTitles: const ['A', 'B', 'C']),
+          () =>
+              StepProgress(totalSteps: 2, nodeSubTitles: const ['A', 'B', 'C']),
           throwsAssertionError,
         );
       },
@@ -262,7 +263,7 @@ void main() {
                 totalSteps: largeStepCount,
                 width: largeStepCount * 80,
                 currentStep: 25,
-                titles: List<String>.generate(
+                nodeTitles: List<String>.generate(
                   largeStepCount,
                   (index) => 'Step ${index + 1}',
                 ),

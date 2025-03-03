@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:step_progress/src/step_line/step_line_label_style.dart';
 import 'package:step_progress/step_progress.dart';
 
 /// A class that defines the theme data for the Step Progress widget.
@@ -22,7 +21,8 @@ import 'package:step_progress/step_progress.dart';
 /// * [stepLineSpacing]: The spacing between step lines.
 /// * [stepLabelAlignment]: The alignment of the labels for the step nodes.
 /// * [lineLabelAlignment]: The alignment of the labels for line segment.
-/// * [labelStyle]: The style of the labels for the step nodes.
+/// * [nodeLabelStyle]: The style of the labels for the step nodes.
+/// * [lineLabelStyle]: The style of the labels for the step lines.
 /// * [stepNodeStyle]: The style of the step nodes.
 /// * [stepLineStyle]: The style of the lines connecting the step nodes.
 /// * [rippleEffectStyle]: The style of the ripple effect on step nodes.
@@ -40,8 +40,8 @@ class StepProgressThemeData {
     this.stepLineSpacing = 0,
     this.stepLabelAlignment,
     this.lineLabelAlignment,
-    this.labelStyle = const StepLabelStyle(),
-    this.lineLabelStyle = const StepLineLabelStyle(),
+    this.nodeLabelStyle = const StepLabelStyle(),
+    this.lineLabelStyle = const StepLabelStyle(maxWidth: double.infinity),
     this.stepNodeStyle = const StepNodeStyle(),
     this.stepLineStyle = const StepLineStyle(),
     this.rippleEffectStyle = const RippleEffectStyle(),
@@ -74,11 +74,11 @@ class StepProgressThemeData {
   /// The spacing between each step line in the progress indicator.
   final double stepLineSpacing;
 
-  /// The style to be applied to the step labels.
-  final StepLabelStyle labelStyle;
+  /// The style to be applied to the step node labels.
+  final StepLabelStyle nodeLabelStyle;
 
-  /// A style configuration for the line label of the step progress indicator.
-  final StepLineLabelStyle lineLabelStyle;
+  /// The style to be applied to the step line labels.
+  final StepLabelStyle lineLabelStyle;
 
   /// Specifies the alignment of labels along the progress indicator's
   /// line segments.
@@ -117,8 +117,8 @@ class StepProgressThemeData {
   /// - [enableRippleEffect]: Whether the ripple effect is enabled.
   /// - [shape]: The shape of the step nodes.
   /// - [stepLineSpacing]: The spacing between step lines.
-  /// - [labelStyle]: The style of the step labels.
-  /// - [lineLabelStyle]: The style for the line labels.
+  /// - [nodeLabelStyle]: The style of the step labels of nodes.
+  /// - [lineLabelStyle]: The style of the step labels of lines.
   /// - [stepNodeStyle]: The style of the step nodes.
   /// - [stepLineStyle]: The style of the step lines.
   /// - [rippleEffectStyle]: The style of the ripple effect.
@@ -137,8 +137,8 @@ class StepProgressThemeData {
     bool? enableRippleEffect,
     StepNodeShape? shape,
     double? stepLineSpacing,
-    StepLabelStyle? labelStyle,
-    StepLineLabelStyle? lineLabelStyle,
+    StepLabelStyle? nodeLabelStyle,
+    StepLabelStyle? lineLabelStyle,
     StepNodeStyle? stepNodeStyle,
     StepLineStyle? stepLineStyle,
     RippleEffectStyle? rippleEffectStyle,
@@ -159,7 +159,7 @@ class StepProgressThemeData {
       enableRippleEffect: enableRippleEffect ?? this.enableRippleEffect,
       shape: shape ?? this.shape,
       stepLineSpacing: stepLineSpacing ?? this.stepLineSpacing,
-      labelStyle: labelStyle ?? this.labelStyle,
+      nodeLabelStyle: nodeLabelStyle ?? this.nodeLabelStyle,
       lineLabelStyle: lineLabelStyle ?? this.lineLabelStyle,
       stepNodeStyle: stepNodeStyle ?? this.stepNodeStyle,
       stepLineStyle: stepLineStyle ?? this.stepLineStyle,

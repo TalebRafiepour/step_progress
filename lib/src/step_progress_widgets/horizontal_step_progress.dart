@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:step_progress/src/step_label/step_label.dart';
 import 'package:step_progress/src/step_line/step_line.dart';
-import 'package:step_progress/src/step_line/step_line_label.dart';
 import 'package:step_progress/src/step_progress_widgets/step_generator.dart';
 import 'package:step_progress/src/step_progress_widgets/step_progress_widget.dart';
 import 'package:step_progress/step_progress.dart';
@@ -19,9 +19,9 @@ import 'package:step_progress/step_progress.dart';
 /// elements.
 ///
 /// Optional parameters include:
-/// - [titles]: A list of titles for each step.
-/// - [subTitles]: A list of subtitles for each step.
-/// - [lineLabels]: A list of labels for each line segment of progress.
+/// - [nodeTitles]: A list of titles for each step node.
+/// - [nodeSubTitles]: A list of subtitles for each step node.
+/// - [lineTitles]: A list of titles for each line segment of progress.
 /// - [onStepNodeTapped]: A callback function that is called when a step is
 /// tapped.
 /// - [onStepLineTapped]: A callback function that is called when a line is
@@ -37,9 +37,9 @@ class HorizontalStepProgress extends StepProgressWidget {
     required super.currentStep,
     required super.stepSize,
     required super.visibilityOptions,
-    super.titles,
-    super.subTitles,
-    super.lineLabels,
+    super.nodeTitles,
+    super.nodeSubTitles,
+    super.lineTitles,
     super.onStepNodeTapped,
     super.onStepLineTapped,
     super.nodeIconBuilder,
@@ -76,8 +76,8 @@ class HorizontalStepProgress extends StepProgressWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: crossAxisAlignment(),
       children: List.generate(totalStep, (index) {
-        final title = titles?.elementAtOrNull(index);
-        final subTitle = subTitles?.elementAtOrNull(index);
+        final title = nodeTitles?.elementAtOrNull(index);
+        final subTitle = nodeSubTitles?.elementAtOrNull(index);
         final isActive =
             highlightCompletedSteps
                 ? index <= currentStep
@@ -87,7 +87,7 @@ class HorizontalStepProgress extends StepProgressWidget {
           width: stepSize,
           height: stepSize,
           stepIndex: index,
-          anyLabelExist: titles != null || subTitles != null,
+          anyLabelExist: nodeTitles != null || nodeSubTitles != null,
           title: title,
           subTitle: subTitle,
           isActive: isActive,
@@ -136,16 +136,18 @@ class HorizontalStepProgress extends StepProgressWidget {
 
   @override
   Widget buildStepLineLabels({required BuildContext context}) {
-    final maxStepWidth = maxStepSize(
-      StepProgressTheme.of(context)!.data.labelStyle,
-    );
+    final theme = StepProgressTheme.of(context)!.data;
+    final maxStepWidth = maxStepSize(theme.nodeLabelStyle);
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: maxStepWidth / 2),
       child: Row(
         children: List.generate(totalStep - 1, (index) {
-          return StepLineLabel(
-            axis: Axis.horizontal,
-            label: lineLabels?.elementAtOrNull(index),
+          return Expanded(
+            child: StepLabel(
+              style: theme.lineLabelStyle,
+              isActive: currentStep > index,
+              title: lineTitles?.elementAtOrNull(index),
+            ),
           );
         }),
       ),
@@ -189,7 +191,7 @@ class HorizontalStepProgress extends StepProgressWidget {
         labelMargin.right;
 
     // Calculate the maximum size for the step node.
-    return ((titles != null || subTitles != null) &&
+    return ((nodeTitles != null || nodeSubTitles != null) &&
             labelMaxWidth.isFinite &&
             labelMaxWidth > stepSize)
         ? labelMaxWidth
@@ -199,8 +201,8 @@ class HorizontalStepProgress extends StepProgressWidget {
   @override
   Widget build(BuildContext context) {
     // If there are no line labels or we only want nodes, simply build nodes/lines.
-    if (lineLabels == null ||
-        lineLabels!.isEmpty ||
+    if (lineTitles == null ||
+        lineTitles!.isEmpty ||
         visibilityOptions == StepProgressVisibilityOptions.nodeOnly) {
       return buildNodesAndLines(context: context);
     }

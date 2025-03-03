@@ -20,11 +20,11 @@ import 'package:step_progress/src/step_progress_visibility_options.dart';
 /// - [totalStep]: The total number of steps in the progress indicator.
 /// - [currentStep]: The current step in the progress indicator.
 /// - [stepSize]: The size of each step in the progress indicator.
-/// - [titles]: An optional list of titles for each step.
-/// - [lineLabels]: An optional list of labels for each line segment.
+/// - [nodeTitles]: An optional list of titles for each step.
+/// - [lineTitles]: An optional list of titles for each line segment.
 /// - [axis]: The axis in which the step progress is laid out.
 /// - [visibilityOptions]: The options to control the visibility of elements.
-/// - [subTitles]: An optional list of subtitles for each step.
+/// - [nodeSubTitles]: An optional list of subtitles for each step.
 /// - [onStepNodeTapped]: An optional callback function that is called when a
 /// step node is tapped.
 /// - [onStepLineTapped]: An optional callback function that is called when a
@@ -39,25 +39,25 @@ abstract class StepProgressWidget extends StatelessWidget {
     required this.stepSize,
     required this.axis,
     required this.visibilityOptions,
-    this.titles,
-    this.subTitles,
-    this.lineLabels,
+    this.nodeTitles,
+    this.nodeSubTitles,
+    this.lineTitles,
     this.onStepNodeTapped,
     this.onStepLineTapped,
     this.nodeIconBuilder,
     this.nodeActiveIconBuilder,
     super.key,
   }) : assert(
-         titles == null || titles.length <= totalStep,
-         'titles lenght must be equals to or less than total steps',
+         nodeTitles == null || nodeTitles.length <= totalStep,
+         'nodeTitles lenght must be equals to or less than total steps',
        ),
        assert(
-         subTitles == null || subTitles.length <= totalStep,
-         'subTitles lenght must be equals to or less than total steps',
+         nodeSubTitles == null || nodeSubTitles.length <= totalStep,
+         'nodeSubTitles lenght must be equals to or less than total steps',
        ),
        assert(
-         lineLabels == null || lineLabels.length < totalStep,
-         'lineLabels lenght must be less than total steps',
+         lineTitles == null || lineTitles.length < totalStep,
+         'lineTitle lenght must be less than total steps',
        );
 
   /// The total number of steps in the progress indicator.
@@ -69,14 +69,14 @@ abstract class StepProgressWidget extends StatelessWidget {
   /// The size of each step in the progress indicator.
   final double stepSize;
 
-  /// The titles for each step, if any.
-  final List<String>? titles;
+  /// The titles for each step node, if any.
+  final List<String>? nodeTitles;
 
-  /// The subtitles for each step, if any.
-  final List<String>? subTitles;
+  /// The subtitles for each step node, if any.
+  final List<String>? nodeSubTitles;
 
-  /// The labels for each line segment in the progress indicator.
-  final List<String>? lineLabels;
+  /// The title for each line segment in the progress indicator.
+  final List<String>? lineTitles;
 
   /// Callback function when a step is tapped.
   final OnStepNodeTapped? onStepNodeTapped;
@@ -97,7 +97,7 @@ abstract class StepProgressWidget extends StatelessWidget {
   final StepNodeIconBuilder? nodeActiveIconBuilder;
 
   /// Determine if the step nodes have associated labels.
-  bool get hasNodeLabels => titles != null || subTitles != null;
+  bool get hasNodeLabels => nodeTitles != null || nodeSubTitles != null;
 
   /// Builds the step nodes widget.
   ///
@@ -165,7 +165,7 @@ abstract class StepProgressWidget extends StatelessWidget {
                 buildStepLines(
                   key: lineKey,
                   style: stepLineStyle,
-                  maxStepSize: maxStepSize(theme.labelStyle),
+                  maxStepSize: maxStepSize(theme.nodeLabelStyle),
                   highlightCompletedSteps: highlightCompletedSteps,
                 ),
               if (visibilityOptions != StepProgressVisibilityOptions.lineOnly)

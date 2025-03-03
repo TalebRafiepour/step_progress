@@ -208,7 +208,7 @@ StepProgress(
   padding: const EdgeInsets.all(18),
   theme: const StepProgressThemeData(
     stepLabelAlignment: StepLabelAlignment.right,
-    labelStyle: StepLabelStyle(labelAxisAlignment: CrossAxisAlignment.start),
+    nodeLabelStyle: StepLabelStyle(labelAxisAlignment: CrossAxisAlignment.start),
   ),
 ),
 ```
@@ -233,7 +233,7 @@ StepProgress(
   padding: const EdgeInsets.all(18),
   theme: const StepProgressThemeData(
     stepLabelAlignment: StepLabelAlignment.left,
-    labelStyle: StepLabelStyle(
+    nodeLabelStyle: StepLabelStyle(
       labelAxisAlignment: CrossAxisAlignment.start,
     ),
     stepLineSpacing: 24,
@@ -339,7 +339,7 @@ StepProgress(
         Radius.circular(4),
       ),
     ),
-    labelStyle: StepLabelStyle(
+    nodeLabelStyle: StepLabelStyle(
       margin: EdgeInsets.only(bottom: 6),
     ),
     stepNodeStyle: StepNodeStyle(
@@ -489,7 +489,7 @@ StepProgress(
 |`stepAnimationDuration`  | The duration of the animation for step transitions.| Duration            |`Duration(milliseconds: 150)`        |
 |`stepLineSpacing`        | The spacing between step lines.                    | double              | `0.0`                               |
 |`stepLabelAlignment`     | The alignment of the labels for the step nodes.    | StepLabelAlignment? |`null`                               |
-|`labelStyle`             | The style of the labels for the step nodes.        | StepLabelStyle      | `StepLabelStyle()`                  |
+|`nodeLabelStyle`             | The style of the labels for the step nodes.        | StepLabelStyle      | `StepLabelStyle()`                  |
 |`stepNodeStyle`          | The style of the step nodes.                       | StepNodeStyle       | `StepNodeStyle()`                   |
 |`stepLineStyle`          | The style of the lines connecting the step nodes.  | StepLineStyle       | `StepLineStyle()`                   |
 |`rippleEffectStyle`      | The style of the ripple effect on step nodes.      | RippleEffectStyle   | `RippleEffectStyle()`               |

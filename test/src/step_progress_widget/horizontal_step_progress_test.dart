@@ -19,8 +19,11 @@ void main() {
       const double stepSize = 50;
       const visibilityOptions = StepProgressVisibilityOptions.both;
       // Optional titles and subtitles.
-      final titles = List.generate(totalSteps, (index) => 'Title $index');
-      final subTitles = List.generate(totalSteps, (index) => 'SubTitle $index');
+      final nodeTitles = List.generate(totalSteps, (index) => 'Title $index');
+      final nodeSubTitles = List.generate(
+        totalSteps,
+        (index) => 'SubTitle $index',
+      );
 
       // Build the widget.
       await tester.pumpWidget(
@@ -31,8 +34,8 @@ void main() {
               currentStep: currentStep,
               stepSize: stepSize,
               visibilityOptions: visibilityOptions,
-              titles: titles,
-              subTitles: subTitles,
+              nodeTitles: nodeTitles,
+              nodeSubTitles: nodeSubTitles,
             ),
           ),
         ),

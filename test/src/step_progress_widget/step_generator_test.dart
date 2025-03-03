@@ -18,7 +18,7 @@ StepProgressThemeData get dummyThemeData => const StepProgressThemeData(
     defaultForegroundColor: Colors.grey,
     activeForegroundColor: Colors.green,
   ),
-  labelStyle: StepLabelStyle(titleStyle: TextStyle(color: Colors.black)),
+  nodeLabelStyle: StepLabelStyle(titleStyle: TextStyle(color: Colors.black)),
   stepLabelAlignment: StepLabelAlignment.top,
 );
 

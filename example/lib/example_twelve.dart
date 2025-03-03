@@ -20,7 +20,7 @@ class ExampleTwelve extends StatelessWidget {
             height: 390,
             axis: Axis.vertical,
             controller: stepProgressController,
-            titles: const [
+            nodeTitles: const [
               'Step 1',
               'Step 2',
               'Step 3',

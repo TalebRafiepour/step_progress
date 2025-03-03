@@ -19,7 +19,7 @@ class ExampleFourteen extends StatelessWidget {
               totalSteps: 4,
               stepSize: 28,
               controller: stepProgressController,
-              titles: const [
+              nodeTitles: const [
                 'Step 1',
                 'Step 2',
                 'Step 3',
@@ -33,7 +33,7 @@ class ExampleFourteen extends StatelessWidget {
               totalSteps: 4,
               stepSize: 28,
               controller: stepProgressController,
-              titles: const [
+              nodeTitles: const [
                 'Step 1',
                 'Step 2',
                 'Step 3',
@@ -47,7 +47,7 @@ class ExampleFourteen extends StatelessWidget {
               totalSteps: 4,
               stepSize: 28,
               controller: stepProgressController,
-              titles: const [
+              nodeTitles: const [
                 'Step 1 and a long title here',
                 'Step 2',
                 'Step 3',
@@ -66,7 +66,7 @@ class ExampleFourteen extends StatelessWidget {
                   height: 390,
                   axis: Axis.vertical,
                   controller: stepProgressController,
-                  titles: const [
+                  nodeTitles: const [
                     'Step 1',
                     'Step 2',
                     'Step 3',
@@ -82,7 +82,7 @@ class ExampleFourteen extends StatelessWidget {
                   height: 390,
                   axis: Axis.vertical,
                   controller: stepProgressController,
-                  titles: const [
+                  nodeTitles: const [
                     'Step 1',
                     'Step 2',
                     'Step 3',
@@ -98,7 +98,7 @@ class ExampleFourteen extends StatelessWidget {
                   height: 390,
                   axis: Axis.vertical,
                   controller: stepProgressController,
-                  titles: const [
+                  nodeTitles: const [
                     'Step 1',
                     'Step 2',
                     'Step 3',

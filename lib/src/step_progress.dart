@@ -54,11 +54,11 @@ typedef OnStepNodeTapped = void Function(int index);
 /// The [axis] parameter specifies the axis along which the steps are laid out.
 /// It defaults to [Axis.horizontal].
 ///
-/// The [titles] parameter can be used to specify titles for each step.
+/// The [nodeTitles] parameter can be used to specify titles for each step.
 ///
-/// The [subTitles] parameter can be used to specify subtitles for each step.
+/// The [nodeSubTitles] parameter can be used to specify subtitles for steps.
 ///
-/// The [lineLabels] parameter can be used to specify labels for each step line
+/// The [lineTitles] parameter can be used to specify labels for each step line
 /// segment.
 ///
 /// The [visibilityOptions] parameter can be used to control the visibility of
@@ -96,9 +96,9 @@ class StepProgress extends StatefulWidget {
     this.padding = EdgeInsets.zero,
     this.axis = Axis.horizontal,
     this.visibilityOptions = StepProgressVisibilityOptions.both,
-    this.titles,
-    this.subTitles,
-    this.lineLabels,
+    this.nodeTitles,
+    this.nodeSubTitles,
+    this.lineTitles,
     this.onStepNodeTapped,
     this.onStepLineTapped,
     this.onStepChanged,
@@ -110,26 +110,26 @@ class StepProgress extends StatefulWidget {
          'currentStep must be  lower than totalSteps',
        ),
        assert(
-         titles == null || titles.length <= totalSteps,
-         'titles must be equals to or less than total steps',
+         nodeTitles == null || nodeTitles.length <= totalSteps,
+         'nodeTitles must be equals to or less than total steps',
        ),
        assert(
-         subTitles == null || subTitles.length <= totalSteps,
-         'subTitles must be equals to or less than total steps',
+         nodeSubTitles == null || nodeSubTitles.length <= totalSteps,
+         'nodeSubTitles must be equals to or less than total steps',
        ),
        assert(
-         lineLabels == null || lineLabels.length < totalSteps,
-         'lineLabels must be less than total steps',
+         lineTitles == null || lineTitles.length < totalSteps,
+         'lineTitles must be less than total steps',
        );
 
   /// Titles for each step in the progress
-  final List<String>? titles;
+  final List<String>? nodeTitles;
 
   /// Subtitles for each step in the progress
-  final List<String>? subTitles;
+  final List<String>? nodeSubTitles;
 
   /// Optional list of labels for the line segments in the progress indicator.
-  final List<String>? lineLabels;
+  final List<String>? lineTitles;
 
   /// Options to control the visibility of step progress elements.
   final StepProgressVisibilityOptions visibilityOptions;
@@ -266,9 +266,9 @@ class _StepProgressState extends State<StepProgress>
                 ? HorizontalStepProgress(
                   totalStep: widget.totalSteps,
                   currentStep: _currentStep,
-                  titles: widget.titles,
-                  subTitles: widget.subTitles,
-                  lineLabels: widget.lineLabels,
+                  nodeTitles: widget.nodeTitles,
+                  nodeSubTitles: widget.nodeSubTitles,
+                  lineTitles: widget.lineTitles,
                   stepSize: widget.stepSize,
                   onStepNodeTapped: widget.onStepNodeTapped,
                   onStepLineTapped: widget.onStepLineTapped,
@@ -279,9 +279,9 @@ class _StepProgressState extends State<StepProgress>
                 : VerticalStepProgress(
                   totalStep: widget.totalSteps,
                   currentStep: _currentStep,
-                  titles: widget.titles,
-                  subTitles: widget.subTitles,
-                  lineLabels: widget.lineLabels,
+                  nodeTitles: widget.nodeTitles,
+                  nodeSubTitles: widget.nodeSubTitles,
+                  lineTitles: widget.lineTitles,
                   stepSize: widget.stepSize,
                   onStepNodeTapped: widget.onStepNodeTapped,
                   onStepLineTapped: widget.onStepLineTapped,

@@ -20,7 +20,7 @@ class ExampleOne extends StatelessWidget {
               totalSteps: 4,
               controller: stepProgressController,
               axis: Axis.vertical,
-              titles: const [
+              nodeTitles: const [
                 'step 1',
                 'step 2',
                 'step 3',

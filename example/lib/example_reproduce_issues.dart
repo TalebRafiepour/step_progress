@@ -19,7 +19,7 @@ class ExampleReproduceIssues extends StatelessWidget {
             stepSize: 28,
             controller: stepProgressController,
             padding: const EdgeInsets.all(18),
-            titles: const [
+            nodeTitles: const [
               'Step 1',
               'Step 2',
               'Step 3',

@@ -2,7 +2,6 @@ library step_progress;
 
 export 'src/step_label/step_label_style.dart';
 export 'src/step_label_alignment.dart';
-export 'src/step_line/step_line_label_style.dart';
 export 'src/step_line/step_line_style.dart';
 export 'src/step_node/ripple_effect_style.dart';
 export 'src/step_node/step_node_shape.dart';

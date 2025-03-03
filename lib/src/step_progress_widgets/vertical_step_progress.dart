@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:step_progress/src/step_label/step_label.dart';
 import 'package:step_progress/src/step_label/step_label_style.dart';
 import 'package:step_progress/src/step_label_alignment.dart';
 import 'package:step_progress/src/step_line/step_line.dart';
-import 'package:step_progress/src/step_line/step_line_label.dart';
 import 'package:step_progress/src/step_line/step_line_style.dart';
 import 'package:step_progress/src/step_progress_theme.dart';
 import 'package:step_progress/src/step_progress_visibility_options.dart';
@@ -25,11 +25,11 @@ import 'package:step_progress/src/step_progress_widgets/step_progress_widget.dar
 /// various elements within the step progress widget, such as step titles and
 /// subtitles.
 ///
-/// Optional parameters include [titles] and [subTitles], which allow you to
-/// provide titles and subtitles for each step. The [onStepNodeTapped] callback
-/// can be used to handle tap events on individual steps. The [onStepLineTapped]
-/// callback can be used to handle tap events on the step lines.
-///
+/// Optional parameters include [nodeTitles] and [nodeSubTitles], which allow
+/// you to provide titles and subtitles for step nodes.The [onStepNodeTapped]
+/// callback can be used to handle tap events on individual steps.
+/// The [onStepLineTapped] callback can be used to handle tap events on the step
+/// lines.
 /// The [nodeIconBuilder] and [nodeActiveIconBuilder] parameters allow you to
 /// customize the icons for each step. The [nodeIconBuilder] is used for
 /// inactive steps, while the [nodeActiveIconBuilder] is used for the active
@@ -42,9 +42,9 @@ import 'package:step_progress/src/step_progress_widgets/step_progress_widget.dar
 ///   currentStep: 2,
 ///   stepSize: 30.0,
 ///   visibilityOptions: StepProgressVisibilityOptions.both,
-///   lineLabels: ['Line1', 'Line2', 'Line3', 'Line4' ],
-///   titles: ['Step 1', 'Step 2', 'Step 3', 'Step 4', 'Step 5'],
-///   subTitles: ['Description 1', 'Description 2', 'Description 3',
+///   lineTitles: ['Line1', 'Line2', 'Line3', 'Line4' ],
+///   nodeTitles: ['Step 1', 'Step 2', 'Step 3', 'Step 4', 'Step 5'],
+///   nodeSubTitles: ['Description 1', 'Description 2', 'Description 3',
 ///    'Description 4', 'Description 5'],
 ///   onStepNodeTapped: (step) {
 ///     print('Tapped on step: $step');
@@ -66,9 +66,9 @@ class VerticalStepProgress extends StepProgressWidget {
     required super.currentStep,
     required super.stepSize,
     required super.visibilityOptions,
-    super.titles,
-    super.subTitles,
-    super.lineLabels,
+    super.nodeTitles,
+    super.nodeSubTitles,
+    super.lineTitles,
     super.onStepNodeTapped,
     super.onStepLineTapped,
     super.nodeIconBuilder,
@@ -97,8 +97,8 @@ class VerticalStepProgress extends StepProgressWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: List.generate(totalStep, (index) {
-        final title = titles?.elementAtOrNull(index);
-        final subTitle = subTitles?.elementAtOrNull(index);
+        final title = nodeTitles?.elementAtOrNull(index);
+        final subTitle = nodeSubTitles?.elementAtOrNull(index);
         final isActive =
             highlightCompletedSteps
                 ? index <= currentStep
@@ -108,7 +108,7 @@ class VerticalStepProgress extends StepProgressWidget {
           axis: Axis.vertical,
           width: stepSize,
           height: stepSize,
-          anyLabelExist: titles != null || subTitles != null,
+          anyLabelExist: nodeTitles != null || nodeSubTitles != null,
           stepIndex: index,
           title: title,
           subTitle: subTitle,
@@ -164,16 +164,18 @@ class VerticalStepProgress extends StepProgressWidget {
 
   @override
   Widget buildStepLineLabels({required BuildContext context}) {
-    final maxStepHeight = maxStepSize(
-      StepProgressTheme.of(context)!.data.labelStyle,
-    );
+    final theme = StepProgressTheme.of(context)!.data;
+    final maxStepHeight = maxStepSize(theme.nodeLabelStyle);
     return Padding(
       padding: EdgeInsets.symmetric(vertical: maxStepHeight / 2),
       child: Column(
         children: List.generate(totalStep - 1, (index) {
-          return StepLineLabel(
-            axis: Axis.vertical,
-            label: lineLabels?.elementAtOrNull(index),
+          return Expanded(
+            child: StepLabel(
+              style: theme.lineLabelStyle,
+              isActive: index < currentStep,
+              title: lineTitles?.elementAtOrNull(index),
+            ),
           );
         }),
       ),
@@ -213,7 +215,7 @@ class VerticalStepProgress extends StepProgressWidget {
         labelMargin.bottom;
 
     // Calculate the maximum size for the step node.
-    return ((titles != null || subTitles != null) &&
+    return ((nodeTitles != null || nodeSubTitles != null) &&
             labelMaxHeight.isFinite &&
             labelMaxHeight > stepSize)
         ? labelMaxHeight
@@ -225,8 +227,8 @@ class VerticalStepProgress extends StepProgressWidget {
     final theme = StepProgressTheme.of(context)!.data;
 
     // If there are no line labels or we only want nodes, simply build nodes/lines.
-    if (lineLabels == null ||
-        lineLabels!.isEmpty ||
+    if (lineTitles == null ||
+        lineTitles!.isEmpty ||
         visibilityOptions == StepProgressVisibilityOptions.nodeOnly) {
       return buildNodesAndLines(context: context);
     }

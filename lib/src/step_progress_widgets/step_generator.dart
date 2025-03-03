@@ -154,7 +154,7 @@ class StepGenerator extends StatelessWidget {
     Widget buildStepLabel() {
       if (title == null && subTitle == null) {
         if (anyLabelExist) {
-          final style = themeData.labelStyle;
+          final style = themeData.nodeLabelStyle;
           return Container(
             padding: style.padding,
             margin: style.margin,
@@ -165,7 +165,12 @@ class StepGenerator extends StatelessWidget {
           return const SizedBox.shrink();
         }
       }
-      return StepLabel(title: title, subTitle: subTitle, isActive: isActive);
+      return StepLabel(
+        style: themeData.nodeLabelStyle,
+        title: title,
+        subTitle: subTitle,
+        isActive: isActive,
+      );
     }
 
     Widget buildStep({

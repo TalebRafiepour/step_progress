@@ -23,6 +23,7 @@ import 'package:step_progress/src/step_progress_theme.dart';
 /// ```
 class StepLabel extends StatelessWidget {
   const StepLabel({
+    required this.style,
     this.title,
     this.subTitle,
     this.isActive = false,
@@ -38,10 +39,17 @@ class StepLabel extends StatelessWidget {
   /// Indicates whether the step label is active.
   final bool isActive;
 
+  /// The style to appliy on label
+  final StepLabelStyle style;
+
   @override
   Widget build(BuildContext context) {
+    if (title == null && subTitle == null) {
+      return const SizedBox.shrink();
+    }
+    //
     final theme = StepProgressTheme.of(context)!.data;
-    final style = theme.labelStyle;
+    //
     return Container(
       padding: style.padding,
       margin: style.margin,

@@ -17,7 +17,7 @@ class ExampleFifteen extends StatelessWidget {
           children: [
             StepProgress(
               totalSteps: 4,
-              lineLabels: const ['top 1', 'top 2', 'top 3'],
+              lineTitles: const ['top 1', 'top 2', 'top 3'],
               controller: stepProgressController,
               theme: const StepProgressThemeData(
                 lineLabelAlignment: Alignment.topCenter,
@@ -25,8 +25,8 @@ class ExampleFifteen extends StatelessWidget {
             ),
             StepProgress(
               totalSteps: 4,
-              lineLabels: const ['top 1', 'top 2', 'top 3'],
-              titles: const [
+              lineTitles: const ['top 1', 'top 2', 'top 3'],
+              nodeTitles: const [
                 'step 1',
                 'step 2',
                 'step 3',
@@ -39,8 +39,8 @@ class ExampleFifteen extends StatelessWidget {
             ),
             StepProgress(
               totalSteps: 4,
-              lineLabels: const ['top 1', 'top 2', 'top 3'],
-              titles: const [
+              lineTitles: const ['top 1', 'top 2', 'top 3'],
+              nodeTitles: const [
                 'step 1',
                 'step 2',
                 'step 3',
@@ -54,7 +54,7 @@ class ExampleFifteen extends StatelessWidget {
             ),
             StepProgress(
               totalSteps: 4,
-              lineLabels: const ['center 1', 'center 2', 'center 3'],
+              lineTitles: const ['center 1', 'center 2', 'center 3'],
               controller: stepProgressController,
               theme: const StepProgressThemeData(
                 lineLabelAlignment: Alignment.center,
@@ -62,8 +62,8 @@ class ExampleFifteen extends StatelessWidget {
             ),
             StepProgress(
               totalSteps: 4,
-              lineLabels: const ['center 1', 'center 2', 'center 3'],
-              titles: const [
+              lineTitles: const ['center 1', 'center 2', 'center 3'],
+              nodeTitles: const [
                 'step 1',
                 'step 2',
                 'step 3',
@@ -77,8 +77,8 @@ class ExampleFifteen extends StatelessWidget {
             ),
             StepProgress(
               totalSteps: 4,
-              lineLabels: const ['bottom 1', 'bottom 2', 'bottom 3'],
-              titles: const [
+              lineTitles: const ['bottom 1', 'bottom 2', 'bottom 3'],
+              nodeTitles: const [
                 'title 1',
                 'title 2',
                 'title 3',
@@ -91,8 +91,8 @@ class ExampleFifteen extends StatelessWidget {
             ),
             StepProgress(
               totalSteps: 4,
-              lineLabels: const ['bottom 1', 'bottom 2', 'bottom 3'],
-              titles: const [
+              lineTitles: const ['bottom 1', 'bottom 2', 'bottom 3'],
+              nodeTitles: const [
                 'title 1',
                 'title 2',
                 'title 3',
@@ -115,7 +115,7 @@ class ExampleFifteen extends StatelessWidget {
                       totalSteps: 4,
                       height: 390,
                       axis: Axis.vertical,
-                      lineLabels: const [
+                      lineTitles: const [
                         'left 1',
                         'left 2',
                         'left 3',
@@ -129,12 +129,12 @@ class ExampleFifteen extends StatelessWidget {
                       totalSteps: 4,
                       height: 390,
                       axis: Axis.vertical,
-                      lineLabels: const [
+                      lineTitles: const [
                         'right 1',
                         'right 2',
                         'right 3',
                       ],
-                      titles: const [
+                      nodeTitles: const [
                         'step 1',
                         'step 2',
                         'step 3',
@@ -150,12 +150,12 @@ class ExampleFifteen extends StatelessWidget {
                       totalSteps: 4,
                       height: 390,
                       axis: Axis.vertical,
-                      lineLabels: const [
+                      lineTitles: const [
                         'right 1',
                         'right 2',
                         'right 3',
                       ],
-                      titles: const [
+                      nodeTitles: const [
                         'step 1',
                         'step 2',
                         'step 3',
@@ -171,12 +171,12 @@ class ExampleFifteen extends StatelessWidget {
                       totalSteps: 4,
                       height: 390,
                       axis: Axis.vertical,
-                      lineLabels: const [
+                      lineTitles: const [
                         'right 1',
                         'right 2',
                         'right 3',
                       ],
-                      titles: const [
+                      nodeTitles: const [
                         'step 1',
                         'step 2',
                         'step 3',
@@ -203,7 +203,7 @@ class ExampleFifteen extends StatelessWidget {
                       totalSteps: 4,
                       height: 390,
                       axis: Axis.vertical,
-                      lineLabels: const [
+                      lineTitles: const [
                         'center 1',
                         'center 2',
                         'center 3',
@@ -217,12 +217,12 @@ class ExampleFifteen extends StatelessWidget {
                       totalSteps: 4,
                       height: 390,
                       axis: Axis.vertical,
-                      lineLabels: const [
+                      lineTitles: const [
                         'center 1',
                         'center 2',
                         'center 3',
                       ],
-                      titles: const [
+                      nodeTitles: const [
                         'step 1',
                         'step 2',
                         'step 3',
@@ -238,12 +238,12 @@ class ExampleFifteen extends StatelessWidget {
                       totalSteps: 4,
                       height: 390,
                       axis: Axis.vertical,
-                      lineLabels: const [
+                      lineTitles: const [
                         'center 1',
                         'center 2',
                         'center 3',
                       ],
-                      titles: const [
+                      nodeTitles: const [
                         'step 1',
                         'step 2',
                         'step 3',
@@ -259,12 +259,12 @@ class ExampleFifteen extends StatelessWidget {
                       totalSteps: 4,
                       height: 390,
                       axis: Axis.vertical,
-                      lineLabels: const [
+                      lineTitles: const [
                         'center 1',
                         'center 2',
                         'center 3',
                       ],
-                      titles: const [
+                      nodeTitles: const [
                         'step 1',
                         'step 2',
                         'step 3',
