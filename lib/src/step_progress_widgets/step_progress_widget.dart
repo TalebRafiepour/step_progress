@@ -128,15 +128,60 @@ abstract class StepProgressWidget extends StatelessWidget {
     Key? key,
   });
 
+  /// Builds the labels for the step lines in the step progress widget.
+  ///
+  /// This method is responsible for creating the labels that are displayed
+  /// alongside the step lines in the step progress widget.
+  ///
+  /// The [context] parameter is required and provides the build context
+  /// in which the widget is built.
+  ///
+  /// Returns a [Widget] that represents the labels for the step lines.
   Widget buildStepLineLabels({required BuildContext context});
 
+  /// Returns the alignment for the stack based on the provided 
+  /// [stepLabelAlignment].
+  ///
+  /// The [stepLabelAlignment] parameter is required and determines the 
+  /// alignment of the step label within the stack.
+  ///
+  /// - [stepLabelAlignment]: The alignment of the step node label.
+  ///
+  /// Returns an [Alignment] object that specifies the alignment for the stack.
   Alignment getStackAlignment({required StepLabelAlignment stepLabelAlignment});
 
+  /// Returns the box constraints based on the provided constraints.
+  /// This method is required to be implemented.
   BoxConstraints getBoxConstraint({required BoxConstraints constraints});
 
+  /// Calculates the maximum step size based on the provided label style.
+  ///
+  /// This method determines the maximum size of a step, which can be useful
+  /// for layout purposes when displaying steps with labels.
+  ///
+  /// - Parameters:
+  ///   - labelStyle: The style to be applied to the step labels.
+  ///
+  /// - Returns: The maximum size of a step as a double.
   double maxStepSize(StepLabelStyle labelStyle);
 
-  // Widget that builds nodes and lines.
+  /// Builds the nodes and lines for the step progress widget.
+  ///
+  /// This method constructs the visual representation of the step progress,
+  /// including the step nodes and the connecting lines between them. The
+  /// appearance and behavior of these elements are determined by the provided
+  /// theme and visibility options.
+  ///
+  /// The method uses a [LayoutBuilder] to adapt to the available constraints
+  /// and a [Stack] to layer the nodes and lines appropriately.
+  ///
+  /// Parameters:
+  /// - `context`: The build context in which the widget is built.
+  /// - `wholeKey`: An optional key for the entire constrained box.
+  /// - `lineKey`: An optional key for the step lines.
+  ///
+  /// Returns:
+  /// A [Widget] that contains the step nodes and lines.
   Widget buildNodesAndLines({
     required BuildContext context,
     Key? wholeKey,

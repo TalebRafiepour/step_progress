@@ -12,10 +12,14 @@ import 'package:step_progress/src/step_progress_theme.dart';
 /// additional information about the step. The [isActive] flag indicates whether
 /// the step is currently active, and defaults to `false`.
 ///
+/// The [style] property allows you to customize the appearance of the label,
+/// including text styles, colors, and other visual properties.
+///
 /// Example usage:
 ///
 /// ```dart
 /// StepLabel(
+///   style: StepLabelStyle(),
 ///   title: 'Step 1',
 ///   subTitle: 'Introduction',
 ///   isActive: true,
