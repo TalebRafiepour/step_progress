@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:step_progress/src/step_label/step_label_style.dart';
 import 'package:step_progress/src/step_label_alignment.dart';
 import 'package:step_progress/src/step_line/step_line.dart';
 import 'package:step_progress/src/step_line/step_line_label.dart';
@@ -154,7 +155,6 @@ class VerticalStepProgress extends StepProgressWidget {
                 highlightCompletedSteps
                     ? index < currentStep
                     : index == currentStep - 1,
-            style: style,
             onTap: () => onStepLineTapped?.call(index),
           );
         }),
@@ -163,9 +163,12 @@ class VerticalStepProgress extends StepProgressWidget {
   }
 
   @override
-  Widget buildStepLineLabels(double lineThickness, double maxStepSize) {
+  Widget buildStepLineLabels({required BuildContext context}) {
+    final maxStepHeight = maxStepSize(
+      StepProgressTheme.of(context)!.data.labelStyle,
+    );
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: stepSize / 2),
+      padding: EdgeInsets.symmetric(vertical: maxStepHeight / 2),
       child: Column(
         children: List.generate(totalStep - 1, (index) {
           return StepLineLabel(
@@ -178,82 +181,54 @@ class VerticalStepProgress extends StepProgressWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final theme = StepProgressTheme.of(context)!.data;
-    final stepLineStyle = theme.stepLineStyle;
-    final highlightCompletedSteps = theme.highlightCompletedSteps;
+  Alignment getStackAlignment({
+    required StepLabelAlignment stepLabelAlignment,
+  }) {
+    if (!hasNodeLabels) return Alignment.center;
+    if (stepLabelAlignment == StepLabelAlignment.right) {
+      return Alignment.centerLeft;
+    } else if (stepLabelAlignment == StepLabelAlignment.left) {
+      return Alignment.centerRight;
+    } else {
+      return Alignment.center;
+    }
+  }
 
-    // Determine if the step nodes have associated labels.
-    final hasNodeLabels = titles != null || subTitles != null;
-    final nodeLabelAlignment =
-        theme.stepLabelAlignment ?? StepLabelAlignment.right;
-    final labelPadding = theme.labelStyle.padding;
-    final labelMargin = theme.labelStyle.margin;
-    final labelMaxWidth =
-        theme.labelStyle.maxWidth +
-        labelPadding.left +
-        labelPadding.right +
-        labelMargin.left +
-        labelMargin.right;
+  @override
+  BoxConstraints getBoxConstraint({required BoxConstraints constraints}) {
+    final height =
+        !constraints.hasBoundedHeight ? totalStep * 1.45 * stepSize : null;
+    return BoxConstraints.tightFor(height: height);
+  }
+
+  @override
+  double maxStepSize(StepLabelStyle labelStyle) {
+    final labelPadding = labelStyle.padding;
+    final labelMargin = labelStyle.margin;
+    final labelMaxHeight =
+        // labelMaxHeight +
+        labelPadding.top +
+        labelPadding.bottom +
+        labelMargin.top +
+        labelMargin.bottom;
 
     // Calculate the maximum size for the step node.
-    final maxStepSize =
-        ((titles != null || subTitles != null) &&
-                labelMaxWidth.isFinite &&
-                labelMaxWidth > stepSize)
-            ? labelMaxWidth
-            : stepSize;
+    return ((titles != null || subTitles != null) &&
+            labelMaxHeight.isFinite &&
+            labelMaxHeight > stepSize)
+        ? labelMaxHeight
+        : stepSize;
+  }
 
-    // Widget that builds nodes and lines.
-    Widget buildNodesAndLines({GlobalKey? wholeKey, GlobalKey? lineKey}) {
-      return LayoutBuilder(
-        builder: (context, constraints) {
-          final height =
-              !constraints.hasBoundedHeight
-                  ? totalStep * 1.45 * stepSize
-                  : null;
-
-          Alignment getStackAlignment() {
-            if (!hasNodeLabels) return Alignment.center;
-            if (nodeLabelAlignment == StepLabelAlignment.right) {
-              return Alignment.centerLeft;
-            } else if (nodeLabelAlignment == StepLabelAlignment.left) {
-              return Alignment.centerRight;
-            } else {
-              return Alignment.center;
-            }
-          }
-
-          return ConstrainedBox(
-            key: wholeKey,
-            constraints: BoxConstraints.tightFor(height: height),
-            child: Stack(
-              alignment: getStackAlignment(),
-              children: [
-                if (visibilityOptions != StepProgressVisibilityOptions.nodeOnly)
-                  buildStepLines(
-                    key: lineKey,
-                    style: stepLineStyle,
-                    maxStepSize: maxStepSize,
-                    highlightCompletedSteps: highlightCompletedSteps,
-                  ),
-                if (visibilityOptions != StepProgressVisibilityOptions.lineOnly)
-                  buildStepNodes(
-                    highlightCompletedSteps: highlightCompletedSteps,
-                    labelAlignment: nodeLabelAlignment,
-                  ),
-              ],
-            ),
-          );
-        },
-      );
-    }
+  @override
+  Widget build(BuildContext context) {
+    final theme = StepProgressTheme.of(context)!.data;
 
     // If there are no line labels or we only want nodes, simply build nodes/lines.
     if (lineLabels == null ||
         lineLabels!.isEmpty ||
         visibilityOptions == StepProgressVisibilityOptions.nodeOnly) {
-      return buildNodesAndLines();
+      return buildNodesAndLines(context: context);
     }
 
     // Define keys to obtain widget sizes.
@@ -278,13 +253,16 @@ class VerticalStepProgress extends StepProgressWidget {
       return Alignment.center;
     }
 
-    Widget buildLineLabelWidget() =>
-        buildStepLineLabels(stepLineStyle.lineThickness, maxStepSize);
+    Widget buildLineLabelWidget() => buildStepLineLabels(context: context);
 
     return Stack(
       alignment: getLineStackAlignment(),
       children: [
-        buildNodesAndLines(wholeKey: wholeWidgetKey, lineKey: lineWidgetKey),
+        buildNodesAndLines(
+          context: context,
+          wholeKey: wholeWidgetKey,
+          lineKey: lineWidgetKey,
+        ),
         FutureBuilder<void>(
           future: Future.delayed(Duration.zero),
           builder: (context, snapshot) {

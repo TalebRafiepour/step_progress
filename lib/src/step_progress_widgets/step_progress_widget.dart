@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:step_progress/src/step_label/step_label_style.dart';
 import 'package:step_progress/src/step_label_alignment.dart';
 import 'package:step_progress/src/step_line/step_line_style.dart';
 import 'package:step_progress/src/step_progress.dart';
+import 'package:step_progress/src/step_progress_theme.dart';
 import 'package:step_progress/src/step_progress_visibility_options.dart';
 
 /// An abstract class that represents a step progress widget.
@@ -94,6 +96,9 @@ abstract class StepProgressWidget extends StatelessWidget {
   /// Builder for the icon of an active step node.
   final StepNodeIconBuilder? nodeActiveIconBuilder;
 
+  /// Determine if the step nodes have associated labels.
+  bool get hasNodeLabels => titles != null || subTitles != null;
+
   /// Builds the step nodes widget.
   ///
   /// This method should be implemented to create the visual representation
@@ -123,5 +128,55 @@ abstract class StepProgressWidget extends StatelessWidget {
     Key? key,
   });
 
-  Widget buildStepLineLabels(double lineThickness, double maxStepSize);
+  Widget buildStepLineLabels({required BuildContext context});
+
+  Alignment getStackAlignment({required StepLabelAlignment stepLabelAlignment});
+
+  BoxConstraints getBoxConstraint({required BoxConstraints constraints});
+
+  double maxStepSize(StepLabelStyle labelStyle);
+
+  // Widget that builds nodes and lines.
+  Widget buildNodesAndLines({
+    required BuildContext context,
+    Key? wholeKey,
+    Key? lineKey,
+  }) {
+    final theme = StepProgressTheme.of(context)!.data;
+    final stepLineStyle = theme.stepLineStyle;
+    final highlightCompletedSteps = theme.highlightCompletedSteps;
+    final nodeLabelAlignment =
+        theme.stepLabelAlignment ??
+        (axis == Axis.horizontal
+            ? StepLabelAlignment.top
+            : StepLabelAlignment.right);
+    //
+    return LayoutBuilder(
+      builder: (_, constraint) {
+        return ConstrainedBox(
+          key: wholeKey,
+          constraints: getBoxConstraint(constraints: constraint),
+          child: Stack(
+            alignment: getStackAlignment(
+              stepLabelAlignment: nodeLabelAlignment,
+            ),
+            children: [
+              if (visibilityOptions != StepProgressVisibilityOptions.nodeOnly)
+                buildStepLines(
+                  key: lineKey,
+                  style: stepLineStyle,
+                  maxStepSize: maxStepSize(theme.labelStyle),
+                  highlightCompletedSteps: highlightCompletedSteps,
+                ),
+              if (visibilityOptions != StepProgressVisibilityOptions.lineOnly)
+                buildStepNodes(
+                  highlightCompletedSteps: highlightCompletedSteps,
+                  labelAlignment: nodeLabelAlignment,
+                ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 }

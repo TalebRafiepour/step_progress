@@ -120,13 +120,13 @@ class HorizontalStepProgress extends StepProgressWidget {
         horizontal: maxStepSize / 2,
       ),
       child: Row(
+        key: key,
         children: List.generate(totalStep - 1, (index) {
           return StepLine(
             isActive:
                 highlightCompletedSteps
                     ? index < currentStep
                     : index == currentStep - 1,
-            style: style,
             onTap: () => onStepLineTapped?.call(index),
           );
         }),
@@ -135,9 +135,12 @@ class HorizontalStepProgress extends StepProgressWidget {
   }
 
   @override
-  Widget buildStepLineLabels(double lineThickness, double maxStepSize) {
+  Widget buildStepLineLabels({required BuildContext context}) {
+    final maxStepWidth = maxStepSize(
+      StepProgressTheme.of(context)!.data.labelStyle,
+    );
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: maxStepSize / 2),
+      padding: EdgeInsets.symmetric(horizontal: maxStepWidth / 2),
       child: Row(
         children: List.generate(totalStep - 1, (index) {
           return StepLineLabel(
@@ -150,85 +153,149 @@ class HorizontalStepProgress extends StepProgressWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final theme = StepProgressTheme.of(context)!.data;
-    final stepLineStyle = theme.stepLineStyle;
-    final highlightCompletedSteps = theme.highlightCompletedSteps;
-    //
-    final stepNodeLabelExist = titles != null || subTitles != null;
-    final stepNodeLabelAlignment =
-        theme.stepLabelAlignment ?? StepLabelAlignment.top;
+  Alignment getStackAlignment({
+    required StepLabelAlignment stepLabelAlignment,
+  }) {
+    if (!hasNodeLabels) {
+      return Alignment.center;
+    }
+    if (stepLabelAlignment == StepLabelAlignment.top) {
+      return Alignment.bottomCenter;
+    } else if (stepLabelAlignment == StepLabelAlignment.bottom) {
+      return Alignment.topCenter;
+    } else {
+      return Alignment.center;
+    }
+  }
 
+  @override
+  BoxConstraints getBoxConstraint({required BoxConstraints constraints}) {
+    final width =
+        axis == Axis.horizontal && !constraints.hasBoundedWidth
+            ? totalStep * 1.45 * stepSize
+            : null;
+    return BoxConstraints.tightFor(width: width);
+  }
+
+  @override
+  double maxStepSize(StepLabelStyle labelStyle) {
+    final labelPadding = labelStyle.padding;
+    final labelMargin = labelStyle.margin;
     final labelMaxWidth =
-        (theme.labelStyle.maxWidth) +
-        theme.labelStyle.padding.left +
-        theme.labelStyle.padding.right +
-        theme.labelStyle.margin.left +
-        theme.labelStyle.margin.right;
-    // The maximum size of a step node.
-    final maxStepSize =
-        ((titles != null || subTitles != null) &&
-                labelMaxWidth.isFinite &&
-                labelMaxWidth > stepSize)
-            ? labelMaxWidth
-            : stepSize;
+        labelStyle.maxWidth +
+        labelPadding.left +
+        labelPadding.right +
+        labelMargin.left +
+        labelMargin.right;
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final width =
-            axis == Axis.horizontal && !constraints.hasBoundedWidth
-                ? totalStep * 1.45 * stepSize
-                : null;
+    // Calculate the maximum size for the step node.
+    return ((titles != null || subTitles != null) &&
+            labelMaxWidth.isFinite &&
+            labelMaxWidth > stepSize)
+        ? labelMaxWidth
+        : stepSize;
+  }
 
-        Alignment alignment() {
-          if (!stepNodeLabelExist) {
-            return Alignment.center;
-          }
-          switch (stepNodeLabelAlignment) {
-            case StepLabelAlignment.top:
-              return Alignment.bottomCenter;
-            case StepLabelAlignment.bottom:
-              return Alignment.topCenter;
-            case StepLabelAlignment.left:
-            case StepLabelAlignment.right:
-            case StepLabelAlignment.topBottom:
-            case StepLabelAlignment.bottomTop:
-            case StepLabelAlignment.rightLeft:
-            case StepLabelAlignment.leftRight:
-              return Alignment.center;
-          }
-        }
+  @override
+  Widget build(BuildContext context) {
+    // If there are no line labels or we only want nodes, simply build nodes/lines.
+    if (lineLabels == null ||
+        lineLabels!.isEmpty ||
+        visibilityOptions == StepProgressVisibilityOptions.nodeOnly) {
+      return buildNodesAndLines(context: context);
+    }
 
-        return ConstrainedBox(
-          constraints: BoxConstraints.tightFor(width: width),
-          child: Stack(
-            alignment: alignment(),
-            children: [
-              if (visibilityOptions != StepProgressVisibilityOptions.nodeOnly)
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    buildStepLines(
-                      style: stepLineStyle,
-                      maxStepSize: maxStepSize,
-                      highlightCompletedSteps: highlightCompletedSteps,
-                    ),
-                    if (lineLabels != null)
-                      buildStepLineLabels(
-                        stepLineStyle.lineThickness,
-                        maxStepSize,
-                      ),
-                  ],
-                ),
-              if (visibilityOptions != StepProgressVisibilityOptions.lineOnly)
-                buildStepNodes(
-                  highlightCompletedSteps: highlightCompletedSteps,
-                  labelAlignment: stepNodeLabelAlignment,
-                ),
-            ],
-          ),
-        );
-      },
+    // Define keys to obtain widget sizes.
+    final wholeWidgetKey = GlobalKey();
+    final lineWidgetKey = GlobalKey();
+
+    //
+    final theme = StepProgressTheme.of(context)!.data;
+
+    // Determine the alignment for the line labels.
+    final lineLabelAlignment =
+        theme.lineLabelAlignment ?? Alignment.centerRight;
+    bool isTopAligned() =>
+        lineLabelAlignment == Alignment.topCenter ||
+        lineLabelAlignment == Alignment.topRight ||
+        lineLabelAlignment == Alignment.topLeft;
+    bool isBottomAligned() =>
+        lineLabelAlignment == Alignment.bottomCenter ||
+        lineLabelAlignment == Alignment.bottomRight ||
+        lineLabelAlignment == Alignment.bottomLeft;
+
+    Alignment getLineStackAlignment() {
+      if (isTopAligned()) return Alignment.bottomCenter;
+      if (isBottomAligned()) return Alignment.topCenter;
+      return Alignment.center;
+    }
+
+    Widget buildLineLabelWidget() => buildStepLineLabels(context: context);
+
+    return Stack(
+      alignment: getLineStackAlignment(),
+      children: [
+        buildNodesAndLines(
+          context: context,
+          wholeKey: wholeWidgetKey,
+          lineKey: lineWidgetKey,
+        ),
+        FutureBuilder<void>(
+          future: Future.delayed(Duration.zero),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState != ConnectionState.done) {
+              return const SizedBox.shrink();
+            }
+
+            final wholeBox =
+                wholeWidgetKey.currentContext!.findRenderObject()! as RenderBox;
+            final lineBox =
+                lineWidgetKey.currentContext!.findRenderObject()! as RenderBox;
+            final wholeSize = wholeBox.size;
+            final lineSize = lineBox.size;
+            final linePosition = lineBox.localToGlobal(
+              Offset.zero,
+              ancestor: wholeBox,
+            );
+
+            if (isTopAligned()) {
+              final gap = (wholeSize.height - linePosition.dy).abs();
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [buildLineLabelWidget(), SizedBox(height: gap)],
+              );
+            } else if (isBottomAligned()) {
+              final gap = (linePosition.dy + lineSize.height).abs();
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [SizedBox(height: gap), buildLineLabelWidget()],
+              );
+            } else {
+              final wholeCenter = wholeSize.height / 2;
+              final lineCenter = linePosition.dy + lineSize.height / 2;
+              if (wholeCenter == lineCenter) {
+                return buildLineLabelWidget();
+              } else if (wholeCenter < lineCenter) {
+                final gap =
+                    (2 * linePosition.dy + lineSize.height - wholeSize.height)
+                        .abs();
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [SizedBox(height: gap), buildLineLabelWidget()],
+                );
+              } else {
+                final gap =
+                    (wholeSize.height - (2 * linePosition.dy + lineSize.height))
+                        .abs();
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [buildLineLabelWidget(), SizedBox(height: gap)],
+                );
+              }
+            }
+          },
+        ),
+      ],
     );
   }
 }

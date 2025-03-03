@@ -25,6 +25,35 @@ class ExampleFifteen extends StatelessWidget {
             ),
             StepProgress(
               totalSteps: 4,
+              lineLabels: const ['top 1', 'top 2', 'top 3'],
+              titles: const [
+                'step 1',
+                'step 2',
+                'step 3',
+                'step 4',
+              ],
+              controller: stepProgressController,
+              theme: const StepProgressThemeData(
+                lineLabelAlignment: Alignment.topCenter,
+              ),
+            ),
+            StepProgress(
+              totalSteps: 4,
+              lineLabels: const ['top 1', 'top 2', 'top 3'],
+              titles: const [
+                'step 1',
+                'step 2',
+                'step 3',
+                'step 4',
+              ],
+              controller: stepProgressController,
+              theme: const StepProgressThemeData(
+                lineLabelAlignment: Alignment.topCenter,
+                stepLabelAlignment: StepLabelAlignment.bottom,
+              ),
+            ),
+            StepProgress(
+              totalSteps: 4,
               lineLabels: const ['center 1', 'center 2', 'center 3'],
               controller: stepProgressController,
               theme: const StepProgressThemeData(
@@ -33,7 +62,21 @@ class ExampleFifteen extends StatelessWidget {
             ),
             StepProgress(
               totalSteps: 4,
-              //stepSize: 60,
+              lineLabels: const ['center 1', 'center 2', 'center 3'],
+              titles: const [
+                'step 1',
+                'step 2',
+                'step 3',
+                'step 4',
+              ],
+              controller: stepProgressController,
+              theme: const StepProgressThemeData(
+                lineLabelAlignment: Alignment.center,
+                stepLabelAlignment: StepLabelAlignment.top,
+              ),
+            ),
+            StepProgress(
+              totalSteps: 4,
               lineLabels: const ['bottom 1', 'bottom 2', 'bottom 3'],
               titles: const [
                 'title 1',

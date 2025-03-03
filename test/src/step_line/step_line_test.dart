@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:step_progress/src/step_line/step_line.dart';
-import 'package:step_progress/src/step_line/step_line_style.dart';
 
 void main() {
   group('StepLine Widget Tests', () {
@@ -17,15 +16,7 @@ void main() {
               body: SizedBox(
                 width: 200,
                 height: 50,
-                child: Row(
-                  children: [
-                    StepLine(
-                      key: testKey,
-                      isActive: true,
-                      style: StepLineStyle(lineThickness: lineThickness),
-                    ),
-                  ],
-                ),
+                child: Row(children: [StepLine(key: testKey, isActive: true)]),
               ),
             ),
           ),
@@ -63,14 +54,7 @@ void main() {
               body: SizedBox(
                 width: 200,
                 height: 50,
-                child: Row(
-                  children: [
-                    StepLine(
-                      key: testKey,
-                      style: StepLineStyle(lineThickness: lineThickness),
-                    ),
-                  ],
-                ),
+                child: Row(children: [StepLine(key: testKey)]),
               ),
             ),
           ),
@@ -106,12 +90,7 @@ void main() {
                 height: 200,
                 child: Column(
                   children: [
-                    StepLine(
-                      key: testKey,
-                      axis: Axis.vertical,
-                      isActive: true,
-                      style: StepLineStyle(lineThickness: lineThickness),
-                    ),
+                    StepLine(key: testKey, axis: Axis.vertical, isActive: true),
                   ],
                 ),
               ),
@@ -148,13 +127,7 @@ void main() {
                 width: 50,
                 height: 200,
                 child: Column(
-                  children: [
-                    StepLine(
-                      key: testKey,
-                      axis: Axis.vertical,
-                      style: StepLineStyle(lineThickness: lineThickness),
-                    ),
-                  ],
+                  children: [StepLine(key: testKey, axis: Axis.vertical)],
                 ),
               ),
             ),
@@ -189,7 +162,6 @@ void main() {
                 StepLine(
                   key: testKey,
                   isActive: true,
-                  style: const StepLineStyle(lineThickness: 5),
                   onTap: () {
                     tapped = true;
                   },
@@ -221,15 +193,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: Row(
-              children: [
-                StepLine(
-                  key: testKey,
-                  isActive: true,
-                  style: StepLineStyle(lineThickness: 5),
-                ),
-              ],
-            ),
+            body: Row(children: [StepLine(key: testKey, isActive: true)]),
           ),
         ),
       );
