@@ -113,19 +113,21 @@ class ExampleFourteen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        spacing: 38,
-        children: [
-          ElevatedButton(
-            onPressed: stepProgressController.previousStep,
-            child: const Text('Prev'),
-          ),
-          ElevatedButton(
-            onPressed: stepProgressController.nextStep,
-            child: const Text('Next'),
-          ),
-        ],
+      bottomNavigationBar: SafeArea(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          spacing: 38,
+          children: [
+            ElevatedButton(
+              onPressed: stepProgressController.previousStep,
+              child: const Text('Prev'),
+            ),
+            ElevatedButton(
+              onPressed: stepProgressController.nextStep,
+              child: const Text('Next'),
+            ),
+          ],
+        ),
       ),
     );
   }

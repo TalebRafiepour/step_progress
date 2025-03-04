@@ -20,9 +20,10 @@
 - **Theming and Customization**:
   - **Comprehensive Theme**: Easily customize the look and feel using `StepProgressThemeData`, controlling colors, text styles, and border properties.
   - **Step Sizing**: Adjust the size of step nodes with `stepSize`.
-  - **Titles and Subtitles**: Add descriptive labels to each step for enhanced user understanding.
+  - **Titles and Subtitles**: Add descriptive labels to each step nodes and lines for enhanced user understanding.
   - **Visibility Control**: Show or hide titles, subtitles, and connecting lines using `StepProgressVisibilityOptions`.
   - **Custom Icons**: Utilize custom icons for step nodes, with separate options for inactive and active states using `nodeIconBuilder` and `nodeActiveIconBuilder`.
+  - **Custom Labels**: Use `nodeLabelBuilder` and `lineLabelBuilder` to provide custom labels for step nodes and connecting lines.
   
 - **Interactive Elements**:
   - **Step Tapping**: Enable user interaction with steps using `onStepNodeTapped` callbacks.
