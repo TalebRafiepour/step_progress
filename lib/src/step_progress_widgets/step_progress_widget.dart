@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:step_progress/src/helpers/rendering_box_widget.dart';
 import 'package:step_progress/src/step_label/step_label_style.dart';
 import 'package:step_progress/src/step_label_alignment.dart';
 import 'package:step_progress/src/step_line/step_line_style.dart';
@@ -149,7 +150,7 @@ abstract class StepProgressWidget extends StatelessWidget {
     required StepLineStyle style,
     required double maxStepSize,
     required bool highlightCompletedSteps,
-    Key? key,
+    ValueNotifier<RenderBox?>? boxNotifier,
   });
 
   /// Builds the labels for the step lines in the step progress widget.
@@ -201,15 +202,17 @@ abstract class StepProgressWidget extends StatelessWidget {
   ///
   /// Parameters:
   /// - `context`: The build context in which the widget is built.
-  /// - `wholeKey`: An optional key for the entire constrained box.
-  /// - `lineKey`: An optional key for the step lines.
+  /// - `wholeBoxNotifier`: An optional ValueNotifier to retrieve RenderBox of
+  /// the entire constrained box.
+  /// - `lineBoxNotifier`: An optional ValueNotifier to retrieve RenderBox of
+  /// the step lines.
   ///
   /// Returns:
   /// A [Widget] that contains the step nodes and lines.
   Widget buildNodesAndLines({
     required BuildContext context,
-    Key? wholeKey,
-    Key? lineKey,
+    ValueNotifier<RenderBox?>? wholeBoxNotifier,
+    ValueNotifier<RenderBox?>? lineBoxNotifier,
   }) {
     final theme = StepProgressTheme.of(context)!.data;
     final stepLineStyle = theme.stepLineStyle;
@@ -222,29 +225,39 @@ abstract class StepProgressWidget extends StatelessWidget {
     //
     return LayoutBuilder(
       builder: (_, constraint) {
-        return ConstrainedBox(
-          key: wholeKey,
-          constraints: getBoxConstraint(constraints: constraint),
-          child: Stack(
-            alignment: getStackAlignment(
-              stepLabelAlignment: nodeLabelAlignment,
+        Widget buildWidget() {
+          return ConstrainedBox(
+            constraints: getBoxConstraint(constraints: constraint),
+            child: Stack(
+              alignment: getStackAlignment(
+                stepLabelAlignment: nodeLabelAlignment,
+              ),
+              children: [
+                if (visibilityOptions != StepProgressVisibilityOptions.nodeOnly)
+                  buildStepLines(
+                    boxNotifier: lineBoxNotifier,
+                    style: stepLineStyle,
+                    maxStepSize: maxStepSize(theme.nodeLabelStyle),
+                    highlightCompletedSteps: highlightCompletedSteps,
+                  ),
+                if (visibilityOptions != StepProgressVisibilityOptions.lineOnly)
+                  buildStepNodes(
+                    highlightCompletedSteps: highlightCompletedSteps,
+                    labelAlignment: nodeLabelAlignment,
+                  ),
+              ],
             ),
-            children: [
-              if (visibilityOptions != StepProgressVisibilityOptions.nodeOnly)
-                buildStepLines(
-                  key: lineKey,
-                  style: stepLineStyle,
-                  maxStepSize: maxStepSize(theme.nodeLabelStyle),
-                  highlightCompletedSteps: highlightCompletedSteps,
-                ),
-              if (visibilityOptions != StepProgressVisibilityOptions.lineOnly)
-                buildStepNodes(
-                  highlightCompletedSteps: highlightCompletedSteps,
-                  labelAlignment: nodeLabelAlignment,
-                ),
-            ],
-          ),
-        );
+          );
+        }
+
+        if (wholeBoxNotifier != null) {
+          return RenderingBoxWidget(
+            boxNotifier: wholeBoxNotifier,
+            child: buildWidget(),
+          );
+        } else {
+          return buildWidget();
+        }
       },
     );
   }

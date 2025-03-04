@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:step_progress/src/helpers/rendering_box_widget.dart';
 import 'package:step_progress/src/step_label/step_label.dart';
 import 'package:step_progress/src/step_line/step_line.dart';
 import 'package:step_progress/src/step_progress_widgets/step_generator.dart';
@@ -117,15 +118,10 @@ class HorizontalStepProgress extends StepProgressWidget {
     required StepLineStyle style,
     required double maxStepSize,
     required bool highlightCompletedSteps,
-    Key? key,
+    ValueNotifier<RenderBox?>? boxNotifier,
   }) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: stepSize / 2 - style.lineThickness / 2,
-        horizontal: maxStepSize / 2,
-      ),
-      child: Row(
-        key: key,
+    Widget buildWidget() {
+      return Row(
         children: List.generate(totalStep - 1, (index) {
           return StepLine(
             isActive:
@@ -135,7 +131,21 @@ class HorizontalStepProgress extends StepProgressWidget {
             onTap: () => onStepLineTapped?.call(index),
           );
         }),
+      );
+    }
+
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        vertical: stepSize / 2 - style.lineThickness / 2,
+        horizontal: maxStepSize / 2,
       ),
+      child:
+          boxNotifier == null
+              ? buildWidget()
+              : RenderingBoxWidget(
+                boxNotifier: boxNotifier,
+                child: buildWidget(),
+              ),
     );
   }
 
@@ -217,9 +227,9 @@ class HorizontalStepProgress extends StepProgressWidget {
       return buildNodesAndLines(context: context);
     }
 
-    // Define keys to obtain widget sizes.
-    final wholeWidgetKey = GlobalKey();
-    final lineWidgetKey = GlobalKey();
+    // Define ValueNotifier to obtain widget RenderBox.
+    final wholeWidgetBoxNotifier = ValueNotifier<RenderBox?>(null);
+    final lineWidgetBoxNotifier = ValueNotifier<RenderBox?>(null);
 
     //
     final theme = StepProgressTheme.of(context)!.data;
@@ -249,62 +259,55 @@ class HorizontalStepProgress extends StepProgressWidget {
       children: [
         buildNodesAndLines(
           context: context,
-          wholeKey: wholeWidgetKey,
-          lineKey: lineWidgetKey,
+          lineBoxNotifier: lineWidgetBoxNotifier,
+          wholeBoxNotifier: wholeWidgetBoxNotifier,
         ),
-        FutureBuilder<void>(
-          future: Future.delayed(Duration.zero),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState != ConnectionState.done) {
+        ValueListenableBuilder<RenderBox?>(
+          valueListenable: wholeWidgetBoxNotifier,
+          builder: (_, wholeBox, __) {
+            if (wholeBox == null) {
               return const SizedBox.shrink();
             }
+            return ValueListenableBuilder<RenderBox?>(
+              valueListenable: lineWidgetBoxNotifier,
+              builder: (_, lineBox, __) {
+                if (lineBox == null) {
+                  return const SizedBox.shrink();
+                }
 
-            final wholeBox =
-                wholeWidgetKey.currentContext!.findRenderObject()! as RenderBox;
-            final lineBox =
-                lineWidgetKey.currentContext!.findRenderObject()! as RenderBox;
-            final wholeSize = wholeBox.size;
-            final lineSize = lineBox.size;
-            final linePosition = lineBox.localToGlobal(
-              Offset.zero,
-              ancestor: wholeBox,
+                final wholeSize = wholeBox.size;
+                final lineSize = lineBox.size;
+                final linePosition = lineBox.localToGlobal(
+                  Offset.zero,
+                  ancestor: wholeBox,
+                );
+
+                if (isTopAligned()) {
+                  final gap = (wholeSize.height - linePosition.dy).abs();
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [buildLineLabelWidget(), SizedBox(height: gap)],
+                  );
+                } else if (isBottomAligned()) {
+                  final gap = (linePosition.dy + lineSize.height).abs();
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [SizedBox(height: gap), buildLineLabelWidget()],
+                  );
+                } else {
+                  final wholeCenter = wholeSize.height / 2;
+                  final lineCenter = linePosition.dy + lineSize.height / 2;
+                  final gap = (wholeCenter - lineCenter).abs();
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children:
+                        wholeCenter < lineCenter
+                            ? [SizedBox(height: gap), buildLineLabelWidget()]
+                            : [buildLineLabelWidget(), SizedBox(height: gap)],
+                  );
+                }
+              },
             );
-
-            if (isTopAligned()) {
-              final gap = (wholeSize.height - linePosition.dy).abs();
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [buildLineLabelWidget(), SizedBox(height: gap)],
-              );
-            } else if (isBottomAligned()) {
-              final gap = (linePosition.dy + lineSize.height).abs();
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [SizedBox(height: gap), buildLineLabelWidget()],
-              );
-            } else {
-              final wholeCenter = wholeSize.height / 2;
-              final lineCenter = linePosition.dy + lineSize.height / 2;
-              if (wholeCenter == lineCenter) {
-                return buildLineLabelWidget();
-              } else if (wholeCenter < lineCenter) {
-                final gap =
-                    (2 * linePosition.dy + lineSize.height - wholeSize.height)
-                        .abs();
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [SizedBox(height: gap), buildLineLabelWidget()],
-                );
-              } else {
-                final gap =
-                    (wholeSize.height - (2 * linePosition.dy + lineSize.height))
-                        .abs();
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [buildLineLabelWidget(), SizedBox(height: gap)],
-                );
-              }
-            }
           },
         ),
       ],
