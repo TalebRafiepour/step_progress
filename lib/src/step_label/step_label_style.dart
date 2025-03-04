@@ -22,7 +22,7 @@ class StepLabelStyle {
     this.titleStyle,
     this.subTitleStyle,
     this.titleMaxLines = 3,
-    this.subTitleMaxLines = 1,
+    this.subTitleMaxLines = 3,
     this.overflow = TextOverflow.ellipsis,
     this.padding = EdgeInsets.zero,
     this.textAlign = TextAlign.center,

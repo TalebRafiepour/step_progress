@@ -22,6 +22,7 @@ import 'package:step_progress/step_progress.dart';
 /// - [nodeTitles]: A list of titles for each step node.
 /// - [nodeSubTitles]: A list of subtitles for each step node.
 /// - [lineTitles]: A list of titles for each line segment of progress.
+/// - [lineSubTitles]: A list of subTitles for each line segment of progress.
 /// - [onStepNodeTapped]: A callback function that is called when a step is
 /// tapped.
 /// - [onStepLineTapped]: A callback function that is called when a line is
@@ -40,6 +41,7 @@ class HorizontalStepProgress extends StepProgressWidget {
     super.nodeTitles,
     super.nodeSubTitles,
     super.lineTitles,
+    super.lineSubTitles,
     super.onStepNodeTapped,
     super.onStepLineTapped,
     super.nodeIconBuilder,
@@ -136,6 +138,9 @@ class HorizontalStepProgress extends StepProgressWidget {
 
   @override
   Widget buildStepLineLabels({required BuildContext context}) {
+    if (lineTitles == null && lineSubTitles == null) {
+      return const SizedBox.shrink();
+    }
     final theme = StepProgressTheme.of(context)!.data;
     final maxStepWidth = maxStepSize(theme.nodeLabelStyle);
     return Padding(
@@ -147,6 +152,7 @@ class HorizontalStepProgress extends StepProgressWidget {
               style: theme.lineLabelStyle,
               isActive: currentStep > index,
               title: lineTitles?.elementAtOrNull(index),
+              subTitle: lineSubTitles?.elementAtOrNull(index),
             ),
           );
         }),
@@ -201,8 +207,7 @@ class HorizontalStepProgress extends StepProgressWidget {
   @override
   Widget build(BuildContext context) {
     // If there are no line labels or we only want nodes, simply build nodes/lines.
-    if (lineTitles == null ||
-        lineTitles!.isEmpty ||
+    if (!hasLineLabels ||
         visibilityOptions == StepProgressVisibilityOptions.nodeOnly) {
       return buildNodesAndLines(context: context);
     }

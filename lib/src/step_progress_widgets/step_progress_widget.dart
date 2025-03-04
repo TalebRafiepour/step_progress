@@ -22,6 +22,7 @@ import 'package:step_progress/src/step_progress_visibility_options.dart';
 /// - [stepSize]: The size of each step in the progress indicator.
 /// - [nodeTitles]: An optional list of titles for each step.
 /// - [lineTitles]: An optional list of titles for each line segment.
+/// - [lineSubTitles]: An optional list of subTitles for each line segment.
 /// - [axis]: The axis in which the step progress is laid out.
 /// - [visibilityOptions]: The options to control the visibility of elements.
 /// - [nodeSubTitles]: An optional list of subtitles for each step.
@@ -42,6 +43,7 @@ abstract class StepProgressWidget extends StatelessWidget {
     this.nodeTitles,
     this.nodeSubTitles,
     this.lineTitles,
+    this.lineSubTitles,
     this.onStepNodeTapped,
     this.onStepLineTapped,
     this.nodeIconBuilder,
@@ -57,7 +59,11 @@ abstract class StepProgressWidget extends StatelessWidget {
        ),
        assert(
          lineTitles == null || lineTitles.length < totalStep,
-         'lineTitle lenght must be less than total steps',
+         'lineTitles lenght must be less than total steps',
+       ),
+       assert(
+         lineSubTitles == null || lineSubTitles.length < totalStep,
+         'lineSubTitles lenght must be less than total steps',
        );
 
   /// The total number of steps in the progress indicator.
@@ -75,8 +81,11 @@ abstract class StepProgressWidget extends StatelessWidget {
   /// The subtitles for each step node, if any.
   final List<String>? nodeSubTitles;
 
-  /// The title for each line segment in the progress indicator.
+  /// The titles for each line segment in the progress indicator.
   final List<String>? lineTitles;
+
+  /// The subTitles for each line segment in the progress indicator.
+  final List<String>? lineSubTitles;
 
   /// Callback function when a step is tapped.
   final OnStepNodeTapped? onStepNodeTapped;
@@ -97,7 +106,14 @@ abstract class StepProgressWidget extends StatelessWidget {
   final StepNodeIconBuilder? nodeActiveIconBuilder;
 
   /// Determine if the step nodes have associated labels.
-  bool get hasNodeLabels => nodeTitles != null || nodeSubTitles != null;
+  bool get hasNodeLabels =>
+      (nodeTitles != null && nodeTitles!.isNotEmpty) ||
+      (nodeSubTitles != null && nodeSubTitles!.isNotEmpty);
+
+  /// Indicates whether the step progress widget has line labels.
+  bool get hasLineLabels =>
+      (lineTitles != null && lineTitles!.isNotEmpty) ||
+      (lineSubTitles != null && lineSubTitles!.isNotEmpty);
 
   /// Builds the step nodes widget.
   ///
@@ -139,10 +155,10 @@ abstract class StepProgressWidget extends StatelessWidget {
   /// Returns a [Widget] that represents the labels for the step lines.
   Widget buildStepLineLabels({required BuildContext context});
 
-  /// Returns the alignment for the stack based on the provided 
+  /// Returns the alignment for the stack based on the provided
   /// [stepLabelAlignment].
   ///
-  /// The [stepLabelAlignment] parameter is required and determines the 
+  /// The [stepLabelAlignment] parameter is required and determines the
   /// alignment of the step label within the stack.
   ///
   /// - [stepLabelAlignment]: The alignment of the step node label.

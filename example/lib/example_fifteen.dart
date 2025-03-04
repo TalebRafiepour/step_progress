@@ -176,6 +176,7 @@ class ExampleFifteen extends StatelessWidget {
                         'right 2',
                         'right 3',
                       ],
+                      lineSubTitles: const ['sub 1','sub2','sub 3'],
                       nodeTitles: const [
                         'step 1',
                         'step 2',

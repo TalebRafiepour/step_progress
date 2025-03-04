@@ -545,7 +545,7 @@ StepProgress(
 | `textAlign`          | `TextAlign`         | `TextAlign.center`         | How the text should be aligned horizontally.                                |
 | `titleMaxLines`      | `int`               | `3`                        | The maximum number of lines for the title text.                             |
 | `maxWidth`           | `double`            | `48`                       | The maximum width of the step label.                                        |
-| `subTitleMaxLines`   | `int`               | `1`                        | The maximum number of lines for the subtitle text.                          |
+| `subTitleMaxLines`   | `int`               | `3`                        | The maximum number of lines for the subtitle text.                          |
 | `overflow`           | `TextOverflow`      | `TextOverflow.ellipsis`    | How visual overflow should be handled.                                      |
 | `padding`            | `EdgeInsets`        | `EdgeInsets.zero`          | The amount of space to surround the label with.                             |
 | `margin`             | `EdgeInsets`        | `EdgeInsets.all(2)`        | The amount of space to surround the label with.                             |

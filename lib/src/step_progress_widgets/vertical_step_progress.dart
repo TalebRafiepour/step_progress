@@ -25,9 +25,10 @@ import 'package:step_progress/src/step_progress_widgets/step_progress_widget.dar
 /// various elements within the step progress widget, such as step titles and
 /// subtitles.
 ///
-/// Optional parameters include [nodeTitles] and [nodeSubTitles], which allow
-/// you to provide titles and subtitles for step nodes.The [onStepNodeTapped]
-/// callback can be used to handle tap events on individual steps.
+/// Optional parameters include [nodeTitles], [nodeSubTitles], [lineTitles],
+/// and [lineSubTitles], which allow you to provide titles and subtitles for
+/// step nodes and line.The [onStepNodeTapped] callback can be used to handle
+/// tap events on individual steps.
 /// The [onStepLineTapped] callback can be used to handle tap events on the step
 /// lines.
 /// The [nodeIconBuilder] and [nodeActiveIconBuilder] parameters allow you to
@@ -43,6 +44,7 @@ import 'package:step_progress/src/step_progress_widgets/step_progress_widget.dar
 ///   stepSize: 30.0,
 ///   visibilityOptions: StepProgressVisibilityOptions.both,
 ///   lineTitles: ['Line1', 'Line2', 'Line3', 'Line4' ],
+///   lineSubTitles: ['sub1', 'sub2', 'sub3', 'sub4', ]
 ///   nodeTitles: ['Step 1', 'Step 2', 'Step 3', 'Step 4', 'Step 5'],
 ///   nodeSubTitles: ['Description 1', 'Description 2', 'Description 3',
 ///    'Description 4', 'Description 5'],
@@ -69,6 +71,7 @@ class VerticalStepProgress extends StepProgressWidget {
     super.nodeTitles,
     super.nodeSubTitles,
     super.lineTitles,
+    super.lineSubTitles,
     super.onStepNodeTapped,
     super.onStepLineTapped,
     super.nodeIconBuilder,
@@ -164,6 +167,9 @@ class VerticalStepProgress extends StepProgressWidget {
 
   @override
   Widget buildStepLineLabels({required BuildContext context}) {
+    if (lineTitles == null && lineSubTitles == null) {
+      return const SizedBox.shrink();
+    }
     final theme = StepProgressTheme.of(context)!.data;
     final maxStepHeight = maxStepSize(theme.nodeLabelStyle);
     return Padding(
@@ -175,6 +181,7 @@ class VerticalStepProgress extends StepProgressWidget {
               style: theme.lineLabelStyle,
               isActive: index < currentStep,
               title: lineTitles?.elementAtOrNull(index),
+              subTitle: lineSubTitles?.elementAtOrNull(index),
             ),
           );
         }),
@@ -224,14 +231,13 @@ class VerticalStepProgress extends StepProgressWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = StepProgressTheme.of(context)!.data;
-
     // If there are no line labels or we only want nodes, simply build nodes/lines.
-    if (lineTitles == null ||
-        lineTitles!.isEmpty ||
+    if (!hasLineLabels ||
         visibilityOptions == StepProgressVisibilityOptions.nodeOnly) {
       return buildNodesAndLines(context: context);
     }
+
+    final theme = StepProgressTheme.of(context)!.data;
 
     // Define keys to obtain widget sizes.
     final wholeWidgetKey = GlobalKey();

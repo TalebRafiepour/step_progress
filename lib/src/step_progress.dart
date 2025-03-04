@@ -58,8 +58,11 @@ typedef OnStepNodeTapped = void Function(int index);
 ///
 /// The [nodeSubTitles] parameter can be used to specify subtitles for steps.
 ///
-/// The [lineTitles] parameter can be used to specify labels for each step line
+/// The [lineTitles] parameter can be used to specify titles for each step line
 /// segment.
+///
+/// The [lineSubTitles] parameter can be used to specify subTitles for each
+/// step line segment.
 ///
 /// The [visibilityOptions] parameter can be used to control the visibility of
 /// step progress elements.
@@ -99,6 +102,7 @@ class StepProgress extends StatefulWidget {
     this.nodeTitles,
     this.nodeSubTitles,
     this.lineTitles,
+    this.lineSubTitles,
     this.onStepNodeTapped,
     this.onStepLineTapped,
     this.onStepChanged,
@@ -120,16 +124,23 @@ class StepProgress extends StatefulWidget {
        assert(
          lineTitles == null || lineTitles.length < totalSteps,
          'lineTitles must be less than total steps',
+       ),
+       assert(
+         lineSubTitles == null || lineSubTitles.length < totalSteps,
+         'lineSubTitles must be less than total steps',
        );
 
-  /// Titles for each step in the progress
+  /// List of Titles for each step in the progress
   final List<String>? nodeTitles;
 
-  /// Subtitles for each step in the progress
+  /// List of Subtitles for each step in the progress
   final List<String>? nodeSubTitles;
 
-  /// Optional list of labels for the line segments in the progress indicator.
+  /// List of titles for the line segments in the progress indicator.
   final List<String>? lineTitles;
+
+  /// List of subTitles for the line segments in the progress indicator.
+  final List<String>? lineSubTitles;
 
   /// Options to control the visibility of step progress elements.
   final StepProgressVisibilityOptions visibilityOptions;
@@ -269,6 +280,7 @@ class _StepProgressState extends State<StepProgress>
                   nodeTitles: widget.nodeTitles,
                   nodeSubTitles: widget.nodeSubTitles,
                   lineTitles: widget.lineTitles,
+                  lineSubTitles: widget.lineSubTitles,
                   stepSize: widget.stepSize,
                   onStepNodeTapped: widget.onStepNodeTapped,
                   onStepLineTapped: widget.onStepLineTapped,
@@ -282,6 +294,7 @@ class _StepProgressState extends State<StepProgress>
                   nodeTitles: widget.nodeTitles,
                   nodeSubTitles: widget.nodeSubTitles,
                   lineTitles: widget.lineTitles,
+                  lineSubTitles: widget.lineSubTitles,
                   stepSize: widget.stepSize,
                   onStepNodeTapped: widget.onStepNodeTapped,
                   onStepLineTapped: widget.onStepLineTapped,
