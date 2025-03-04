@@ -6,15 +6,14 @@ import 'package:step_progress/src/step_progress.dart';
 import 'package:step_progress/src/step_progress_theme.dart';
 import 'package:step_progress/src/step_progress_visibility_options.dart';
 
-/// An abstract class that represents a step progress widget.
+/// An abstract class representing a step progress widget.
 ///
-/// This widget is used to display a progress indicator with multiple steps.
+/// This widget displays a progress indicator with multiple steps, allowing for
+/// customization of titles, subtitles, and tap events for each step.
 ///
-/// The [StepProgressWidget] class is a [StatelessWidget] that requires the
-/// total number of steps, the current step, and the size of each step.
-///
-/// The widget can also optionally display titles and subtitles for each step,
-/// and handle tap events on each step.
+/// The [StepProgressWidget] class extends [StatelessWidget] and requires the
+/// total number of steps, the current step, and the size of each step. It also
+/// provides options for customizing the appearance and behavior of the steps.
 ///
 /// Parameters:
 /// - [totalStep]: The total number of steps in the progress indicator.
@@ -22,17 +21,22 @@ import 'package:step_progress/src/step_progress_visibility_options.dart';
 /// - [stepSize]: The size of each step in the progress indicator.
 /// - [nodeTitles]: An optional list of titles for each step.
 /// - [lineTitles]: An optional list of titles for each line segment.
-/// - [lineSubTitles]: An optional list of subTitles for each line segment.
-/// - [axis]: The axis in which the step progress is laid out.
-/// - [visibilityOptions]: The options to control the visibility of elements.
+/// - [lineSubTitles]: An optional list of subtitles for each line segment.
+/// - [axis]: The axis in which the step progress is laid out
+/// (horizontal or vertical).
+/// - [visibilityOptions]: Options to control the visibility of elements.
 /// - [nodeSubTitles]: An optional list of subtitles for each step.
-/// - [onStepNodeTapped]: An optional callback function that is called when a
-/// step node is tapped.
-/// - [onStepLineTapped]: An optional callback function that is called when a
-/// step line is tapped.
+/// - [onStepNodeTapped]: An optional callback function triggered when a step
+/// node is tapped.
+/// - [onStepLineTapped]: An optional callback function triggered when a step
+/// line is tapped.
 /// - [nodeIconBuilder]: An optional builder for the icon of a step node.
 /// - [nodeActiveIconBuilder]: An optional builder for the icon of an active
 /// step node.
+/// - [nodeLabelBuilder]: A builder for creating custom label widgets for
+/// step nodes.
+/// - [lineLabelBuilder]: A builder for creating custom label widgets for step
+///  lines.
 abstract class StepProgressWidget extends StatelessWidget {
   const StepProgressWidget({
     required this.totalStep,
@@ -48,6 +52,8 @@ abstract class StepProgressWidget extends StatelessWidget {
     this.onStepLineTapped,
     this.nodeIconBuilder,
     this.nodeActiveIconBuilder,
+    this.nodeLabelBuilder,
+    this.lineLabelBuilder,
     super.key,
   }) : assert(
          nodeTitles == null || nodeTitles.length <= totalStep,
@@ -105,15 +111,23 @@ abstract class StepProgressWidget extends StatelessWidget {
   /// Builder for the icon of an active step node.
   final StepNodeIconBuilder? nodeActiveIconBuilder;
 
+  /// A builder for creating custom label widgets for step nodes.
+  final StepLabelBuilder? nodeLabelBuilder;
+
+  /// A builder for creating custom label widgets for step lines.
+  final StepLabelBuilder? lineLabelBuilder;
+
   /// Determine if the step nodes have associated labels.
   bool get hasNodeLabels =>
       (nodeTitles != null && nodeTitles!.isNotEmpty) ||
-      (nodeSubTitles != null && nodeSubTitles!.isNotEmpty);
+      (nodeSubTitles != null && nodeSubTitles!.isNotEmpty) ||
+      nodeLabelBuilder != null;
 
   /// Indicates whether the step progress widget has line labels.
   bool get hasLineLabels =>
       (lineTitles != null && lineTitles!.isNotEmpty) ||
-      (lineSubTitles != null && lineSubTitles!.isNotEmpty);
+      (lineSubTitles != null && lineSubTitles!.isNotEmpty) ||
+      lineLabelBuilder != null;
 
   /// Builds the step nodes widget.
   ///

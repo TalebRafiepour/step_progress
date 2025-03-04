@@ -3,6 +3,16 @@ import 'package:step_progress/src/step_progress_widgets/horizontal_step_progress
 import 'package:step_progress/src/step_progress_widgets/vertical_step_progress.dart';
 import 'package:step_progress/step_progress.dart';
 
+/// A typedef for a function that builds a widget to label a step in a step
+/// progress indicator.
+///
+/// The function takes two parameters:
+/// - `index`: The index of the current step.
+/// - `completedStepIndex`: The index of the last completed step.
+///
+/// Returns a [Widget] that represents the label for the step.
+typedef StepLabelBuilder = Widget Function(int index, int completedStepIndex);
+
 /// A typedef for a function that builds a widget for a step node icon.
 ///
 /// The function takes an integer [index] as a parameter, which represents
@@ -85,6 +95,12 @@ typedef OnStepNodeTapped = void Function(int index);
 ///
 /// The [nodeActiveIconBuilder] parameter is a builder function to create custom
 /// icons for active steps.
+///
+/// The [nodeLabelBuilder] parameter is a builder function for creating custom
+/// label widgets for step nodes.
+///
+/// The [lineLabelBuilder] parameter is a builder function for creating custom
+/// label widgets for step lines.
 class StepProgress extends StatefulWidget {
   const StepProgress({
     required this.totalSteps,
@@ -107,6 +123,8 @@ class StepProgress extends StatefulWidget {
     this.onStepLineTapped,
     this.onStepChanged,
     this.nodeIconBuilder,
+    this.nodeLabelBuilder,
+    this.lineLabelBuilder,
     this.nodeActiveIconBuilder,
   }) : assert(totalSteps > 0, 'totalSteps must be greater than 0'),
        assert(
@@ -189,6 +207,12 @@ class StepProgress extends StatefulWidget {
 
   /// A builder for creating custom icons for active steps.
   final StepNodeIconBuilder? nodeActiveIconBuilder;
+
+  /// A builder for creating custom label widgets for step nodes.
+  final StepLabelBuilder? nodeLabelBuilder;
+
+  /// A builder for creating custom label widgets for step lines.
+  final StepLabelBuilder? lineLabelBuilder;
 
   @override
   _StepProgressState createState() {
@@ -287,6 +311,8 @@ class _StepProgressState extends State<StepProgress>
                   visibilityOptions: widget.visibilityOptions,
                   nodeIconBuilder: widget.nodeIconBuilder,
                   nodeActiveIconBuilder: widget.nodeActiveIconBuilder,
+                  lineLabelBuilder: widget.lineLabelBuilder,
+                  nodeLabelBuilder: widget.nodeLabelBuilder,
                 )
                 : VerticalStepProgress(
                   totalStep: widget.totalSteps,
@@ -301,6 +327,8 @@ class _StepProgressState extends State<StepProgress>
                   visibilityOptions: widget.visibilityOptions,
                   nodeIconBuilder: widget.nodeIconBuilder,
                   nodeActiveIconBuilder: widget.nodeActiveIconBuilder,
+                  lineLabelBuilder: widget.lineLabelBuilder,
+                  nodeLabelBuilder: widget.nodeLabelBuilder,
                 ),
       ),
     );

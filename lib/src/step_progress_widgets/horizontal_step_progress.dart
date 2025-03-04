@@ -31,6 +31,10 @@ import 'package:step_progress/step_progress.dart';
 /// step.
 /// - [nodeActiveIconBuilder]: A builder function to create custom icons for
 /// active steps.
+/// - [nodeLabelBuilder]: A builder for creating custom label widgets for
+/// step nodes.
+/// - [lineLabelBuilder]: A builder for creating custom label widgets for step
+///  lines.
 /// - [key]: An optional key for the widget.
 class HorizontalStepProgress extends StepProgressWidget {
   const HorizontalStepProgress({
@@ -46,6 +50,8 @@ class HorizontalStepProgress extends StepProgressWidget {
     super.onStepLineTapped,
     super.nodeIconBuilder,
     super.nodeActiveIconBuilder,
+    super.nodeLabelBuilder,
+    super.lineLabelBuilder,
     super.key,
   }) : super(axis: Axis.horizontal);
 
@@ -95,6 +101,7 @@ class HorizontalStepProgress extends StepProgressWidget {
           isActive: isActive,
           stepNodeIcon: nodeIconBuilder?.call(index),
           stepNodeActiveIcon: nodeActiveIconBuilder?.call(index),
+          customLabelWidget: nodeLabelBuilder?.call(index, currentStep),
           onTap: () => onStepNodeTapped?.call(index),
         );
       }),
@@ -138,7 +145,7 @@ class HorizontalStepProgress extends StepProgressWidget {
 
   @override
   Widget buildStepLineLabels({required BuildContext context}) {
-    if (lineTitles == null && lineSubTitles == null) {
+    if (!hasLineLabels) {
       return const SizedBox.shrink();
     }
     final theme = StepProgressTheme.of(context)!.data;
@@ -148,12 +155,14 @@ class HorizontalStepProgress extends StepProgressWidget {
       child: Row(
         children: List.generate(totalStep - 1, (index) {
           return Expanded(
-            child: StepLabel(
-              style: theme.lineLabelStyle,
-              isActive: currentStep > index,
-              title: lineTitles?.elementAtOrNull(index),
-              subTitle: lineSubTitles?.elementAtOrNull(index),
-            ),
+            child:
+                lineLabelBuilder?.call(index, currentStep) ??
+                StepLabel(
+                  style: theme.lineLabelStyle,
+                  isActive: currentStep > index,
+                  title: lineTitles?.elementAtOrNull(index),
+                  subTitle: lineSubTitles?.elementAtOrNull(index),
+                ),
           );
         }),
       ),

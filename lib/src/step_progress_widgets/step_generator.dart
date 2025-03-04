@@ -46,6 +46,7 @@ import 'package:step_progress/step_progress.dart';
 ///   },
 ///   stepNodeIcon: Icon(Icons.check),
 ///   stepNodeActiveIcon: Icon(Icons.check_circle),
+///   customLabelWidget: Icon(Icons.arrow_right)
 /// )
 /// ```
 class StepGenerator extends StatelessWidget {
@@ -61,6 +62,7 @@ class StepGenerator extends StatelessWidget {
     this.onTap,
     this.stepNodeIcon,
     this.stepNodeActiveIcon,
+    this.customLabelWidget,
     super.key,
   });
 
@@ -96,6 +98,9 @@ class StepGenerator extends StatelessWidget {
 
   /// This means any other step nodes has label or not
   final bool anyLabelExist;
+
+  /// A widget that is built specifically for the step label.
+  final Widget? customLabelWidget;
 
   /// Builds a widget that represents a step in a step progress indicator.
   ///
@@ -152,6 +157,9 @@ class StepGenerator extends StatelessWidget {
     }
 
     Widget buildStepLabel() {
+      if (customLabelWidget != null) {
+        return customLabelWidget!;
+      }
       if (title == null && subTitle == null) {
         if (anyLabelExist) {
           final style = themeData.nodeLabelStyle;

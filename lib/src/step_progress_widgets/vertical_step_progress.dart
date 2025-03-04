@@ -27,14 +27,17 @@ import 'package:step_progress/src/step_progress_widgets/step_progress_widget.dar
 ///
 /// Optional parameters include [nodeTitles], [nodeSubTitles], [lineTitles],
 /// and [lineSubTitles], which allow you to provide titles and subtitles for
-/// step nodes and line.The [onStepNodeTapped] callback can be used to handle
-/// tap events on individual steps.
-/// The [onStepLineTapped] callback can be used to handle tap events on the step
-/// lines.
+/// step nodes and lines. The [onStepNodeTapped] callback can be used to handle
+/// tap events on individual steps. The [onStepLineTapped] callback can be used
+/// to handle tap events on the step lines.
+///
 /// The [nodeIconBuilder] and [nodeActiveIconBuilder] parameters allow you to
 /// customize the icons for each step. The [nodeIconBuilder] is used for
 /// inactive steps, while the [nodeActiveIconBuilder] is used for the active
 /// step.
+///
+/// The [nodeLabelBuilder] and [lineLabelBuilder] parameters allow you to
+/// customize the labels for each step node and step line respectively.
 ///
 /// Example usage:
 /// ```dart
@@ -60,6 +63,12 @@ import 'package:step_progress/src/step_progress_widgets/step_progress_widget.dar
 ///   nodeActiveIconBuilder: (step) {
 ///     return Icon(Icons.check_circle);
 ///   },
+///   nodeLabelBuilder: (step, completedStepIndex) {
+///     return Text('Node Label $step');
+///   },
+///   lineLabelBuilder: (step, completedStepIndex) {
+///     return Text('Line Label $step');
+///   },
 /// );
 /// ```
 class VerticalStepProgress extends StepProgressWidget {
@@ -76,6 +85,8 @@ class VerticalStepProgress extends StepProgressWidget {
     super.onStepLineTapped,
     super.nodeIconBuilder,
     super.nodeActiveIconBuilder,
+    super.nodeLabelBuilder,
+    super.lineLabelBuilder,
     super.key,
   }) : super(axis: Axis.vertical);
 
@@ -118,6 +129,7 @@ class VerticalStepProgress extends StepProgressWidget {
           isActive: isActive,
           stepNodeIcon: nodeIconBuilder?.call(index),
           stepNodeActiveIcon: nodeActiveIconBuilder?.call(index),
+          customLabelWidget: nodeLabelBuilder?.call(index, currentStep),
           onTap: () => onStepNodeTapped?.call(index),
         );
       }),
@@ -167,7 +179,7 @@ class VerticalStepProgress extends StepProgressWidget {
 
   @override
   Widget buildStepLineLabels({required BuildContext context}) {
-    if (lineTitles == null && lineSubTitles == null) {
+    if (!hasLineLabels) {
       return const SizedBox.shrink();
     }
     final theme = StepProgressTheme.of(context)!.data;
@@ -177,12 +189,14 @@ class VerticalStepProgress extends StepProgressWidget {
       child: Column(
         children: List.generate(totalStep - 1, (index) {
           return Expanded(
-            child: StepLabel(
-              style: theme.lineLabelStyle,
-              isActive: index < currentStep,
-              title: lineTitles?.elementAtOrNull(index),
-              subTitle: lineSubTitles?.elementAtOrNull(index),
-            ),
+            child:
+                lineLabelBuilder?.call(index, currentStep) ??
+                StepLabel(
+                  style: theme.lineLabelStyle,
+                  isActive: index < currentStep,
+                  title: lineTitles?.elementAtOrNull(index),
+                  subTitle: lineSubTitles?.elementAtOrNull(index),
+                ),
           );
         }),
       ),
