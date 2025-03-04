@@ -444,6 +444,48 @@ StepProgress(
   ),
 ),
 ```
+### Example 14: Horizontal Step Progress with Line Labels
+![StepProgress-horizontal-with-line-labels](https://github.com/TalebRafiepour/showcase/blob/main/step_progress/sample-14-stepprogress-line-labels.png?raw=true)
+
+#### Implementation
+
+```dart
+StepProgress(
+totalSteps: 4,
+padding: const EdgeInsets.all(10),
+lineTitles: const [
+  'line title 1',
+  'line title 2',
+  'line title 3',
+],
+controller: stepProgressController,
+nodeIconBuilder: (index, completedStepIndex) {
+  if (index <= completedStepIndex) {
+    return const Icon(
+      Icons.check,
+      color: Colors.white,
+    );
+  } else {
+    return const Icon(
+      Icons.more_horiz,
+      color: Colors.white,
+    );
+  }
+},
+theme: const StepProgressThemeData(
+  lineLabelAlignment: Alignment.bottomCenter,
+  lineLabelStyle: StepLabelStyle(
+    defualtColor: Colors.grey,
+    activeColor: Colors.green,
+  ),
+  stepLineSpacing: 20,
+  stepLineStyle: StepLineStyle(
+    lineThickness: 3,
+    borderRadius: BorderRadius.all(Radius.circular(4)),
+  ),
+),
+),
+```
 
 ## Installation
 

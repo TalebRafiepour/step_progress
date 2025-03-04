@@ -14,7 +14,11 @@ class ExampleFifteen extends StatelessWidget {
       body: StepProgress(
         totalSteps: 4,
         padding: const EdgeInsets.all(10),
-        lineTitles: const ['line title 1', 'line title 2', 'line title 3'],
+        lineTitles: const [
+          'line title 1',
+          'line title 2',
+          'line title 3',
+        ],
         controller: stepProgressController,
         nodeIconBuilder: (index, completedStepIndex) {
           if (index <= completedStepIndex) {
