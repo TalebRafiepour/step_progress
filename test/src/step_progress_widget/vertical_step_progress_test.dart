@@ -44,11 +44,8 @@ void main() {
               onStepLineTapped: (step) {
                 tappedLineIndex = step;
               },
-              nodeIconBuilder: (step) {
+              nodeIconBuilder: (step, completedStepIndex) {
                 return Icon(Icons.circle, key: Key('node_$step'));
-              },
-              nodeActiveIconBuilder: (step) {
-                return Icon(Icons.check_circle, key: Key('active_node_$step'));
               },
             ),
           ),
@@ -107,11 +104,12 @@ void main() {
             ),
             onStepNodeTapped: (_) {},
             onStepLineTapped: (_) {},
-            nodeIconBuilder: (step) {
-              return Icon(Icons.circle, key: Key('node_$step'));
-            },
-            nodeActiveIconBuilder: (step) {
-              return Icon(Icons.check_circle, key: Key('active_node_$step'));
+            nodeIconBuilder: (step, completedStepIndex) {
+              if (step <= completedStepIndex) {
+                return Icon(Icons.check_circle, key: Key('active_node_$step'));
+              } else {
+                return Icon(Icons.circle, key: Key('node_$step'));
+              }
             },
           ),
         ),
@@ -155,11 +153,12 @@ void main() {
             ),
             onStepNodeTapped: (_) {},
             onStepLineTapped: (_) {},
-            nodeIconBuilder: (step) {
-              return Icon(Icons.circle, key: Key('node_$step'));
-            },
-            nodeActiveIconBuilder: (step) {
-              return Icon(Icons.check_circle, key: Key('active_node_$step'));
+            nodeIconBuilder: (step, completedStepIndex) {
+              if (step <= completedStepIndex) {
+                return Icon(Icons.check_circle, key: Key('active_node_$step'));
+              } else {
+                return Icon(Icons.circle, key: Key('node_$step'));
+              }
             },
           ),
         ),
@@ -203,11 +202,12 @@ void main() {
             onStepLineTapped: (step) {
               tappedLineIndex = step;
             },
-            nodeIconBuilder: (step) {
-              return Icon(Icons.circle, key: Key('node_$step'));
-            },
-            nodeActiveIconBuilder: (step) {
-              return Icon(Icons.check_circle, key: Key('active_node_$step'));
+            nodeIconBuilder: (step, completedStepIndex) {
+              if (step <= completedStepIndex) {
+                return Icon(Icons.check_circle, key: Key('active_node_$step'));
+              } else {
+                return Icon(Icons.circle, key: Key('node_$step'));
+              }
             },
           ),
         ),
@@ -248,11 +248,12 @@ void main() {
             nodeSubTitles: const ['SubTitle 1'], // fewer subtitles than steps
             onStepNodeTapped: (_) {},
             onStepLineTapped: (_) {},
-            nodeIconBuilder: (step) {
-              return Icon(Icons.circle, key: Key('node_$step'));
-            },
-            nodeActiveIconBuilder: (step) {
-              return Icon(Icons.check_circle, key: Key('active_node_$step'));
+            nodeIconBuilder: (step, completedStepIndex) {
+              if (step <= completedStepIndex) {
+                return Icon(Icons.check_circle, key: Key('active_node_$step'));
+              } else {
+                return Icon(Icons.circle, key: Key('node_$step'));
+              }
             },
           ),
         ),

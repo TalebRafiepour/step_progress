@@ -47,7 +47,6 @@ void main() {
                   tapped = true;
                 },
                 stepNodeIcon: const Icon(Icons.check),
-                stepNodeActiveIcon: const Icon(Icons.check_circle),
               ),
             ),
           ),

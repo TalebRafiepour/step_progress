@@ -29,8 +29,6 @@ import 'package:step_progress/step_progress.dart';
 /// tapped.
 /// - [nodeIconBuilder]: A builder function to create custom icons for each
 /// step.
-/// - [nodeActiveIconBuilder]: A builder function to create custom icons for
-/// active steps.
 /// - [nodeLabelBuilder]: A builder for creating custom label widgets for
 /// step nodes.
 /// - [lineLabelBuilder]: A builder for creating custom label widgets for step
@@ -49,7 +47,6 @@ class HorizontalStepProgress extends StepProgressWidget {
     super.onStepNodeTapped,
     super.onStepLineTapped,
     super.nodeIconBuilder,
-    super.nodeActiveIconBuilder,
     super.nodeLabelBuilder,
     super.lineLabelBuilder,
     super.key,
@@ -99,8 +96,7 @@ class HorizontalStepProgress extends StepProgressWidget {
           title: title,
           subTitle: subTitle,
           isActive: isActive,
-          stepNodeIcon: nodeIconBuilder?.call(index),
-          stepNodeActiveIcon: nodeActiveIconBuilder?.call(index),
+          stepNodeIcon: nodeIconBuilder?.call(index, currentStep),
           customLabelWidget: nodeLabelBuilder?.call(index, currentStep),
           onTap: () => onStepNodeTapped?.call(index),
         );

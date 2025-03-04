@@ -16,8 +16,18 @@ class ExampleFifteen extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         lineTitles: const ['line title 1', 'line title 2', 'line title 3'],
         controller: stepProgressController,
-        nodeIconBuilder: (index) {
-          return const Icon(Icons.more_horiz,color: Colors.white,);
+        nodeIconBuilder: (index, completedStepIndex) {
+          if (index <= completedStepIndex) {
+            return const Icon(
+              Icons.check,
+              color: Colors.white,
+            );
+          } else {
+            return const Icon(
+              Icons.more_horiz,
+              color: Colors.white,
+            );
+          }
         },
         theme: const StepProgressThemeData(
           lineLabelAlignment: Alignment.bottomCenter,

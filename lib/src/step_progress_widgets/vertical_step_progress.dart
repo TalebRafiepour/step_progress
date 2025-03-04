@@ -31,10 +31,7 @@ import 'package:step_progress/src/step_progress_widgets/step_progress_widget.dar
 /// tap events on individual steps. The [onStepLineTapped] callback can be used
 /// to handle tap events on the step lines.
 ///
-/// The [nodeIconBuilder] and [nodeActiveIconBuilder] parameters allow you to
-/// customize the icons for each step. The [nodeIconBuilder] is used for
-/// inactive steps, while the [nodeActiveIconBuilder] is used for the active
-/// step.
+/// The [nodeIconBuilder] allow you to customize the icons for each step.
 ///
 /// The [nodeLabelBuilder] and [lineLabelBuilder] parameters allow you to
 /// customize the labels for each step node and step line respectively.
@@ -57,11 +54,8 @@ import 'package:step_progress/src/step_progress_widgets/step_progress_widget.dar
 ///   onStepLineTapped: (step) {
 ///     print('Tapped on step line: $step');
 ///   },
-///   nodeIconBuilder: (step) {
+///   nodeIconBuilder: (step, completedStepIndex) {
 ///     return Icon(Icons.circle);
-///   },
-///   nodeActiveIconBuilder: (step) {
-///     return Icon(Icons.check_circle);
 ///   },
 ///   nodeLabelBuilder: (step, completedStepIndex) {
 ///     return Text('Node Label $step');
@@ -84,7 +78,6 @@ class VerticalStepProgress extends StepProgressWidget {
     super.onStepNodeTapped,
     super.onStepLineTapped,
     super.nodeIconBuilder,
-    super.nodeActiveIconBuilder,
     super.nodeLabelBuilder,
     super.lineLabelBuilder,
     super.key,
@@ -127,8 +120,7 @@ class VerticalStepProgress extends StepProgressWidget {
           title: title,
           subTitle: subTitle,
           isActive: isActive,
-          stepNodeIcon: nodeIconBuilder?.call(index),
-          stepNodeActiveIcon: nodeActiveIconBuilder?.call(index),
+          stepNodeIcon: nodeIconBuilder?.call(index, currentStep),
           customLabelWidget: nodeLabelBuilder?.call(index, currentStep),
           onTap: () => onStepNodeTapped?.call(index),
         );

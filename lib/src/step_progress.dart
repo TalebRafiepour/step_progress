@@ -15,9 +15,13 @@ typedef StepLabelBuilder = Widget Function(int index, int completedStepIndex);
 
 /// A typedef for a function that builds a widget for a step node icon.
 ///
-/// The function takes an integer [index] as a parameter, which represents
-/// the position of the step node in the sequence, and returns a [Widget].
-typedef StepNodeIconBuilder = Widget Function(int index);
+/// The function takes two parameters:
+/// - `index`: The index of the current step.
+/// - `completedStepIndex`: The index of the last completed step.
+///
+/// Returns a [Widget] that represents the icon for the step node.
+typedef StepNodeIconBuilder =
+    Widget Function(int index, int completedStepIndex);
 
 /// A typedef for a callback function that is triggered when a step line is
 /// tapped.
@@ -93,9 +97,6 @@ typedef OnStepNodeTapped = void Function(int index);
 /// The [nodeIconBuilder] parameter is a builder function to create custom icons
 /// for each step node.
 ///
-/// The [nodeActiveIconBuilder] parameter is a builder function to create custom
-/// icons for active steps.
-///
 /// The [nodeLabelBuilder] parameter is a builder function for creating custom
 /// label widgets for step nodes.
 ///
@@ -125,7 +126,6 @@ class StepProgress extends StatefulWidget {
     this.nodeIconBuilder,
     this.nodeLabelBuilder,
     this.lineLabelBuilder,
-    this.nodeActiveIconBuilder,
   }) : assert(totalSteps > 0, 'totalSteps must be greater than 0'),
        assert(
          currentStep < totalSteps,
@@ -204,9 +204,6 @@ class StepProgress extends StatefulWidget {
 
   /// A builder function to create custom icons for each step node.
   final StepNodeIconBuilder? nodeIconBuilder;
-
-  /// A builder for creating custom icons for active steps.
-  final StepNodeIconBuilder? nodeActiveIconBuilder;
 
   /// A builder for creating custom label widgets for step nodes.
   final StepLabelBuilder? nodeLabelBuilder;
@@ -310,7 +307,6 @@ class _StepProgressState extends State<StepProgress>
                   onStepLineTapped: widget.onStepLineTapped,
                   visibilityOptions: widget.visibilityOptions,
                   nodeIconBuilder: widget.nodeIconBuilder,
-                  nodeActiveIconBuilder: widget.nodeActiveIconBuilder,
                   lineLabelBuilder: widget.lineLabelBuilder,
                   nodeLabelBuilder: widget.nodeLabelBuilder,
                 )
@@ -326,7 +322,6 @@ class _StepProgressState extends State<StepProgress>
                   onStepLineTapped: widget.onStepLineTapped,
                   visibilityOptions: widget.visibilityOptions,
                   nodeIconBuilder: widget.nodeIconBuilder,
-                  nodeActiveIconBuilder: widget.nodeActiveIconBuilder,
                   lineLabelBuilder: widget.lineLabelBuilder,
                   nodeLabelBuilder: widget.nodeLabelBuilder,
                 ),

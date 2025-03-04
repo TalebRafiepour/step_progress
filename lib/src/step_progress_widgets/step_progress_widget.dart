@@ -31,8 +31,6 @@ import 'package:step_progress/src/step_progress_visibility_options.dart';
 /// - [onStepLineTapped]: An optional callback function triggered when a step
 /// line is tapped.
 /// - [nodeIconBuilder]: An optional builder for the icon of a step node.
-/// - [nodeActiveIconBuilder]: An optional builder for the icon of an active
-/// step node.
 /// - [nodeLabelBuilder]: A builder for creating custom label widgets for
 /// step nodes.
 /// - [lineLabelBuilder]: A builder for creating custom label widgets for step
@@ -51,7 +49,6 @@ abstract class StepProgressWidget extends StatelessWidget {
     this.onStepNodeTapped,
     this.onStepLineTapped,
     this.nodeIconBuilder,
-    this.nodeActiveIconBuilder,
     this.nodeLabelBuilder,
     this.lineLabelBuilder,
     super.key,
@@ -107,9 +104,6 @@ abstract class StepProgressWidget extends StatelessWidget {
 
   /// Builder for the icon of a step node.
   final StepNodeIconBuilder? nodeIconBuilder;
-
-  /// Builder for the icon of an active step node.
-  final StepNodeIconBuilder? nodeActiveIconBuilder;
 
   /// A builder for creating custom label widgets for step nodes.
   final StepLabelBuilder? nodeLabelBuilder;

@@ -25,8 +25,6 @@ import 'package:step_progress/step_progress.dart';
 /// when the widget is tapped.
 /// The [stepNodeIcon] parameter is an optional widget to display inside the
 /// `StepNode` by default.
-/// The [stepNodeActiveIcon] parameter is an optional widget to display inside
-/// the `StepNode` when the step is active.
 /// The [stepIndex] parameter specifies the index of the current step in the
 /// step progress.
 ///
@@ -45,7 +43,6 @@ import 'package:step_progress/step_progress.dart';
 ///     print('Step tapped');
 ///   },
 ///   stepNodeIcon: Icon(Icons.check),
-///   stepNodeActiveIcon: Icon(Icons.check_circle),
 ///   customLabelWidget: Icon(Icons.arrow_right)
 /// )
 /// ```
@@ -61,7 +58,6 @@ class StepGenerator extends StatelessWidget {
     this.subTitle,
     this.onTap,
     this.stepNodeIcon,
-    this.stepNodeActiveIcon,
     this.customLabelWidget,
     super.key,
   });
@@ -89,9 +85,6 @@ class StepGenerator extends StatelessWidget {
 
   /// Icon widget to display inside `StepNode` by default.
   final Widget? stepNodeIcon;
-
-  /// Icon widget to display inside `StepNode` when the step is active.
-  final Widget? stepNodeActiveIcon;
 
   /// The index of the current step in the step progress.
   final int stepIndex;
@@ -149,7 +142,7 @@ class StepGenerator extends StatelessWidget {
               height: themeData.enableRippleEffect ? height / 1.5 : height,
               isActive: isActive,
               icon: stepNodeIcon,
-              activeIcon: stepNodeActiveIcon,
+              activeIcon: stepNodeIcon,
             ),
           ],
         ),

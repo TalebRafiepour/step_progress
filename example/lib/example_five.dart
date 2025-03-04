@@ -20,23 +20,24 @@ class ExampleFive extends StatelessWidget {
               totalSteps: 4,
               margin: const EdgeInsets.symmetric(horizontal: 12),
               controller: stepProgressController,
-              nodeIconBuilder: (index) {
-                return Text(
-                  '${index + 1}',
-                  style: const TextStyle(
-                    fontSize: 24,
-                    color: Color(0xFFa2a2ab),
-                  ),
-                );
-              },
-              nodeActiveIconBuilder: (index) {
-                return Text(
-                  '${index + 1}',
-                  style: const TextStyle(
-                    fontSize: 24,
-                    color: Color(0xFFb1acaa),
-                  ),
-                );
+              nodeIconBuilder: (index, completedStepIndex) {
+                if (index <= completedStepIndex) {
+                  return Text(
+                    '${index + 1}',
+                    style: const TextStyle(
+                      fontSize: 24,
+                      color: Color(0xFFb1acaa),
+                    ),
+                  );
+                } else {
+                  return Text(
+                    '${index + 1}',
+                    style: const TextStyle(
+                      fontSize: 24,
+                      color: Color(0xFFa2a2ab),
+                    ),
+                  );
+                }
               },
               theme: const StepProgressThemeData(
                 defaultForegroundColor: Colors.white,
