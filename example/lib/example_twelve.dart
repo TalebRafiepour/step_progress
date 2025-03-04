@@ -28,7 +28,7 @@ class ExampleTwelve extends StatelessWidget {
             ],
             padding: const EdgeInsets.all(18),
             theme: const StepProgressThemeData(
-              stepLabelAlignment: StepLabelAlignment.leftRight,
+              nodeLabelAlignment: StepLabelAlignment.leftRight,
               shape: StepNodeShape.hexagon,
               stepLineSpacing: 18,
               stepLineStyle: StepLineStyle(

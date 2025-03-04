@@ -215,7 +215,7 @@ class StepGenerator extends StatelessWidget {
     }
 
     final labelAlignment =
-        themeData.stepLabelAlignment ??
+        themeData.nodeLabelAlignment ??
         (axis == Axis.horizontal
             ? StepLabelAlignment.top
             : StepLabelAlignment.right);

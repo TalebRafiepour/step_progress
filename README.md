@@ -488,7 +488,8 @@ StepProgress(
 |`shape`                  | The shape of the step nodes (e.g., circle, square).| StepNodeShape       | `StepNodeShape.circle`              |
 |`stepAnimationDuration`  | The duration of the animation for step transitions.| Duration            |`Duration(milliseconds: 150)`        |
 |`stepLineSpacing`        | The spacing between step lines.                    | double              | `0.0`                               |
-|`stepLabelAlignment`     | The alignment of the labels for the step nodes.    | StepLabelAlignment? |`null`                               |
+|`nodeLabelAlignment`     | The alignment of the labels for the step nodes.    | StepLabelAlignment? |`null`                               |
+|`lineLabelAlignment`     | The alignment of the labels for the step lines.    | Alignment?          |`null`                               |
 |`nodeLabelStyle`         | The style of the labels for the step nodes.        | StepLabelStyle      | `StepLabelStyle()`                  |
 |`lineLabelStyle`         | The style of the labels for the step lines.        | StepLabelStyle      | `StepLabelStyle(maxWidth: double.infinity)`|
 |`stepNodeStyle`          | The style of the step nodes.                       | StepNodeStyle       | `StepNodeStyle()`                   |

@@ -19,7 +19,7 @@ import 'package:step_progress/step_progress.dart';
 /// * [stepAnimationDuration]: The duration of the animation for step
 /// transitions.
 /// * [stepLineSpacing]: The spacing between step lines.
-/// * [stepLabelAlignment]: The alignment of the labels for the step nodes.
+/// * [nodeLabelAlignment]: The alignment of the labels for the step nodes.
 /// * [lineLabelAlignment]: The alignment of the labels for line segment.
 /// * [nodeLabelStyle]: The style of the labels for the step nodes.
 /// * [lineLabelStyle]: The style of the labels for the step lines.
@@ -38,7 +38,7 @@ class StepProgressThemeData {
     this.shape = StepNodeShape.circle,
     this.stepAnimationDuration = const Duration(milliseconds: 150),
     this.stepLineSpacing = 0,
-    this.stepLabelAlignment,
+    this.nodeLabelAlignment,
     this.lineLabelAlignment,
     this.nodeLabelStyle = const StepLabelStyle(),
     this.lineLabelStyle = const StepLabelStyle(maxWidth: double.infinity),
@@ -93,8 +93,8 @@ class StepProgressThemeData {
   /// The style of the ripple effect for the step progress.
   final RippleEffectStyle rippleEffectStyle;
 
-  /// Alignment of the step labels in the step progress indicator.
-  final StepLabelAlignment? stepLabelAlignment;
+  /// Alignment of the step node labels in the step progress indicator.
+  final StepLabelAlignment? nodeLabelAlignment;
 
   /// Determines if the completed steps should be highlighted.
   final bool highlightCompletedSteps;
@@ -123,7 +123,7 @@ class StepProgressThemeData {
   /// - [stepLineStyle]: The style of the step lines.
   /// - [rippleEffectStyle]: The style of the ripple effect.
   /// - [highlightCompletedSteps]: Whether to highlight completed steps.
-  /// - [stepLabelAlignment]: The alignment of the step labels.
+  /// - [nodeLabelAlignment]: The alignment of the step node labels.
   /// - [lineLabelAlignment]: The alignment of the line segment labels.
   ///
   /// Returns a new instance of [StepProgressThemeData] with the updated values.
@@ -143,7 +143,7 @@ class StepProgressThemeData {
     StepLineStyle? stepLineStyle,
     RippleEffectStyle? rippleEffectStyle,
     bool? highlightCompletedSteps,
-    StepLabelAlignment? stepLabelAlignment,
+    StepLabelAlignment? nodeLabelAlignment,
     Alignment? lineLabelAlignment,
   }) {
     return StepProgressThemeData(
@@ -166,7 +166,7 @@ class StepProgressThemeData {
       rippleEffectStyle: rippleEffectStyle ?? this.rippleEffectStyle,
       highlightCompletedSteps:
           highlightCompletedSteps ?? this.highlightCompletedSteps,
-      stepLabelAlignment: stepLabelAlignment ?? this.stepLabelAlignment,
+      nodeLabelAlignment: nodeLabelAlignment ?? this.nodeLabelAlignment,
       lineLabelAlignment: lineLabelAlignment ?? this.lineLabelAlignment,
     );
   }

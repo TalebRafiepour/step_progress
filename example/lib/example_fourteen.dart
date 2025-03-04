@@ -26,7 +26,7 @@ class ExampleFourteen extends StatelessWidget {
                 'Step 4 and a long title',
               ],
               theme: const StepProgressThemeData(
-                stepLabelAlignment: StepLabelAlignment.top,
+                nodeLabelAlignment: StepLabelAlignment.top,
               ),
             ),
             StepProgress(
@@ -40,7 +40,7 @@ class ExampleFourteen extends StatelessWidget {
                 'Step 4 and a long title',
               ],
               theme: const StepProgressThemeData(
-                stepLabelAlignment: StepLabelAlignment.bottom,
+                nodeLabelAlignment: StepLabelAlignment.bottom,
               ),
             ),
             StepProgress(
@@ -54,7 +54,7 @@ class ExampleFourteen extends StatelessWidget {
                 'Step 4 and a long title',
               ],
               theme: const StepProgressThemeData(
-                stepLabelAlignment: StepLabelAlignment.topBottom,
+                nodeLabelAlignment: StepLabelAlignment.topBottom,
               ),
             ),
             Row(
@@ -73,7 +73,7 @@ class ExampleFourteen extends StatelessWidget {
                     'Step 4 and a long title',
                   ],
                   theme: const StepProgressThemeData(
-                    stepLabelAlignment: StepLabelAlignment.left,
+                    nodeLabelAlignment: StepLabelAlignment.left,
                   ),
                 ),
                 StepProgress(
@@ -89,7 +89,7 @@ class ExampleFourteen extends StatelessWidget {
                     'Step 4 and a long title',
                   ],
                   theme: const StepProgressThemeData(
-                    stepLabelAlignment: StepLabelAlignment.right,
+                    nodeLabelAlignment: StepLabelAlignment.right,
                   ),
                 ),
                 StepProgress(
@@ -105,7 +105,7 @@ class ExampleFourteen extends StatelessWidget {
                     'Step 4 and a long title',
                   ],
                   theme: const StepProgressThemeData(
-                    stepLabelAlignment: StepLabelAlignment.leftRight,
+                    nodeLabelAlignment: StepLabelAlignment.leftRight,
                   ),
                 ),
               ],

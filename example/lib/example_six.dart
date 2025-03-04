@@ -24,7 +24,7 @@ class ExampleSix extends StatelessWidget {
               'Step 4',
             ],
             theme: const StepProgressThemeData(
-              stepLabelAlignment: StepLabelAlignment.topBottom,
+              nodeLabelAlignment: StepLabelAlignment.topBottom,
               stepLineSpacing: 2,
               stepLineStyle: StepLineStyle(
                 lineThickness: 2,

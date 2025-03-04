@@ -207,7 +207,7 @@ abstract class StepProgressWidget extends StatelessWidget {
     final stepLineStyle = theme.stepLineStyle;
     final highlightCompletedSteps = theme.highlightCompletedSteps;
     final nodeLabelAlignment =
-        theme.stepLabelAlignment ??
+        theme.nodeLabelAlignment ??
         (axis == Axis.horizontal
             ? StepLabelAlignment.top
             : StepLabelAlignment.right);

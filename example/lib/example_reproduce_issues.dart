@@ -26,7 +26,7 @@ class ExampleReproduceIssues extends StatelessWidget {
               'Step 4 and a long title',
             ],
             theme: const StepProgressThemeData(
-              stepLabelAlignment: StepLabelAlignment.top,
+              nodeLabelAlignment: StepLabelAlignment.top,
               stepLineStyle: StepLineStyle(
                 lineThickness: 3,
               ),

@@ -22,7 +22,7 @@ class ExampleThirteen extends StatelessWidget {
             controller: stepProgressController,
             padding: const EdgeInsets.all(18),
             theme: const StepProgressThemeData(
-              stepLabelAlignment: StepLabelAlignment.left,
+              nodeLabelAlignment: StepLabelAlignment.left,
               shape: StepNodeShape.star,
               stepLineSpacing: 18,
               stepLineStyle: StepLineStyle(

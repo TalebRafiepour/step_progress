@@ -27,7 +27,7 @@ class ExampleTen extends StatelessWidget {
             padding: const EdgeInsets.all(18),
             theme: const StepProgressThemeData(
               shape: StepNodeShape.triangle,
-              stepLabelAlignment: StepLabelAlignment.left,
+              nodeLabelAlignment: StepLabelAlignment.left,
               stepNodeStyle: StepNodeStyle(
                 activeIcon: null,
               ),

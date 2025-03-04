@@ -49,7 +49,7 @@ class ExampleFifteen extends StatelessWidget {
               controller: stepProgressController,
               theme: const StepProgressThemeData(
                 lineLabelAlignment: Alignment.topCenter,
-                stepLabelAlignment: StepLabelAlignment.bottom,
+                nodeLabelAlignment: StepLabelAlignment.bottom,
               ),
             ),
             StepProgress(
@@ -72,7 +72,7 @@ class ExampleFifteen extends StatelessWidget {
               controller: stepProgressController,
               theme: const StepProgressThemeData(
                 lineLabelAlignment: Alignment.center,
-                stepLabelAlignment: StepLabelAlignment.top,
+                nodeLabelAlignment: StepLabelAlignment.top,
               ),
             ),
             StepProgress(
@@ -101,7 +101,7 @@ class ExampleFifteen extends StatelessWidget {
               controller: stepProgressController,
               theme: const StepProgressThemeData(
                 lineLabelAlignment: Alignment.bottomCenter,
-                stepLabelAlignment: StepLabelAlignment.bottomTop,
+                nodeLabelAlignment: StepLabelAlignment.bottomTop,
               ),
             ),
             SizedBox(
@@ -142,7 +142,7 @@ class ExampleFifteen extends StatelessWidget {
                       ],
                       controller: stepProgressController,
                       theme: const StepProgressThemeData(
-                        stepLabelAlignment: StepLabelAlignment.left,
+                        nodeLabelAlignment: StepLabelAlignment.left,
                         lineLabelAlignment: Alignment.centerRight,
                       ),
                     ),
@@ -163,7 +163,7 @@ class ExampleFifteen extends StatelessWidget {
                       ],
                       controller: stepProgressController,
                       theme: const StepProgressThemeData(
-                        stepLabelAlignment: StepLabelAlignment.right,
+                        nodeLabelAlignment: StepLabelAlignment.right,
                         lineLabelAlignment: Alignment.centerRight,
                       ),
                     ),
@@ -176,7 +176,7 @@ class ExampleFifteen extends StatelessWidget {
                         'right 2',
                         'right 3',
                       ],
-                      lineSubTitles: const ['sub 1','sub2','sub 3'],
+                      lineSubTitles: const ['sub 1', 'sub2', 'sub 3'],
                       nodeTitles: const [
                         'step 1',
                         'step 2',
@@ -185,7 +185,7 @@ class ExampleFifteen extends StatelessWidget {
                       ],
                       controller: stepProgressController,
                       theme: const StepProgressThemeData(
-                        stepLabelAlignment: StepLabelAlignment.leftRight,
+                        nodeLabelAlignment: StepLabelAlignment.leftRight,
                         lineLabelAlignment: Alignment.centerRight,
                       ),
                     ),
@@ -231,7 +231,7 @@ class ExampleFifteen extends StatelessWidget {
                       ],
                       controller: stepProgressController,
                       theme: const StepProgressThemeData(
-                        stepLabelAlignment: StepLabelAlignment.left,
+                        nodeLabelAlignment: StepLabelAlignment.left,
                         lineLabelAlignment: Alignment.center,
                       ),
                     ),
@@ -252,7 +252,7 @@ class ExampleFifteen extends StatelessWidget {
                       ],
                       controller: stepProgressController,
                       theme: const StepProgressThemeData(
-                        stepLabelAlignment: StepLabelAlignment.right,
+                        nodeLabelAlignment: StepLabelAlignment.right,
                         lineLabelAlignment: Alignment.center,
                       ),
                     ),
@@ -273,7 +273,7 @@ class ExampleFifteen extends StatelessWidget {
                       ],
                       controller: stepProgressController,
                       theme: const StepProgressThemeData(
-                        stepLabelAlignment: StepLabelAlignment.leftRight,
+                        nodeLabelAlignment: StepLabelAlignment.leftRight,
                         lineLabelAlignment: Alignment.center,
                       ),
                     ),

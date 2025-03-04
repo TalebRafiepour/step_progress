@@ -30,7 +30,7 @@ void main() {
       expect(themeData.stepNodeStyle, equals(const StepNodeStyle()));
       expect(themeData.stepLineStyle, equals(const StepLineStyle()));
       expect(themeData.rippleEffectStyle, equals(const RippleEffectStyle()));
-      expect(themeData.stepLabelAlignment, isNull);
+      expect(themeData.nodeLabelAlignment, isNull);
     });
 
     test('copyWith returns a new instance with updated values', () {
@@ -52,7 +52,7 @@ void main() {
         stepLineStyle: const StepLineStyle(),
         rippleEffectStyle: const RippleEffectStyle(),
         highlightCompletedSteps: false,
-        stepLabelAlignment: StepLabelAlignment.top,
+        nodeLabelAlignment: StepLabelAlignment.top,
       );
 
       expect(newTheme.defaultForegroundColor, equals(Colors.red));
@@ -73,7 +73,7 @@ void main() {
       expect(newTheme.stepLineStyle, equals(const StepLineStyle()));
       expect(newTheme.rippleEffectStyle, equals(const RippleEffectStyle()));
       expect(newTheme.highlightCompletedSteps, isFalse);
-      expect(newTheme.stepLabelAlignment, equals(StepLabelAlignment.top));
+      expect(newTheme.nodeLabelAlignment, equals(StepLabelAlignment.top));
     });
 
     test('copyWith with no parameters returns an identical instance', () {
@@ -92,7 +92,7 @@ void main() {
         stepLineStyle: StepLineStyle(),
         rippleEffectStyle: RippleEffectStyle(),
         highlightCompletedSteps: false,
-        stepLabelAlignment: StepLabelAlignment.top,
+        nodeLabelAlignment: StepLabelAlignment.top,
       );
       final newTheme = original.copyWith();
 
@@ -123,7 +123,7 @@ void main() {
         newTheme.highlightCompletedSteps,
         equals(original.highlightCompletedSteps),
       );
-      expect(newTheme.stepLabelAlignment, equals(original.stepLabelAlignment));
+      expect(newTheme.nodeLabelAlignment, equals(original.nodeLabelAlignment));
     });
 
     test('copyWith negative test: invalid values throws assertion error', () {

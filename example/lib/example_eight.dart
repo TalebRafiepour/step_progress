@@ -27,7 +27,7 @@ class ExampleEight extends StatelessWidget {
             ],
             padding: const EdgeInsets.all(18),
             theme: const StepProgressThemeData(
-              stepLabelAlignment: StepLabelAlignment.left,
+              nodeLabelAlignment: StepLabelAlignment.left,
               nodeLabelStyle: StepLabelStyle(
                 labelAxisAlignment: CrossAxisAlignment.start,
               ),
