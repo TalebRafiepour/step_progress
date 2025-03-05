@@ -20,6 +20,7 @@ import 'package:step_progress/src/step_progress_theme.dart';
 /// ```dart
 /// StepLabel(
 ///   style: StepLabelStyle(),
+///   alignment: Alignment.center,
 ///   title: 'Step 1',
 ///   subTitle: 'Introduction',
 ///   isActive: true,
@@ -28,6 +29,7 @@ import 'package:step_progress/src/step_progress_theme.dart';
 class StepLabel extends StatelessWidget {
   const StepLabel({
     required this.style,
+    this.alignment = Alignment.center,
     this.title,
     this.subTitle,
     this.isActive = false,
@@ -46,18 +48,17 @@ class StepLabel extends StatelessWidget {
   /// The style to appliy on label
   final StepLabelStyle style;
 
+  /// The alignment for whole label
+  final Alignment alignment;
+
   @override
   Widget build(BuildContext context) {
-    if (title == null && subTitle == null) {
-      return const SizedBox.shrink();
-    }
-    //
     final theme = StepProgressTheme.of(context)!.data;
     //
     return Container(
       padding: style.padding,
       margin: style.margin,
-      alignment: Alignment.center,
+      alignment: alignment,
       constraints: BoxConstraints(maxWidth: style.maxWidth),
       child:
           (title == null && subTitle == null)

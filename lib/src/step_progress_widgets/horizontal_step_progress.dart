@@ -165,6 +165,7 @@ class HorizontalStepProgress extends StepProgressWidget {
                 lineLabelBuilder?.call(index, currentStep) ??
                 StepLabel(
                   style: theme.lineLabelStyle,
+                  alignment: theme.lineLabelAlignment ?? Alignment.topCenter,
                   isActive: currentStep > index,
                   title: lineTitles?.elementAtOrNull(index),
                   subTitle: lineSubTitles?.elementAtOrNull(index),

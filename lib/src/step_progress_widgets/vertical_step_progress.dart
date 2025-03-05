@@ -195,6 +195,7 @@ class VerticalStepProgress extends StepProgressWidget {
                 lineLabelBuilder?.call(index, currentStep) ??
                 StepLabel(
                   style: theme.lineLabelStyle,
+                  alignment: theme.lineLabelAlignment ?? Alignment.centerRight,
                   isActive: index < currentStep,
                   title: lineTitles?.elementAtOrNull(index),
                   subTitle: lineSubTitles?.elementAtOrNull(index),

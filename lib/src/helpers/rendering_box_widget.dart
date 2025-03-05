@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 /// A widget that notifies a [ValueNotifier] with its [RenderBox] after the
@@ -38,7 +40,7 @@ class RenderingBoxWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    scheduleMicrotask(() {
       boxNotifier.value = context.findRenderObject() as RenderBox?;
     });
     return child;
