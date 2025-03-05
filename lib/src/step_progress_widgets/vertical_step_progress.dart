@@ -167,7 +167,10 @@ class VerticalStepProgress extends StepProgressWidget {
     return Padding(
       padding: EdgeInsets.symmetric(
         vertical: stepSize / 2,
-        horizontal: stepSize / 2 - style.lineThickness / 2,
+        horizontal:
+            style.lineThickness >= stepSize
+                ? 0
+                : stepSize / 2 - style.lineThickness / 2,
       ),
       child:
           boxNotifier == null

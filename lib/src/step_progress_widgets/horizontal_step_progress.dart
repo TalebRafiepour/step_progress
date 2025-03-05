@@ -136,7 +136,10 @@ class HorizontalStepProgress extends StepProgressWidget {
 
     return Padding(
       padding: EdgeInsets.symmetric(
-        vertical: stepSize / 2 - style.lineThickness / 2,
+        vertical:
+            style.lineThickness >= stepSize
+                ? 0
+                : stepSize / 2 - style.lineThickness / 2,
         horizontal: maxStepSize / 2,
       ),
       child:

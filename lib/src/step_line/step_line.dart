@@ -59,7 +59,7 @@ class StepLine extends StatelessWidget {
     return Expanded(
       child: LayoutBuilder(
         builder: (_, constraint) {
-          final padding = EdgeInsets.symmetric(
+          final lineSpacing = EdgeInsets.symmetric(
             horizontal: _isHorizontal ? theme.stepLineSpacing : 0,
             vertical: !_isHorizontal ? theme.stepLineSpacing : 0,
           );
@@ -99,7 +99,7 @@ class StepLine extends StatelessWidget {
               style.animationDuration ?? theme.stepAnimationDuration;
 
           return Padding(
-            padding: padding,
+            padding: lineSpacing,
             child: GestureDetector(
               onTap: onTap,
               child: Container(
