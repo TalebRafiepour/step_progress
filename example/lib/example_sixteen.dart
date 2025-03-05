@@ -17,6 +17,7 @@ class ExampleSixteen extends StatelessWidget {
         stepSize: 28,
         padding: const EdgeInsets.all(10),
         axis: Axis.vertical,
+        reversed: true,
         controller: stepProgressController,
         nodeIconBuilder: (index, completedStepIndex) {
           if (index <= completedStepIndex) {
@@ -34,7 +35,7 @@ class ExampleSixteen extends StatelessWidget {
           // (numbers of lines is equal to toalSteps - 1)
           if (index.isEven) {
             return Text(
-              'December 08 2020',
+              'December ${index + 10} 2020',
               style: Theme.of(context)
                   .textTheme
                   .titleSmall
@@ -50,7 +51,7 @@ class ExampleSixteen extends StatelessWidget {
             spacing: 6,
             children: [
               Text(
-                'Invisalign ClinCheck',
+                'Invisalign ClinCheck $index',
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       decorationColor: const Color(0xFF4e97fc),
                       color: const Color(0xFF4e97fc),

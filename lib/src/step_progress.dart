@@ -3,7 +3,7 @@ import 'package:step_progress/src/step_progress_widgets/horizontal_step_progress
 import 'package:step_progress/src/step_progress_widgets/vertical_step_progress.dart';
 import 'package:step_progress/step_progress.dart';
 
-/// A typedef for a function that builds an optional widget to label a step in 
+/// A typedef for a function that builds an optional widget to label a step in
 /// a step progress indicator.
 ///
 /// The function takes two parameters:
@@ -102,6 +102,9 @@ typedef OnStepNodeTapped = void Function(int index);
 ///
 /// The [lineLabelBuilder] parameter is a builder function for creating custom
 /// label widgets for step lines.
+///
+/// The [reversed] parameter indicates whether the step progress is displayed
+/// in reverse order. It defaults to false.
 class StepProgress extends StatefulWidget {
   const StepProgress({
     required this.totalSteps,
@@ -115,6 +118,7 @@ class StepProgress extends StatefulWidget {
     this.margin = EdgeInsets.zero,
     this.padding = EdgeInsets.zero,
     this.axis = Axis.horizontal,
+    this.reversed = false,
     this.visibilityOptions = StepProgressVisibilityOptions.both,
     this.nodeTitles,
     this.nodeSubTitles,
@@ -211,6 +215,9 @@ class StepProgress extends StatefulWidget {
   /// A builder for creating custom label widgets for step lines.
   final StepLabelBuilder? lineLabelBuilder;
 
+  /// Indicates whether the step progress is displayed in reverse order.
+  final bool reversed;
+
   @override
   _StepProgressState createState() {
     assert(
@@ -298,6 +305,7 @@ class _StepProgressState extends State<StepProgress>
                 ? HorizontalStepProgress(
                   totalStep: widget.totalSteps,
                   currentStep: _currentStep,
+                  reversed: widget.reversed,
                   nodeTitles: widget.nodeTitles,
                   nodeSubTitles: widget.nodeSubTitles,
                   lineTitles: widget.lineTitles,
@@ -313,6 +321,7 @@ class _StepProgressState extends State<StepProgress>
                 : VerticalStepProgress(
                   totalStep: widget.totalSteps,
                   currentStep: _currentStep,
+                  reversed: widget.reversed,
                   nodeTitles: widget.nodeTitles,
                   nodeSubTitles: widget.nodeSubTitles,
                   lineTitles: widget.lineTitles,

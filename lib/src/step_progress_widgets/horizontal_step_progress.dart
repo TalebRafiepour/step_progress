@@ -20,6 +20,7 @@ import 'package:step_progress/step_progress.dart';
 /// elements.
 ///
 /// Optional parameters include:
+/// - [reversed]: A boolean to reverse the order of steps.
 /// - [nodeTitles]: A list of titles for each step node.
 /// - [nodeSubTitles]: A list of subtitles for each step node.
 /// - [lineTitles]: A list of titles for each line segment of progress.
@@ -41,6 +42,7 @@ class HorizontalStepProgress extends StepProgressWidget {
     required super.currentStep,
     required super.stepSize,
     required super.visibilityOptions,
+    super.reversed,
     super.nodeTitles,
     super.nodeSubTitles,
     super.lineTitles,
@@ -78,30 +80,34 @@ class HorizontalStepProgress extends StepProgressWidget {
       }
     }
 
+    List<Widget> children = List.generate(totalStep, (index) {
+      final title = nodeTitles?.elementAtOrNull(index);
+      final subTitle = nodeSubTitles?.elementAtOrNull(index);
+      final isActive =
+          highlightCompletedSteps ? index <= currentStep : index == currentStep;
+
+      return StepGenerator(
+        width: stepSize,
+        height: stepSize,
+        stepIndex: index,
+        anyLabelExist: nodeTitles != null || nodeSubTitles != null,
+        title: title,
+        subTitle: subTitle,
+        isActive: isActive,
+        stepNodeIcon: nodeIconBuilder?.call(index, currentStep),
+        customLabelWidget: nodeLabelBuilder?.call(index, currentStep),
+        onTap: () => onStepNodeTapped?.call(index),
+      );
+    });
+
+    if (reversed) {
+      children = children.reversed.toList();
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: crossAxisAlignment(),
-      children: List.generate(totalStep, (index) {
-        final title = nodeTitles?.elementAtOrNull(index);
-        final subTitle = nodeSubTitles?.elementAtOrNull(index);
-        final isActive =
-            highlightCompletedSteps
-                ? index <= currentStep
-                : index == currentStep;
-
-        return StepGenerator(
-          width: stepSize,
-          height: stepSize,
-          stepIndex: index,
-          anyLabelExist: nodeTitles != null || nodeSubTitles != null,
-          title: title,
-          subTitle: subTitle,
-          isActive: isActive,
-          stepNodeIcon: nodeIconBuilder?.call(index, currentStep),
-          customLabelWidget: nodeLabelBuilder?.call(index, currentStep),
-          onTap: () => onStepNodeTapped?.call(index),
-        );
-      }),
+      children: children,
     );
   }
 
@@ -121,17 +127,20 @@ class HorizontalStepProgress extends StepProgressWidget {
     ValueNotifier<RenderBox?>? boxNotifier,
   }) {
     Widget buildWidget() {
-      return Row(
-        children: List.generate(totalStep - 1, (index) {
-          return StepLine(
-            isActive:
-                highlightCompletedSteps
-                    ? index < currentStep
-                    : index == currentStep - 1,
-            onTap: () => onStepLineTapped?.call(index),
-          );
-        }),
-      );
+      List<Widget> children = List.generate(totalStep - 1, (index) {
+        return StepLine(
+          isActive:
+              highlightCompletedSteps
+                  ? index < currentStep
+                  : index == currentStep - 1,
+          onTap: () => onStepLineTapped?.call(index),
+        );
+      });
+      if (reversed) {
+        children = children.reversed.toList();
+      }
+      //
+      return Row(children: children);
     }
 
     return Padding(
@@ -159,22 +168,26 @@ class HorizontalStepProgress extends StepProgressWidget {
     }
     final theme = StepProgressTheme.of(context)!.data;
     final maxStepWidth = maxStepSize(theme.nodeLabelStyle);
+    //
+    List<Widget> children = List.generate(totalStep - 1, (index) {
+      return Expanded(
+        child: StepLabel(
+          style: theme.lineLabelStyle,
+          alignment: theme.lineLabelAlignment ?? Alignment.topCenter,
+          isActive: currentStep > index,
+          customLabel: lineLabelBuilder?.call(index, currentStep),
+          title: lineTitles?.elementAtOrNull(index),
+          subTitle: lineSubTitles?.elementAtOrNull(index),
+        ),
+      );
+    });
+    if (reversed) {
+      children = children.reversed.toList();
+    }
+    //
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: maxStepWidth / 2),
-      child: Row(
-        children: List.generate(totalStep - 1, (index) {
-          return Expanded(
-            child: StepLabel(
-              style: theme.lineLabelStyle,
-              alignment: theme.lineLabelAlignment ?? Alignment.topCenter,
-              isActive: currentStep > index,
-              customLabel: lineLabelBuilder?.call(index, currentStep),
-              title: lineTitles?.elementAtOrNull(index),
-              subTitle: lineSubTitles?.elementAtOrNull(index),
-            ),
-          );
-        }),
-      ),
+      child: Row(children: children),
     );
   }
 
@@ -279,14 +292,14 @@ class HorizontalStepProgress extends StepProgressWidget {
                   if (lineBox == null) {
                     return const SizedBox.shrink();
                   }
-          
+
                   final wholeSize = wholeBox.size;
                   final lineSize = lineBox.size;
                   final linePosition = lineBox.localToGlobal(
                     Offset.zero,
                     ancestor: wholeBox,
                   );
-          
+
                   if (isTopAligned()) {
                     final gap = (wholeSize.height - linePosition.dy).abs();
                     return Column(

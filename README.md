@@ -33,6 +33,7 @@
 - **Programmatic Control**:
   - **`StepProgressController`**: Manage the current step externally, allowing integration with your application's logic.
   - **Initial Step**: Set the starting step with the `currentStep` property.
+  - **Reversed**: Display steps in reverse order using the `reversed` property.
   
 - **Flexible Layout**:
   - **Dimensions**: Control the width and height of the widget.
