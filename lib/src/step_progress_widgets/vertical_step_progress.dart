@@ -130,7 +130,7 @@ class VerticalStepProgress extends StepProgressWidget {
     }
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: children,
     );
   }
