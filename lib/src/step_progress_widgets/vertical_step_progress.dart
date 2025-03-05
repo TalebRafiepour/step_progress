@@ -290,65 +290,76 @@ class VerticalStepProgress extends StepProgressWidget {
           lineBoxNotifier: lineWidgetBoxNotifier,
           wholeBoxNotifier: wholeWidgetBoxNotifier,
         ),
-        ValueListenableBuilder<RenderBox?>(
-          valueListenable: wholeWidgetBoxNotifier,
-          builder: (_, wholeBox, __) {
-            if (wholeBox == null) {
-              return const SizedBox.shrink();
-            }
-            return ValueListenableBuilder<RenderBox?>(
-              valueListenable: lineWidgetBoxNotifier,
-              builder: (_, lineBox, __) {
-                if (lineBox == null) {
-                  return const SizedBox.shrink();
-                }
+        Directionality(
+          textDirection: TextDirection.ltr,
+          child: ValueListenableBuilder<RenderBox?>(
+            valueListenable: wholeWidgetBoxNotifier,
+            builder: (_, wholeBox, __) {
+              if (wholeBox == null) {
+                return const SizedBox.shrink();
+              }
+              return ValueListenableBuilder<RenderBox?>(
+                valueListenable: lineWidgetBoxNotifier,
+                builder: (_, lineBox, __) {
+                  if (lineBox == null) {
+                    return const SizedBox.shrink();
+                  }
 
-                final wholeSize = wholeBox.size;
-                final lineSize = lineBox.size;
-                final linePosition = lineBox.localToGlobal(
-                  Offset.zero,
-                  ancestor: wholeBox,
-                );
+                  final wholeSize = wholeBox.size;
+                  final lineSize = lineBox.size;
+                  final linePosition = lineBox.localToGlobal(
+                    Offset.zero,
+                    ancestor: wholeBox,
+                  );
 
-                if (isLeftAligned()) {
-                  final gap = (wholeSize.width - linePosition.dx).abs();
-                  return Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [buildLineLabelWidget(), SizedBox(width: gap)],
-                  );
-                } else if (isRightAligned()) {
-                  final gap = (linePosition.dx + lineSize.width).abs();
-                  return Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [SizedBox(width: gap), buildLineLabelWidget()],
-                  );
-                } else {
-                  final wholeCenter = wholeSize.width / 2;
-                  final lineCenter = linePosition.dx + lineSize.width / 2;
-                  if (wholeCenter == lineCenter) {
-                    return buildLineLabelWidget();
-                  } else if (wholeCenter < lineCenter) {
-                    final gap =
-                        (2 * linePosition.dx + lineSize.width - wholeSize.width)
-                            .abs();
+                  if (isLeftAligned()) {
+                    final gap = (wholeSize.width - linePosition.dx).abs();
+                    return Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [buildLineLabelWidget(), SizedBox(width: gap)],
+                    );
+                  } else if (isRightAligned()) {
+                    final gap = (linePosition.dx + lineSize.width).abs();
                     return Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [SizedBox(width: gap), buildLineLabelWidget()],
                     );
                   } else {
-                    final gap =
-                        (wholeSize.width -
-                                (2 * linePosition.dx + lineSize.width))
-                            .abs();
-                    return Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [buildLineLabelWidget(), SizedBox(width: gap)],
-                    );
+                    final wholeCenter = wholeSize.width / 2;
+                    final lineCenter = linePosition.dx + lineSize.width / 2;
+                    if (wholeCenter == lineCenter) {
+                      return buildLineLabelWidget();
+                    } else if (wholeCenter < lineCenter) {
+                      final gap =
+                          (2 * linePosition.dx +
+                                  lineSize.width -
+                                  wholeSize.width)
+                              .abs();
+                      return Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(width: gap),
+                          buildLineLabelWidget(),
+                        ],
+                      );
+                    } else {
+                      final gap =
+                          (wholeSize.width -
+                                  (2 * linePosition.dx + lineSize.width))
+                              .abs();
+                      return Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          buildLineLabelWidget(),
+                          SizedBox(width: gap),
+                        ],
+                      );
+                    }
                   }
-                }
-              },
-            );
-          },
+                },
+              );
+            },
+          ),
         ),
       ],
     );

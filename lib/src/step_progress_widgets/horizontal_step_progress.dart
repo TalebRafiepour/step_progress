@@ -265,53 +265,56 @@ class HorizontalStepProgress extends StepProgressWidget {
           lineBoxNotifier: lineWidgetBoxNotifier,
           wholeBoxNotifier: wholeWidgetBoxNotifier,
         ),
-        ValueListenableBuilder<RenderBox?>(
-          valueListenable: wholeWidgetBoxNotifier,
-          builder: (_, wholeBox, __) {
-            if (wholeBox == null) {
-              return const SizedBox.shrink();
-            }
-            return ValueListenableBuilder<RenderBox?>(
-              valueListenable: lineWidgetBoxNotifier,
-              builder: (_, lineBox, __) {
-                if (lineBox == null) {
-                  return const SizedBox.shrink();
-                }
-
-                final wholeSize = wholeBox.size;
-                final lineSize = lineBox.size;
-                final linePosition = lineBox.localToGlobal(
-                  Offset.zero,
-                  ancestor: wholeBox,
-                );
-
-                if (isTopAligned()) {
-                  final gap = (wholeSize.height - linePosition.dy).abs();
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [buildLineLabelWidget(), SizedBox(height: gap)],
+        Directionality(
+          textDirection: TextDirection.ltr,
+          child: ValueListenableBuilder<RenderBox?>(
+            valueListenable: wholeWidgetBoxNotifier,
+            builder: (_, wholeBox, __) {
+              if (wholeBox == null) {
+                return const SizedBox.shrink();
+              }
+              return ValueListenableBuilder<RenderBox?>(
+                valueListenable: lineWidgetBoxNotifier,
+                builder: (_, lineBox, __) {
+                  if (lineBox == null) {
+                    return const SizedBox.shrink();
+                  }
+          
+                  final wholeSize = wholeBox.size;
+                  final lineSize = lineBox.size;
+                  final linePosition = lineBox.localToGlobal(
+                    Offset.zero,
+                    ancestor: wholeBox,
                   );
-                } else if (isBottomAligned()) {
-                  final gap = (linePosition.dy + lineSize.height).abs();
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [SizedBox(height: gap), buildLineLabelWidget()],
-                  );
-                } else {
-                  final wholeCenter = wholeSize.height / 2;
-                  final lineCenter = linePosition.dy + lineSize.height / 2;
-                  final gap = (wholeCenter - lineCenter).abs();
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children:
-                        wholeCenter < lineCenter
-                            ? [SizedBox(height: gap), buildLineLabelWidget()]
-                            : [buildLineLabelWidget(), SizedBox(height: gap)],
-                  );
-                }
-              },
-            );
-          },
+          
+                  if (isTopAligned()) {
+                    final gap = (wholeSize.height - linePosition.dy).abs();
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [buildLineLabelWidget(), SizedBox(height: gap)],
+                    );
+                  } else if (isBottomAligned()) {
+                    final gap = (linePosition.dy + lineSize.height).abs();
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [SizedBox(height: gap), buildLineLabelWidget()],
+                    );
+                  } else {
+                    final wholeCenter = wholeSize.height / 2;
+                    final lineCenter = linePosition.dy + lineSize.height / 2;
+                    final gap = (wholeCenter - lineCenter).abs();
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children:
+                          wholeCenter < lineCenter
+                              ? [SizedBox(height: gap), buildLineLabelWidget()]
+                              : [buildLineLabelWidget(), SizedBox(height: gap)],
+                    );
+                  }
+                },
+              );
+            },
+          ),
         ),
       ],
     );
