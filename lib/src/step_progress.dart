@@ -3,25 +3,25 @@ import 'package:step_progress/src/step_progress_widgets/horizontal_step_progress
 import 'package:step_progress/src/step_progress_widgets/vertical_step_progress.dart';
 import 'package:step_progress/step_progress.dart';
 
-/// A typedef for a function that builds a widget to label a step in a step
-/// progress indicator.
+/// A typedef for a function that builds an optional widget to label a step in 
+/// a step progress indicator.
 ///
 /// The function takes two parameters:
 /// - `index`: The index of the current step.
 /// - `completedStepIndex`: The index of the last completed step.
 ///
-/// Returns a [Widget] that represents the label for the step.
-typedef StepLabelBuilder = Widget Function(int index, int completedStepIndex);
+/// Returns an optional [Widget] that represents the label for the step.
+typedef StepLabelBuilder = Widget? Function(int index, int completedStepIndex);
 
-/// A typedef for a function that builds a widget for a step node icon.
+/// A typedef for a function that builds optional widget for a step node icon.
 ///
 /// The function takes two parameters:
 /// - `index`: The index of the current step.
 /// - `completedStepIndex`: The index of the last completed step.
 ///
-/// Returns a [Widget] that represents the icon for the step node.
+/// Returns an optional [Widget] that represents the icon for the step node.
 typedef StepNodeIconBuilder =
-    Widget Function(int index, int completedStepIndex);
+    Widget? Function(int index, int completedStepIndex);
 
 /// A typedef for a callback function that is triggered when a step line is
 /// tapped.

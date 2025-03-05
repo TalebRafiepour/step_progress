@@ -30,6 +30,7 @@ class StepLabel extends StatelessWidget {
   const StepLabel({
     required this.style,
     this.alignment = Alignment.center,
+    this.customLabel,
     this.title,
     this.subTitle,
     this.isActive = false,
@@ -51,6 +52,12 @@ class StepLabel extends StatelessWidget {
   /// The alignment for whole label
   final Alignment alignment;
 
+  /// A custom widget to display as the label for the step.
+  ///
+  /// If a custom label widget is provided, it takes priority over the title and
+  /// subtitle.
+  final Widget? customLabel;
+
   @override
   Widget build(BuildContext context) {
     final theme = StepProgressTheme.of(context)!.data;
@@ -61,7 +68,9 @@ class StepLabel extends StatelessWidget {
       alignment: alignment,
       constraints: BoxConstraints(maxWidth: style.maxWidth),
       child:
-          (title == null && subTitle == null)
+          customLabel != null
+              ? customLabel!
+              : (title == null && subTitle == null)
               ? null
               : Column(
                 mainAxisSize: MainAxisSize.min,

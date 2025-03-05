@@ -150,10 +150,7 @@ class StepGenerator extends StatelessWidget {
     }
 
     Widget buildStepLabel() {
-      if (customLabelWidget != null) {
-        return customLabelWidget!;
-      }
-      if (title == null && subTitle == null) {
+      if (title == null && subTitle == null && customLabelWidget == null) {
         if (anyLabelExist) {
           final style = themeData.nodeLabelStyle;
           return Container(
@@ -170,6 +167,7 @@ class StepGenerator extends StatelessWidget {
         style: themeData.nodeLabelStyle,
         title: title,
         subTitle: subTitle,
+        customLabel: customLabelWidget,
         isActive: isActive,
       );
     }

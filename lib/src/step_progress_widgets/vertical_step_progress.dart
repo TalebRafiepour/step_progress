@@ -194,15 +194,14 @@ class VerticalStepProgress extends StepProgressWidget {
       child: Column(
         children: List.generate(totalStep - 1, (index) {
           return Expanded(
-            child:
-                lineLabelBuilder?.call(index, currentStep) ??
-                StepLabel(
-                  style: theme.lineLabelStyle,
-                  alignment: theme.lineLabelAlignment ?? Alignment.centerRight,
-                  isActive: index < currentStep,
-                  title: lineTitles?.elementAtOrNull(index),
-                  subTitle: lineSubTitles?.elementAtOrNull(index),
-                ),
+            child: StepLabel(
+              style: theme.lineLabelStyle,
+              alignment: theme.lineLabelAlignment ?? Alignment.centerRight,
+              isActive: index < currentStep,
+              customLabel: lineLabelBuilder?.call(index, currentStep),
+              title: lineTitles?.elementAtOrNull(index),
+              subTitle: lineSubTitles?.elementAtOrNull(index),
+            ),
           );
         }),
       ),

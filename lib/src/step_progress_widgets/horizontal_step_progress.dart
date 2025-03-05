@@ -164,15 +164,14 @@ class HorizontalStepProgress extends StepProgressWidget {
       child: Row(
         children: List.generate(totalStep - 1, (index) {
           return Expanded(
-            child:
-                lineLabelBuilder?.call(index, currentStep) ??
-                StepLabel(
-                  style: theme.lineLabelStyle,
-                  alignment: theme.lineLabelAlignment ?? Alignment.topCenter,
-                  isActive: currentStep > index,
-                  title: lineTitles?.elementAtOrNull(index),
-                  subTitle: lineSubTitles?.elementAtOrNull(index),
-                ),
+            child: StepLabel(
+              style: theme.lineLabelStyle,
+              alignment: theme.lineLabelAlignment ?? Alignment.topCenter,
+              isActive: currentStep > index,
+              customLabel: lineLabelBuilder?.call(index, currentStep),
+              title: lineTitles?.elementAtOrNull(index),
+              subTitle: lineSubTitles?.elementAtOrNull(index),
+            ),
           );
         }),
       ),
