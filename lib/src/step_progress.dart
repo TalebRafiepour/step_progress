@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:step_progress/src/helpers/data_cache.dart';
 import 'package:step_progress/src/step_progress_widgets/horizontal_step_progress.dart';
 import 'package:step_progress/src/step_progress_widgets/vertical_step_progress.dart';
 import 'package:step_progress/step_progress.dart';
@@ -238,6 +239,16 @@ class _StepProgressState extends State<StepProgress>
       _changeStep(widget.controller!.currentStep);
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    /// Clears the cache by calling the `clearCache` method on the `DataCache` 
+    /// instance.
+    /// This method is used to remove all cached data, ensuring that the cache 
+    /// is empty.
+    DataCache().clearCache();
+    super.dispose();
   }
 
   /// Called whenever the widget configuration changes.

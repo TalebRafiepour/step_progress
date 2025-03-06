@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:step_progress/src/helpers/data_cache.dart';
 import 'package:step_progress/src/helpers/rendering_box_widget.dart';
 import 'package:step_progress/src/step_label/step_label.dart';
 import 'package:step_progress/src/step_line/step_line.dart';
@@ -243,10 +245,6 @@ class HorizontalStepProgress extends StepProgressWidget {
       return buildNodesAndLines(context: context);
     }
 
-    // Define ValueNotifier to obtain widget RenderBox.
-    final wholeWidgetBoxNotifier = ValueNotifier<RenderBox?>(null);
-    final lineWidgetBoxNotifier = ValueNotifier<RenderBox?>(null);
-
     //
     final theme = StepProgressTheme.of(context)!.data;
 
@@ -270,17 +268,73 @@ class HorizontalStepProgress extends StepProgressWidget {
 
     Widget buildLineLabelWidget() => buildStepLineLabels(context: context);
 
-    return Stack(
-      alignment: getLineStackAlignment(),
-      children: [
-        buildNodesAndLines(
-          context: context,
-          lineBoxNotifier: lineWidgetBoxNotifier,
-          wholeBoxNotifier: wholeWidgetBoxNotifier,
-        ),
-        Directionality(
-          textDirection: TextDirection.ltr,
-          child: ValueListenableBuilder<RenderBox?>(
+    Widget positionLineLabels(
+      Size wholeSize,
+      Size lineSize,
+      Offset linePosition,
+    ) {
+      Widget child;
+      if (isTopAligned()) {
+        final gap = (wholeSize.height - linePosition.dy).abs();
+        child = Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [buildLineLabelWidget(), SizedBox(height: gap)],
+        );
+      } else if (isBottomAligned()) {
+        final gap = (linePosition.dy + lineSize.height).abs();
+        child = Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [SizedBox(height: gap), buildLineLabelWidget()],
+        );
+      } else {
+        final wholeCenter = wholeSize.height / 2;
+        final lineCenter = linePosition.dy + lineSize.height / 2;
+        final gap = (wholeCenter - lineCenter).abs();
+        child = Column(
+          mainAxisSize: MainAxisSize.min,
+          children:
+              wholeCenter < lineCenter
+                  ? [SizedBox(height: gap), buildLineLabelWidget()]
+                  : [buildLineLabelWidget(), SizedBox(height: gap)],
+        );
+      }
+
+      return Directionality(textDirection: TextDirection.ltr, child: child);
+    }
+
+    final lineWidgetSize =
+        DataCache().getData(DataCacheKey.lineWidgetSize) as Size?;
+    final lineWidgetPosition =
+        DataCache().getData(DataCacheKey.lineWidgetPosition) as Offset?;
+    final wholeWidgetSizes =
+        DataCache().getData(DataCacheKey.wholeWidgetSize) as Size?;
+    if (lineWidgetSize != null &&
+        wholeWidgetSizes != null &&
+        lineWidgetPosition != null) {
+      return Stack(
+        alignment: getLineStackAlignment(),
+        children: [
+          buildNodesAndLines(context: context),
+          positionLineLabels(
+            wholeWidgetSizes,
+            lineWidgetSize,
+            lineWidgetPosition,
+          ),
+        ],
+      );
+    } else {
+      // Define ValueNotifier to obtain widget RenderBox.
+      final wholeWidgetBoxNotifier = ValueNotifier<RenderBox?>(null);
+      final lineWidgetBoxNotifier = ValueNotifier<RenderBox?>(null);
+      return Stack(
+        alignment: getLineStackAlignment(),
+        children: [
+          buildNodesAndLines(
+            context: context,
+            lineBoxNotifier: lineWidgetBoxNotifier,
+            wholeBoxNotifier: wholeWidgetBoxNotifier,
+          ),
+          ValueListenableBuilder<RenderBox?>(
             valueListenable: wholeWidgetBoxNotifier,
             builder: (_, wholeBox, __) {
               if (wholeBox == null) {
@@ -298,44 +352,27 @@ class HorizontalStepProgress extends StepProgressWidget {
                   wholeWidgetBoxNotifier.dispose();
                   lineWidgetBoxNotifier.dispose();
                   //
-
                   final wholeSize = wholeBox.size;
                   final lineSize = lineBox.size;
                   final linePosition = lineBox.localToGlobal(
                     Offset.zero,
                     ancestor: wholeBox,
                   );
-
-                  if (isTopAligned()) {
-                    final gap = (wholeSize.height - linePosition.dy).abs();
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [buildLineLabelWidget(), SizedBox(height: gap)],
-                    );
-                  } else if (isBottomAligned()) {
-                    final gap = (linePosition.dy + lineSize.height).abs();
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [SizedBox(height: gap), buildLineLabelWidget()],
-                    );
-                  } else {
-                    final wholeCenter = wholeSize.height / 2;
-                    final lineCenter = linePosition.dy + lineSize.height / 2;
-                    final gap = (wholeCenter - lineCenter).abs();
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children:
-                          wholeCenter < lineCenter
-                              ? [SizedBox(height: gap), buildLineLabelWidget()]
-                              : [buildLineLabelWidget(), SizedBox(height: gap)],
-                    );
-                  }
+                  // cache boxe sizes to retrieve them when step change
+                  DataCache().setData(DataCacheKey.lineWidgetSize, lineSize);
+                  DataCache().setData(
+                    DataCacheKey.lineWidgetPosition,
+                    linePosition,
+                  );
+                  DataCache().setData(DataCacheKey.wholeWidgetSize, wholeSize);
+                  //
+                  return positionLineLabels(wholeSize, lineSize, linePosition);
                 },
               );
             },
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    }
   }
 }

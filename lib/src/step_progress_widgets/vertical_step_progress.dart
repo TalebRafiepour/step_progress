@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:step_progress/src/helpers/data_cache.dart';
 import 'package:step_progress/src/helpers/rendering_box_widget.dart';
 import 'package:step_progress/src/step_label/step_label.dart';
 import 'package:step_progress/src/step_label/step_label_style.dart';
@@ -272,10 +273,6 @@ class VerticalStepProgress extends StepProgressWidget {
 
     final theme = StepProgressTheme.of(context)!.data;
 
-    // Define ValueNotifier to obtain widget RenderBox.
-    final wholeWidgetBoxNotifier = ValueNotifier<RenderBox?>(null);
-    final lineWidgetBoxNotifier = ValueNotifier<RenderBox?>(null);
-
     // Determine the alignment for the line labels.
     final lineLabelAlignment =
         theme.lineLabelAlignment ?? Alignment.centerRight;
@@ -296,17 +293,81 @@ class VerticalStepProgress extends StepProgressWidget {
 
     Widget buildLineLabelWidget() => buildStepLineLabels(context: context);
 
-    return Stack(
-      alignment: getLineStackAlignment(),
-      children: [
-        buildNodesAndLines(
-          context: context,
-          lineBoxNotifier: lineWidgetBoxNotifier,
-          wholeBoxNotifier: wholeWidgetBoxNotifier,
-        ),
-        Directionality(
-          textDirection: TextDirection.ltr,
-          child: ValueListenableBuilder<RenderBox?>(
+    Widget positionLineLabels(
+      Size wholeSize,
+      Size lineSize,
+      Offset linePosition,
+    ) {
+      Widget child;
+      if (isLeftAligned()) {
+        final gap = (wholeSize.width - linePosition.dx).abs();
+        child = Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [buildLineLabelWidget(), SizedBox(width: gap)],
+        );
+      } else if (isRightAligned()) {
+        final gap = (linePosition.dx + lineSize.width).abs();
+        child = Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [SizedBox(width: gap), buildLineLabelWidget()],
+        );
+      } else {
+        final wholeCenter = wholeSize.width / 2;
+        final lineCenter = linePosition.dx + lineSize.width / 2;
+        if (wholeCenter == lineCenter) {
+          child = buildLineLabelWidget();
+        } else if (wholeCenter < lineCenter) {
+          final gap =
+              (2 * linePosition.dx + lineSize.width - wholeSize.width).abs();
+          child = Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [SizedBox(width: gap), buildLineLabelWidget()],
+          );
+        } else {
+          final gap =
+              (wholeSize.width - (2 * linePosition.dx + lineSize.width)).abs();
+          child = Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [buildLineLabelWidget(), SizedBox(width: gap)],
+          );
+        }
+      }
+      return Directionality(textDirection: TextDirection.ltr, child: child);
+    }
+
+    final lineWidgetSize =
+        DataCache().getData(DataCacheKey.lineWidgetSize) as Size?;
+    final lineWidgetPosition =
+        DataCache().getData(DataCacheKey.lineWidgetPosition) as Offset?;
+    final wholeWidgetSizes =
+        DataCache().getData(DataCacheKey.wholeWidgetSize) as Size?;
+    if (lineWidgetSize != null &&
+        wholeWidgetSizes != null &&
+        lineWidgetPosition != null) {
+      return Stack(
+        alignment: getLineStackAlignment(),
+        children: [
+          buildNodesAndLines(context: context),
+          positionLineLabels(
+            wholeWidgetSizes,
+            lineWidgetSize,
+            lineWidgetPosition,
+          ),
+        ],
+      );
+    } else {
+      // Define ValueNotifier to obtain widget RenderBox.
+      final wholeWidgetBoxNotifier = ValueNotifier<RenderBox?>(null);
+      final lineWidgetBoxNotifier = ValueNotifier<RenderBox?>(null);
+      return Stack(
+        alignment: getLineStackAlignment(),
+        children: [
+          buildNodesAndLines(
+            context: context,
+            lineBoxNotifier: lineWidgetBoxNotifier,
+            wholeBoxNotifier: wholeWidgetBoxNotifier,
+          ),
+          ValueListenableBuilder<RenderBox?>(
             valueListenable: wholeWidgetBoxNotifier,
             builder: (_, wholeBox, __) {
               if (wholeBox == null) {
@@ -324,64 +385,27 @@ class VerticalStepProgress extends StepProgressWidget {
                   wholeWidgetBoxNotifier.dispose();
                   lineWidgetBoxNotifier.dispose();
                   //
-
                   final wholeSize = wholeBox.size;
                   final lineSize = lineBox.size;
                   final linePosition = lineBox.localToGlobal(
                     Offset.zero,
                     ancestor: wholeBox,
                   );
-
-                  if (isLeftAligned()) {
-                    final gap = (wholeSize.width - linePosition.dx).abs();
-                    return Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [buildLineLabelWidget(), SizedBox(width: gap)],
-                    );
-                  } else if (isRightAligned()) {
-                    final gap = (linePosition.dx + lineSize.width).abs();
-                    return Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [SizedBox(width: gap), buildLineLabelWidget()],
-                    );
-                  } else {
-                    final wholeCenter = wholeSize.width / 2;
-                    final lineCenter = linePosition.dx + lineSize.width / 2;
-                    if (wholeCenter == lineCenter) {
-                      return buildLineLabelWidget();
-                    } else if (wholeCenter < lineCenter) {
-                      final gap =
-                          (2 * linePosition.dx +
-                                  lineSize.width -
-                                  wholeSize.width)
-                              .abs();
-                      return Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SizedBox(width: gap),
-                          buildLineLabelWidget(),
-                        ],
-                      );
-                    } else {
-                      final gap =
-                          (wholeSize.width -
-                                  (2 * linePosition.dx + lineSize.width))
-                              .abs();
-                      return Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          buildLineLabelWidget(),
-                          SizedBox(width: gap),
-                        ],
-                      );
-                    }
-                  }
+                  // cache boxe sizes to retrieve them when step change
+                  DataCache().setData(DataCacheKey.lineWidgetSize, lineSize);
+                  DataCache().setData(
+                    DataCacheKey.lineWidgetPosition,
+                    linePosition,
+                  );
+                  DataCache().setData(DataCacheKey.wholeWidgetSize, wholeSize);
+                  //
+                  return positionLineLabels(wholeSize, lineSize, linePosition);
                 },
               );
             },
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    }
   }
 }
