@@ -319,6 +319,12 @@ class VerticalStepProgress extends StepProgressWidget {
                     return const SizedBox.shrink();
                   }
 
+                  // Render boxes for both widgets have been obtained.
+                  // Disposing the notifiers to prevent memory leaks.
+                  wholeWidgetBoxNotifier.dispose();
+                  lineWidgetBoxNotifier.dispose();
+                  //
+
                   final wholeSize = wholeBox.size;
                   final lineSize = lineBox.size;
                   final linePosition = lineBox.localToGlobal(
