@@ -51,7 +51,7 @@ StepProgress(
   totalSteps: 4,
   controller: stepProgressController,
   axis: Axis.vertical,
-  titles: const ['step 1', 'step 2', 'step 3', 'step 4'],
+  nodeTitles: const ['step 1', 'step 2', 'step 3', 'step 4'],
   onStepChanged: (index) {
     debugPrint('on step changed: $index');
   },
@@ -194,7 +194,7 @@ StepProgress(
 StepProgress(
   totalSteps: 4,
   controller: stepProgressController,
-  titles: const ['Step 1', 'Step 2', 'Step 3', 'Step 4'],
+  nodeTitles: const ['Step 1', 'Step 2', 'Step 3', 'Step 4'],
   theme: const StepProgressThemeData(
     stepLabelAlignment: StepLabelAlignment.topBottom,
     stepLineSpacing: 2,
@@ -213,7 +213,7 @@ StepProgress(
   totalSteps: 4,
   controller: stepProgressController,
   visibilityOptions: StepProgressVisibilityOptions.nodeOnly,
-  subTitles: const ['sub 1', 'sub 2', 'sub 3', 'sub 4'],
+  nodeSubTitles: const ['sub 1', 'sub 2', 'sub 3', 'sub 4'],
   padding: const EdgeInsets.all(18),
   theme: const StepProgressThemeData(
     stepLabelAlignment: StepLabelAlignment.right,
@@ -233,7 +233,7 @@ StepProgress(
   controller: stepProgressController,
   axis: Axis.vertical,
   height: 300,
-  titles: const [
+  nodeTitles: const [
     'Step 1',
     'Step 2',
     'Step 3',
@@ -264,7 +264,7 @@ StepProgress(
 StepProgress(
   totalSteps: 4,
   controller: stepProgressController,
-  titles: const [
+  nodeTitles: const [
     'Step 1',
     'Step 2',
     'Step 3',
@@ -306,7 +306,7 @@ StepProgress(
   totalSteps: 4,
   controller: stepProgressController,
   visibilityOptions: StepProgressVisibilityOptions.nodeOnly,
-  titles: const [
+  nodeTitles: const [
     'Step 1',
     'Step 2',
     'Step 3',
@@ -333,7 +333,7 @@ StepProgress(
   totalSteps: 4,
   stepSize: 24,
   controller: stepProgressController,
-  titles: const [
+  nodeTitles: const [
     'Step 1',
     'Step 2',
     'Step 3',
@@ -375,7 +375,7 @@ StepProgress(
   height: 390,
   axis: Axis.vertical,
   controller: stepProgressController,
-  titles: const [
+  nodeTitles: const [
     'Step 1',
     'Step 2',
     'Step 3',
