@@ -301,4 +301,192 @@ void main() {
       expect(find.byType(StepProgress), findsOneWidget);
     });
   });
+
+  group('StepProgress Widget - Line Labels and Reversed Tests', () {
+    testWidgets('Should render line titles correctly', (tester) async {
+      const lineTitles = ['Line 1', 'Line 2', 'Line 3'];
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: StepProgress(
+              totalSteps: 4,
+              currentStep: 1,
+              lineTitles: lineTitles,
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Verify each line title is rendered
+      for (final title in lineTitles) {
+        expect(find.text(title), findsOneWidget);
+      }
+    });
+
+    testWidgets('Should render line subtitles correctly', (tester) async {
+      const lineSubTitles = ['Sub 1', 'Sub 2', 'Sub 3'];
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: StepProgress(
+              totalSteps: 4,
+              currentStep: 1,
+              lineSubTitles: lineSubTitles,
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Verify each line subtitle is rendered
+      for (final subtitle in lineSubTitles) {
+        expect(find.text(subtitle), findsOneWidget);
+      }
+    });
+
+    testWidgets('Should use custom lineLabelBuilder correctly', (tester) async {
+      int builderCallCount = 0;
+      Widget? customLineLabel(int index, int currentStep) {
+        builderCallCount++;
+        return Container(
+          key: Key('custom_line_$index'),
+          child: Text('Custom Line $index'),
+        );
+      }
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: StepProgress(
+              totalSteps: 4,
+              currentStep: 1,
+              lineLabelBuilder: customLineLabel,
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Verify custom labels are rendered
+      for (var i = 0; i < 3; i++) {
+        expect(find.byKey(Key('custom_line_$i')), findsOneWidget);
+        expect(find.text('Custom Line $i'), findsOneWidget);
+      }
+
+      // Verify builder was called correct number of times (totalSteps - 1)
+      expect(builderCallCount, equals(3));
+    });
+
+    testWidgets(
+      'Should render elements in reverse order when reversed is true',
+      (tester) async {
+        const lineTitles = ['Line 1', 'Line 2', 'Line 3'];
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: StepProgress(
+                totalSteps: 4,
+                currentStep: 1,
+                lineTitles: lineTitles,
+                reversed: true,
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        // Get all text widgets
+        final textWidgets =
+            tester
+                .widgetList<Text>(find.byType(Text))
+                .where((widget) => lineTitles.contains(widget.data))
+                .toList();
+
+        // Verify texts are in reverse order
+        expect(textWidgets[0].data, equals('Line 3'));
+        expect(textWidgets[1].data, equals('Line 2'));
+        expect(textWidgets[2].data, equals('Line 1'));
+      },
+    );
+
+    testWidgets('Should work with vertical axis when reversed', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: StepProgress(
+              totalSteps: 3,
+              currentStep: 1,
+              axis: Axis.vertical,
+              reversed: true,
+              lineTitles: const ['First', 'Second'],
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Verify content is rendered
+      expect(find.text('First'), findsOneWidget);
+      expect(find.text('Second'), findsOneWidget);
+
+      expect(find.byType(VerticalStepProgress), findsOneWidget);
+    });
+
+    testWidgets('Should work with horizontal axis when reversed', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: StepProgress(
+              totalSteps: 3,
+              currentStep: 1,
+              axis: Axis.horizontal,
+              reversed: true,
+              lineTitles: const ['First', 'Second'],
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Verify content is rendered
+      expect(find.text('First'), findsOneWidget);
+      expect(find.text('Second'), findsOneWidget);
+
+      expect(find.byType(HorizontalStepProgress), findsOneWidget);
+    });
+
+    testWidgets('Should handle line titles and subtitles together', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: StepProgress(
+              totalSteps: 3,
+              currentStep: 1,
+              lineTitles: const ['Title 1', 'Title 2'],
+              lineSubTitles: const ['Sub 1', 'Sub 2'],
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Verify both titles and subtitles are rendered
+      expect(find.text('Title 1'), findsOneWidget);
+      expect(find.text('Title 2'), findsOneWidget);
+      expect(find.text('Sub 1'), findsOneWidget);
+      expect(find.text('Sub 2'), findsOneWidget);
+    });
+  });
 }
