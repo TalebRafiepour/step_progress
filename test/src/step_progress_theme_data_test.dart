@@ -26,11 +26,11 @@ void main() {
         equals(const Duration(milliseconds: 150)),
       );
       expect(themeData.stepLineSpacing, equals(0));
-      expect(themeData.labelStyle, equals(const StepLabelStyle()));
+      expect(themeData.nodeLabelStyle, equals(const StepLabelStyle()));
       expect(themeData.stepNodeStyle, equals(const StepNodeStyle()));
       expect(themeData.stepLineStyle, equals(const StepLineStyle()));
       expect(themeData.rippleEffectStyle, equals(const RippleEffectStyle()));
-      expect(themeData.stepLabelAlignment, isNull);
+      expect(themeData.nodeLabelAlignment, isNull);
     });
 
     test('copyWith returns a new instance with updated values', () {
@@ -46,12 +46,13 @@ void main() {
         shape: StepNodeShape.square,
         stepLineSpacing: 3,
         // Although we use the same styles, they are explicitly provided.
-        labelStyle: const StepLabelStyle(),
+        nodeLabelStyle: const StepLabelStyle(),
+        lineLabelStyle: const StepLabelStyle(),
         stepNodeStyle: const StepNodeStyle(),
         stepLineStyle: const StepLineStyle(),
         rippleEffectStyle: const RippleEffectStyle(),
         highlightCompletedSteps: false,
-        stepLabelAlignment: StepLabelAlignment.top,
+        nodeLabelAlignment: StepLabelAlignment.top,
       );
 
       expect(newTheme.defaultForegroundColor, equals(Colors.red));
@@ -66,12 +67,13 @@ void main() {
       expect(newTheme.enableRippleEffect, isTrue);
       expect(newTheme.shape, equals(StepNodeShape.square));
       expect(newTheme.stepLineSpacing, equals(3.0));
-      expect(newTheme.labelStyle, equals(const StepLabelStyle()));
+      expect(newTheme.nodeLabelStyle, equals(const StepLabelStyle()));
+      expect(newTheme.lineLabelStyle, equals(const StepLabelStyle()));
       expect(newTheme.stepNodeStyle, equals(const StepNodeStyle()));
       expect(newTheme.stepLineStyle, equals(const StepLineStyle()));
       expect(newTheme.rippleEffectStyle, equals(const RippleEffectStyle()));
       expect(newTheme.highlightCompletedSteps, isFalse);
-      expect(newTheme.stepLabelAlignment, equals(StepLabelAlignment.top));
+      expect(newTheme.nodeLabelAlignment, equals(StepLabelAlignment.top));
     });
 
     test('copyWith with no parameters returns an identical instance', () {
@@ -85,12 +87,12 @@ void main() {
         enableRippleEffect: true,
         shape: StepNodeShape.square,
         stepLineSpacing: 3,
-        labelStyle: StepLabelStyle(),
+        nodeLabelStyle: StepLabelStyle(),
         stepNodeStyle: StepNodeStyle(),
         stepLineStyle: StepLineStyle(),
         rippleEffectStyle: RippleEffectStyle(),
         highlightCompletedSteps: false,
-        stepLabelAlignment: StepLabelAlignment.top,
+        nodeLabelAlignment: StepLabelAlignment.top,
       );
       final newTheme = original.copyWith();
 
@@ -113,7 +115,7 @@ void main() {
       expect(newTheme.enableRippleEffect, equals(original.enableRippleEffect));
       expect(newTheme.shape, equals(original.shape));
       expect(newTheme.stepLineSpacing, equals(original.stepLineSpacing));
-      expect(newTheme.labelStyle, equals(original.labelStyle));
+      expect(newTheme.nodeLabelStyle, equals(original.nodeLabelStyle));
       expect(newTheme.stepNodeStyle, equals(original.stepNodeStyle));
       expect(newTheme.stepLineStyle, equals(original.stepLineStyle));
       expect(newTheme.rippleEffectStyle, equals(original.rippleEffectStyle));
@@ -121,7 +123,7 @@ void main() {
         newTheme.highlightCompletedSteps,
         equals(original.highlightCompletedSteps),
       );
-      expect(newTheme.stepLabelAlignment, equals(original.stepLabelAlignment));
+      expect(newTheme.nodeLabelAlignment, equals(original.nodeLabelAlignment));
     });
 
     test('copyWith negative test: invalid values throws assertion error', () {

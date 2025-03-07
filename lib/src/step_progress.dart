@@ -1,13 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:step_progress/src/helpers/data_cache.dart';
 import 'package:step_progress/src/step_progress_widgets/horizontal_step_progress.dart';
 import 'package:step_progress/src/step_progress_widgets/vertical_step_progress.dart';
 import 'package:step_progress/step_progress.dart';
 
-/// A typedef for a function that builds a widget for a step node icon.
+/// A typedef for a function that builds an optional widget to label a step in
+/// a step progress indicator.
 ///
-/// The function takes an integer [index] as a parameter, which represents
-/// the position of the step node in the sequence, and returns a [Widget].
-typedef StepNodeIconBuilder = Widget Function(int index);
+/// The function takes two parameters:
+/// - `index`: The index of the current step.
+/// - `completedStepIndex`: The index of the last completed step.
+///
+/// Returns an optional [Widget] that represents the label for the step.
+typedef StepLabelBuilder = Widget? Function(int index, int completedStepIndex);
+
+/// A typedef for a function that builds optional widget for a step node icon.
+///
+/// The function takes two parameters:
+/// - `index`: The index of the current step.
+/// - `completedStepIndex`: The index of the last completed step.
+///
+/// Returns an optional [Widget] that represents the icon for the step node.
+typedef StepNodeIconBuilder =
+    Widget? Function(int index, int completedStepIndex);
 
 /// A typedef for a callback function that is triggered when a step line is
 /// tapped.
@@ -54,9 +69,15 @@ typedef OnStepNodeTapped = void Function(int index);
 /// The [axis] parameter specifies the axis along which the steps are laid out.
 /// It defaults to [Axis.horizontal].
 ///
-/// The [titles] parameter can be used to specify titles for each step.
+/// The [nodeTitles] parameter can be used to specify titles for each step.
 ///
-/// The [subTitles] parameter can be used to specify subtitles for each step.
+/// The [nodeSubTitles] parameter can be used to specify subtitles for steps.
+///
+/// The [lineTitles] parameter can be used to specify titles for each step line
+/// segment.
+///
+/// The [lineSubTitles] parameter can be used to specify subTitles for each
+/// step line segment.
 ///
 /// The [visibilityOptions] parameter can be used to control the visibility of
 /// step progress elements.
@@ -77,8 +98,14 @@ typedef OnStepNodeTapped = void Function(int index);
 /// The [nodeIconBuilder] parameter is a builder function to create custom icons
 /// for each step node.
 ///
-/// The [nodeActiveIconBuilder] parameter is a builder function to create custom
-/// icons for active steps.
+/// The [nodeLabelBuilder] parameter is a builder function for creating custom
+/// label widgets for step nodes.
+///
+/// The [lineLabelBuilder] parameter is a builder function for creating custom
+/// label widgets for step lines.
+///
+/// The [reversed] parameter indicates whether the step progress is displayed
+/// in reverse order. It defaults to false.
 class StepProgress extends StatefulWidget {
   const StepProgress({
     required this.totalSteps,
@@ -92,33 +119,51 @@ class StepProgress extends StatefulWidget {
     this.margin = EdgeInsets.zero,
     this.padding = EdgeInsets.zero,
     this.axis = Axis.horizontal,
+    this.reversed = false,
     this.visibilityOptions = StepProgressVisibilityOptions.both,
-    this.titles,
-    this.subTitles,
+    this.nodeTitles,
+    this.nodeSubTitles,
+    this.lineTitles,
+    this.lineSubTitles,
     this.onStepNodeTapped,
     this.onStepLineTapped,
     this.onStepChanged,
     this.nodeIconBuilder,
-    this.nodeActiveIconBuilder,
+    this.nodeLabelBuilder,
+    this.lineLabelBuilder,
   }) : assert(totalSteps > 0, 'totalSteps must be greater than 0'),
        assert(
          currentStep < totalSteps,
          'currentStep must be  lower than totalSteps',
        ),
        assert(
-         titles == null || titles.length <= totalSteps,
-         'titles must be equals to or less than total steps',
+         nodeTitles == null || nodeTitles.length <= totalSteps,
+         'nodeTitles must be equals to or less than total steps',
        ),
        assert(
-         subTitles == null || subTitles.length <= totalSteps,
-         'subTitles must be equals to or less than total steps',
+         nodeSubTitles == null || nodeSubTitles.length <= totalSteps,
+         'nodeSubTitles must be equals to or less than total steps',
+       ),
+       assert(
+         lineTitles == null || lineTitles.length < totalSteps,
+         'lineTitles must be less than total steps',
+       ),
+       assert(
+         lineSubTitles == null || lineSubTitles.length < totalSteps,
+         'lineSubTitles must be less than total steps',
        );
 
-  /// Titles for each step in the progress
-  final List<String>? titles;
+  /// List of Titles for each step in the progress
+  final List<String>? nodeTitles;
 
-  /// Subtitles for each step in the progress
-  final List<String>? subTitles;
+  /// List of Subtitles for each step in the progress
+  final List<String>? nodeSubTitles;
+
+  /// List of titles for the line segments in the progress indicator.
+  final List<String>? lineTitles;
+
+  /// List of subTitles for the line segments in the progress indicator.
+  final List<String>? lineSubTitles;
 
   /// Options to control the visibility of step progress elements.
   final StepProgressVisibilityOptions visibilityOptions;
@@ -165,8 +210,14 @@ class StepProgress extends StatefulWidget {
   /// A builder function to create custom icons for each step node.
   final StepNodeIconBuilder? nodeIconBuilder;
 
-  /// A builder for creating custom icons for active steps.
-  final StepNodeIconBuilder? nodeActiveIconBuilder;
+  /// A builder for creating custom label widgets for step nodes.
+  final StepLabelBuilder? nodeLabelBuilder;
+
+  /// A builder for creating custom label widgets for step lines.
+  final StepLabelBuilder? lineLabelBuilder;
+
+  /// Indicates whether the step progress is displayed in reverse order.
+  final bool reversed;
 
   @override
   _StepProgressState createState() {
@@ -188,6 +239,16 @@ class _StepProgressState extends State<StepProgress>
       _changeStep(widget.controller!.currentStep);
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    /// Clears the cache by calling the `clearCache` method on the `DataCache`
+    /// instance.
+    /// This method is used to remove all cached data, ensuring that the cache
+    /// is empty.
+    DataCache().clearCache();
+    super.dispose();
   }
 
   /// Called whenever the widget configuration changes.
@@ -240,6 +301,16 @@ class _StepProgressState extends State<StepProgress>
     widget.onStepChanged?.call(_currentStep);
   }
 
+  /// Triggers a rebuild of the widget if it is currently mounted.
+  ///
+  /// This method checks if the widget is mounted, and if so, 
+  /// calls `setState` to request a rebuild of the widget.
+  void _needsRebuildWidget() {
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return StepProgressTheme(
@@ -255,26 +326,36 @@ class _StepProgressState extends State<StepProgress>
                 ? HorizontalStepProgress(
                   totalStep: widget.totalSteps,
                   currentStep: _currentStep,
-                  titles: widget.titles,
-                  subTitles: widget.subTitles,
+                  reversed: widget.reversed,
+                  needsRebuildWidget: _needsRebuildWidget,
+                  nodeTitles: widget.nodeTitles,
+                  nodeSubTitles: widget.nodeSubTitles,
+                  lineTitles: widget.lineTitles,
+                  lineSubTitles: widget.lineSubTitles,
                   stepSize: widget.stepSize,
                   onStepNodeTapped: widget.onStepNodeTapped,
                   onStepLineTapped: widget.onStepLineTapped,
                   visibilityOptions: widget.visibilityOptions,
                   nodeIconBuilder: widget.nodeIconBuilder,
-                  nodeActiveIconBuilder: widget.nodeActiveIconBuilder,
+                  lineLabelBuilder: widget.lineLabelBuilder,
+                  nodeLabelBuilder: widget.nodeLabelBuilder,
                 )
                 : VerticalStepProgress(
                   totalStep: widget.totalSteps,
                   currentStep: _currentStep,
-                  titles: widget.titles,
-                  subTitles: widget.subTitles,
+                  reversed: widget.reversed,
+                  needsRebuildWidget: _needsRebuildWidget,
+                  nodeTitles: widget.nodeTitles,
+                  nodeSubTitles: widget.nodeSubTitles,
+                  lineTitles: widget.lineTitles,
+                  lineSubTitles: widget.lineSubTitles,
                   stepSize: widget.stepSize,
                   onStepNodeTapped: widget.onStepNodeTapped,
                   onStepLineTapped: widget.onStepLineTapped,
                   visibilityOptions: widget.visibilityOptions,
                   nodeIconBuilder: widget.nodeIconBuilder,
-                  nodeActiveIconBuilder: widget.nodeActiveIconBuilder,
+                  lineLabelBuilder: widget.lineLabelBuilder,
+                  nodeLabelBuilder: widget.nodeLabelBuilder,
                 ),
       ),
     );

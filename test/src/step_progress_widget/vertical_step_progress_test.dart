@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:step_progress/src/step_line/step_line.dart';
+import 'package:step_progress/src/step_progress_theme_data.dart';
 import 'package:step_progress/src/step_progress_visibility_options.dart';
 import 'package:step_progress/src/step_progress_widgets/step_generator.dart';
 import 'package:step_progress/src/step_progress_widgets/vertical_step_progress.dart';
@@ -24,8 +25,14 @@ void main() {
               currentStep: 1,
               stepSize: 30,
               visibilityOptions: StepProgressVisibilityOptions.both,
-              titles: const ['Step 1', 'Step 2', 'Step 3', 'Step 4', 'Step 5'],
-              subTitles: const [
+              nodeTitles: const [
+                'Step 1',
+                'Step 2',
+                'Step 3',
+                'Step 4',
+                'Step 5',
+              ],
+              nodeSubTitles: const [
                 'Description 1',
                 'Description 2',
                 'Description 3',
@@ -38,12 +45,10 @@ void main() {
               onStepLineTapped: (step) {
                 tappedLineIndex = step;
               },
-              nodeIconBuilder: (step) {
+              nodeIconBuilder: (step, completedStepIndex) {
                 return Icon(Icons.circle, key: Key('node_$step'));
               },
-              nodeActiveIconBuilder: (step) {
-                return Icon(Icons.check_circle, key: Key('active_node_$step'));
-              },
+              needsRebuildWidget: () {},
             ),
           ),
         );
@@ -94,16 +99,21 @@ void main() {
             currentStep: -1,
             stepSize: 30,
             visibilityOptions: StepProgressVisibilityOptions.both,
-            titles: List.generate(5, (index) => 'Step ${index + 1}'),
-            subTitles: List.generate(5, (index) => 'Description ${index + 1}'),
+            nodeTitles: List.generate(5, (index) => 'Step ${index + 1}'),
+            nodeSubTitles: List.generate(
+              5,
+              (index) => 'Description ${index + 1}',
+            ),
             onStepNodeTapped: (_) {},
             onStepLineTapped: (_) {},
-            nodeIconBuilder: (step) {
-              return Icon(Icons.circle, key: Key('node_$step'));
+            nodeIconBuilder: (step, completedStepIndex) {
+              if (step <= completedStepIndex) {
+                return Icon(Icons.check_circle, key: Key('active_node_$step'));
+              } else {
+                return Icon(Icons.circle, key: Key('node_$step'));
+              }
             },
-            nodeActiveIconBuilder: (step) {
-              return Icon(Icons.check_circle, key: Key('active_node_$step'));
-            },
+            needsRebuildWidget: () {},
           ),
         ),
       );
@@ -136,19 +146,24 @@ void main() {
             currentStep: currentStep,
             stepSize: 30,
             visibilityOptions: StepProgressVisibilityOptions.both,
-            titles: List.generate(totalSteps, (index) => 'Step ${index + 1}'),
-            subTitles: List.generate(
+            nodeTitles: List.generate(
+              totalSteps,
+              (index) => 'Step ${index + 1}',
+            ),
+            nodeSubTitles: List.generate(
               totalSteps,
               (index) => 'Desc ${index + 1}',
             ),
             onStepNodeTapped: (_) {},
             onStepLineTapped: (_) {},
-            nodeIconBuilder: (step) {
-              return Icon(Icons.circle, key: Key('node_$step'));
+            nodeIconBuilder: (step, completedStepIndex) {
+              if (step <= completedStepIndex) {
+                return Icon(Icons.check_circle, key: Key('active_node_$step'));
+              } else {
+                return Icon(Icons.circle, key: Key('node_$step'));
+              }
             },
-            nodeActiveIconBuilder: (step) {
-              return Icon(Icons.check_circle, key: Key('active_node_$step'));
-            },
+            needsRebuildWidget: () {},
           ),
         ),
       );
@@ -185,18 +200,20 @@ void main() {
             currentStep: 3,
             stepSize: 40,
             visibilityOptions: StepProgressVisibilityOptions.both,
-            titles: List.generate(5, (index) => 'Step ${index + 1}'),
-            subTitles: List.generate(5, (index) => 'Detail ${index + 1}'),
+            nodeTitles: List.generate(5, (index) => 'Step ${index + 1}'),
+            nodeSubTitles: List.generate(5, (index) => 'Detail ${index + 1}'),
             onStepNodeTapped: (_) {},
             onStepLineTapped: (step) {
               tappedLineIndex = step;
             },
-            nodeIconBuilder: (step) {
-              return Icon(Icons.circle, key: Key('node_$step'));
+            nodeIconBuilder: (step, completedStepIndex) {
+              if (step <= completedStepIndex) {
+                return Icon(Icons.check_circle, key: Key('active_node_$step'));
+              } else {
+                return Icon(Icons.circle, key: Key('node_$step'));
+              }
             },
-            nodeActiveIconBuilder: (step) {
-              return Icon(Icons.check_circle, key: Key('active_node_$step'));
-            },
+            needsRebuildWidget: () {},
           ),
         ),
       );
@@ -229,19 +246,21 @@ void main() {
             currentStep: 1,
             stepSize: 30,
             visibilityOptions: StepProgressVisibilityOptions.both,
-            titles: const [
+            nodeTitles: const [
               'Only Title 1',
               'Only Title 2',
             ], // fewer titles than steps
-            subTitles: const ['SubTitle 1'], // fewer subtitles than steps
+            nodeSubTitles: const ['SubTitle 1'], // fewer subtitles than steps
             onStepNodeTapped: (_) {},
             onStepLineTapped: (_) {},
-            nodeIconBuilder: (step) {
-              return Icon(Icons.circle, key: Key('node_$step'));
+            nodeIconBuilder: (step, completedStepIndex) {
+              if (step <= completedStepIndex) {
+                return Icon(Icons.check_circle, key: Key('active_node_$step'));
+              } else {
+                return Icon(Icons.circle, key: Key('node_$step'));
+              }
             },
-            nodeActiveIconBuilder: (step) {
-              return Icon(Icons.check_circle, key: Key('active_node_$step'));
-            },
+            needsRebuildWidget: () {},
           ),
         ),
       );
@@ -263,5 +282,180 @@ void main() {
       // that there is no extra text.
       expect(find.text('null'), findsNothing);
     });
+
+    testWidgets('VerticalStepProgress renders line titles correctly', (
+      tester,
+    ) async {
+      const totalSteps = 3;
+      const currentStep = 1;
+      final lineTitles = List.generate(
+        totalSteps - 1,
+        (index) => 'Line Title $index',
+      );
+
+      await tester.pumpWidget(
+        TestThemeWrapper(
+          child: StatefulBuilder(
+            builder: (context, setState) {
+              return Scaffold(
+                body: VerticalStepProgress(
+                  totalStep: totalSteps,
+                  currentStep: currentStep,
+                  stepSize: 50,
+                  visibilityOptions: StepProgressVisibilityOptions.both,
+                  lineTitles: lineTitles,
+                  needsRebuildWidget: () {
+                    setState(() {});
+                  },
+                ),
+              );
+            },
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Verify each line title is rendered
+      for (final title in lineTitles) {
+        expect(find.text(title), findsOneWidget);
+      }
+    });
+
+    testWidgets('VerticalStepProgress renders line subtitles correctly', (
+      tester,
+    ) async {
+      const totalSteps = 3;
+      const currentStep = 1;
+      final lineSubTitles = List.generate(
+        totalSteps - 1,
+        (index) => 'Line SubTitle $index',
+      );
+
+      await tester.pumpWidget(
+        TestThemeWrapper(
+          child: StatefulBuilder(
+            builder: (context, setState) {
+              return Scaffold(
+                body: VerticalStepProgress(
+                  totalStep: totalSteps,
+                  currentStep: currentStep,
+                  stepSize: 50,
+                  visibilityOptions: StepProgressVisibilityOptions.both,
+                  lineSubTitles: lineSubTitles,
+                  needsRebuildWidget: () {
+                    setState(() {});
+                  },
+                ),
+              );
+            },
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Verify each line subtitle is rendered
+      for (final subtitle in lineSubTitles) {
+        expect(find.text(subtitle), findsOneWidget);
+      }
+    });
+
+    testWidgets('VerticalStepProgress uses custom lineLabelBuilder correctly', (
+      tester,
+    ) async {
+      const totalSteps = 3;
+      const currentStep = 1;
+
+      Widget customLineLabel(int index, int currentStep) {
+        return Container(
+          key: Key('custom_line_label_$index'),
+          child: Text('Custom Label $index'),
+        );
+      }
+
+      await tester.pumpWidget(
+        TestThemeWrapper(
+          child: StatefulBuilder(
+            builder: (context, setState) {
+              return Scaffold(
+                body: VerticalStepProgress(
+                  totalStep: totalSteps,
+                  currentStep: currentStep,
+                  stepSize: 50,
+                  visibilityOptions: StepProgressVisibilityOptions.both,
+                  lineLabelBuilder: customLineLabel,
+                  needsRebuildWidget: () {
+                    setState(() {});
+                  },
+                ),
+              );
+            },
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Verify custom labels are rendered
+      for (var i = 0; i < totalSteps - 1; i++) {
+        expect(find.byKey(Key('custom_line_label_$i')), findsOneWidget);
+        expect(find.text('Custom Label $i'), findsOneWidget);
+      }
+    });
+
+    testWidgets(
+      'VerticalStepProgress renders line labels with different alignments',
+      (tester) async {
+        const totalSteps = 3;
+        const currentStep = 1;
+        final lineTitles = List.generate(
+          totalSteps - 1,
+          (index) => 'Line $index',
+        );
+
+        Future<void> buildWithAlignment(Alignment alignment) async {
+          await tester.pumpWidget(
+            TestThemeWrapper(
+              themeData: StepProgressThemeData(lineLabelAlignment: alignment),
+              child: StatefulBuilder(
+                builder: (context, setState) {
+                  return Scaffold(
+                    body: VerticalStepProgress(
+                      totalStep: totalSteps,
+                      currentStep: currentStep,
+                      stepSize: 50,
+                      visibilityOptions: StepProgressVisibilityOptions.both,
+                      lineTitles: lineTitles,
+                      needsRebuildWidget: () {
+                        setState(() {});
+                      },
+                    ),
+                  );
+                },
+              ),
+            ),
+          );
+          await tester.pumpAndSettle();
+        }
+
+        // Test with left alignment
+        await buildWithAlignment(Alignment.centerLeft);
+        expect(find.byType(Column), findsWidgets);
+
+        // Test with right alignment
+        await buildWithAlignment(Alignment.centerRight);
+        expect(find.byType(Column), findsWidgets);
+
+        // Test with center alignment
+        await buildWithAlignment(Alignment.center);
+        expect(find.byType(Column), findsWidgets);
+
+        // Verify labels are still visible with each alignment
+        for (final title in lineTitles) {
+          expect(find.text(title), findsOneWidget);
+        }
+      },
+    );
   });
 }

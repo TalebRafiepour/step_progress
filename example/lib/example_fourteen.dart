@@ -19,42 +19,42 @@ class ExampleFourteen extends StatelessWidget {
               totalSteps: 4,
               stepSize: 28,
               controller: stepProgressController,
-              titles: const [
+              nodeTitles: const [
                 'Step 1',
                 'Step 2',
                 'Step 3',
                 'Step 4 and a long title',
               ],
               theme: const StepProgressThemeData(
-                stepLabelAlignment: StepLabelAlignment.top,
+                nodeLabelAlignment: StepLabelAlignment.top,
               ),
             ),
             StepProgress(
               totalSteps: 4,
               stepSize: 28,
               controller: stepProgressController,
-              titles: const [
+              nodeTitles: const [
                 'Step 1',
                 'Step 2',
                 'Step 3',
                 'Step 4 and a long title',
               ],
               theme: const StepProgressThemeData(
-                stepLabelAlignment: StepLabelAlignment.bottom,
+                nodeLabelAlignment: StepLabelAlignment.bottom,
               ),
             ),
             StepProgress(
               totalSteps: 4,
               stepSize: 28,
               controller: stepProgressController,
-              titles: const [
+              nodeTitles: const [
                 'Step 1 and a long title here',
                 'Step 2',
                 'Step 3',
                 'Step 4 and a long title',
               ],
               theme: const StepProgressThemeData(
-                stepLabelAlignment: StepLabelAlignment.topBottom,
+                nodeLabelAlignment: StepLabelAlignment.topBottom,
               ),
             ),
             Row(
@@ -66,14 +66,14 @@ class ExampleFourteen extends StatelessWidget {
                   height: 390,
                   axis: Axis.vertical,
                   controller: stepProgressController,
-                  titles: const [
+                  nodeTitles: const [
                     'Step 1',
                     'Step 2',
                     'Step 3',
                     'Step 4 and a long title',
                   ],
                   theme: const StepProgressThemeData(
-                    stepLabelAlignment: StepLabelAlignment.left,
+                    nodeLabelAlignment: StepLabelAlignment.left,
                   ),
                 ),
                 StepProgress(
@@ -82,14 +82,14 @@ class ExampleFourteen extends StatelessWidget {
                   height: 390,
                   axis: Axis.vertical,
                   controller: stepProgressController,
-                  titles: const [
+                  nodeTitles: const [
                     'Step 1',
                     'Step 2',
                     'Step 3',
                     'Step 4 and a long title',
                   ],
                   theme: const StepProgressThemeData(
-                    stepLabelAlignment: StepLabelAlignment.right,
+                    nodeLabelAlignment: StepLabelAlignment.right,
                   ),
                 ),
                 StepProgress(
@@ -98,14 +98,14 @@ class ExampleFourteen extends StatelessWidget {
                   height: 390,
                   axis: Axis.vertical,
                   controller: stepProgressController,
-                  titles: const [
+                  nodeTitles: const [
                     'Step 1',
                     'Step 2',
                     'Step 3',
                     'Step 4 and a long title',
                   ],
                   theme: const StepProgressThemeData(
-                    stepLabelAlignment: StepLabelAlignment.leftRight,
+                    nodeLabelAlignment: StepLabelAlignment.leftRight,
                   ),
                 ),
               ],
@@ -113,19 +113,21 @@ class ExampleFourteen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        spacing: 38,
-        children: [
-          ElevatedButton(
-            onPressed: stepProgressController.previousStep,
-            child: const Text('Prev'),
-          ),
-          ElevatedButton(
-            onPressed: stepProgressController.nextStep,
-            child: const Text('Next'),
-          ),
-        ],
+      bottomNavigationBar: SafeArea(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          spacing: 38,
+          children: [
+            ElevatedButton(
+              onPressed: stepProgressController.previousStep,
+              child: const Text('Prev'),
+            ),
+            ElevatedButton(
+              onPressed: stepProgressController.nextStep,
+              child: const Text('Next'),
+            ),
+          ],
+        ),
       ),
     );
   }

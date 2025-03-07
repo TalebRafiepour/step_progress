@@ -1,5 +1,6 @@
 import 'package:example/example_eight.dart';
 import 'package:example/example_eleven.dart';
+import 'package:example/example_fifteen.dart';
 import 'package:example/example_five.dart';
 import 'package:example/example_four.dart';
 import 'package:example/example_fourteen.dart';
@@ -8,6 +9,7 @@ import 'package:example/example_one.dart';
 import 'package:example/example_reproduce_issues.dart';
 import 'package:example/example_seven.dart';
 import 'package:example/example_six.dart';
+import 'package:example/example_sixteen.dart';
 import 'package:example/example_ten.dart';
 import 'package:example/example_thirteen.dart';
 import 'package:example/example_three.dart';
@@ -200,6 +202,28 @@ class HomePage extends StatelessWidget {
                   );
                 },
                 child: const Text('Example Fourteen (LargeLabel)'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const ExampleFifteen(),
+                    ),
+                  );
+                },
+                child: const Text('Example Fifteen (LineLabel)'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const ExampleSixteen(),
+                    ),
+                  );
+                },
+                child: const Text('Example Sixteen (CustomVerticalTimeLine)'),
               ),
               ElevatedButton(
                 onPressed: () {

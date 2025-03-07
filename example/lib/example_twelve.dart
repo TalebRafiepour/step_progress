@@ -20,7 +20,7 @@ class ExampleTwelve extends StatelessWidget {
             height: 390,
             axis: Axis.vertical,
             controller: stepProgressController,
-            titles: const [
+            nodeTitles: const [
               'Step 1',
               'Step 2',
               'Step 3',
@@ -28,7 +28,7 @@ class ExampleTwelve extends StatelessWidget {
             ],
             padding: const EdgeInsets.all(18),
             theme: const StepProgressThemeData(
-              stepLabelAlignment: StepLabelAlignment.leftRight,
+              nodeLabelAlignment: StepLabelAlignment.leftRight,
               shape: StepNodeShape.hexagon,
               stepLineSpacing: 18,
               stepLineStyle: StepLineStyle(

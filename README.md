@@ -20,9 +20,10 @@
 - **Theming and Customization**:
   - **Comprehensive Theme**: Easily customize the look and feel using `StepProgressThemeData`, controlling colors, text styles, and border properties.
   - **Step Sizing**: Adjust the size of step nodes with `stepSize`.
-  - **Titles and Subtitles**: Add descriptive labels to each step for enhanced user understanding.
+  - **Titles and Subtitles**: Add descriptive labels to each step nodes and lines for enhanced user understanding.
   - **Visibility Control**: Show or hide titles, subtitles, and connecting lines using `StepProgressVisibilityOptions`.
-  - **Custom Icons**: Utilize custom icons for step nodes, with separate options for inactive and active states using `nodeIconBuilder` and `nodeActiveIconBuilder`.
+  - **Custom Icons**: Utilize custom icons for step nodes using `nodeIconBuilder`.
+  - **Custom Labels**: Use `nodeLabelBuilder` and `lineLabelBuilder` to provide custom labels for step nodes and connecting lines.
   
 - **Interactive Elements**:
   - **Step Tapping**: Enable user interaction with steps using `onStepNodeTapped` callbacks.
@@ -32,6 +33,7 @@
 - **Programmatic Control**:
   - **`StepProgressController`**: Manage the current step externally, allowing integration with your application's logic.
   - **Initial Step**: Set the starting step with the `currentStep` property.
+  - **Reversed**: Display steps in reverse order using the `reversed` property.
   
 - **Flexible Layout**:
   - **Dimensions**: Control the width and height of the widget.
@@ -49,7 +51,7 @@ StepProgress(
   totalSteps: 4,
   controller: stepProgressController,
   axis: Axis.vertical,
-  titles: const ['step 1', 'step 2', 'step 3', 'step 4'],
+  nodeTitles: const ['step 1', 'step 2', 'step 3', 'step 4'],
   onStepChanged: (index) {
     debugPrint('on step changed: $index');
   },
@@ -153,17 +155,24 @@ StepProgress(
   totalSteps: 4,
   margin: const EdgeInsets.symmetric(horizontal: 12),
   controller: stepProgressController,
-  nodeIconBuilder: (index) {
-    return Text(
-      '${index + 1}',
-      style: const TextStyle(fontSize: 24, color: Color(0xFFa2a2ab)),
-    );
-  },
-  nodeActiveIconBuilder: (index) {
-    return Text(
-      '${index + 1}',
-      style: const TextStyle(fontSize: 24, color: Color(0xFFb1acaa)),
-    );
+  nodeIconBuilder: (index, completedStepIndex) {
+    if (index <= completedStepIndex) {
+      return Text(
+        '${index + 1}',
+        style: const TextStyle(
+          fontSize: 24,
+          color: Color(0xFFb1acaa),
+        ),
+      );
+    } else {
+      return Text(
+        '${index + 1}',
+        style: const TextStyle(
+          fontSize: 24,
+          color: Color(0xFFa2a2ab),
+        ),
+      );
+    }
   },
   theme: const StepProgressThemeData(
     defaultForegroundColor: Colors.white,
@@ -185,7 +194,7 @@ StepProgress(
 StepProgress(
   totalSteps: 4,
   controller: stepProgressController,
-  titles: const ['Step 1', 'Step 2', 'Step 3', 'Step 4'],
+  nodeTitles: const ['Step 1', 'Step 2', 'Step 3', 'Step 4'],
   theme: const StepProgressThemeData(
     stepLabelAlignment: StepLabelAlignment.topBottom,
     stepLineSpacing: 2,
@@ -204,11 +213,11 @@ StepProgress(
   totalSteps: 4,
   controller: stepProgressController,
   visibilityOptions: StepProgressVisibilityOptions.nodeOnly,
-  subTitles: const ['sub 1', 'sub 2', 'sub 3', 'sub 4'],
+  nodeSubTitles: const ['sub 1', 'sub 2', 'sub 3', 'sub 4'],
   padding: const EdgeInsets.all(18),
   theme: const StepProgressThemeData(
     stepLabelAlignment: StepLabelAlignment.right,
-    labelStyle: StepLabelStyle(labelAxisAlignment: CrossAxisAlignment.start),
+    nodeLabelStyle: StepLabelStyle(labelAxisAlignment: CrossAxisAlignment.start),
   ),
 ),
 ```
@@ -224,7 +233,7 @@ StepProgress(
   controller: stepProgressController,
   axis: Axis.vertical,
   height: 300,
-  titles: const [
+  nodeTitles: const [
     'Step 1',
     'Step 2',
     'Step 3',
@@ -233,7 +242,7 @@ StepProgress(
   padding: const EdgeInsets.all(18),
   theme: const StepProgressThemeData(
     stepLabelAlignment: StepLabelAlignment.left,
-    labelStyle: StepLabelStyle(
+    nodeLabelStyle: StepLabelStyle(
       labelAxisAlignment: CrossAxisAlignment.start,
     ),
     stepLineSpacing: 24,
@@ -255,7 +264,7 @@ StepProgress(
 StepProgress(
   totalSteps: 4,
   controller: stepProgressController,
-  titles: const [
+  nodeTitles: const [
     'Step 1',
     'Step 2',
     'Step 3',
@@ -297,7 +306,7 @@ StepProgress(
   totalSteps: 4,
   controller: stepProgressController,
   visibilityOptions: StepProgressVisibilityOptions.nodeOnly,
-  titles: const [
+  nodeTitles: const [
     'Step 1',
     'Step 2',
     'Step 3',
@@ -324,7 +333,7 @@ StepProgress(
   totalSteps: 4,
   stepSize: 24,
   controller: stepProgressController,
-  titles: const [
+  nodeTitles: const [
     'Step 1',
     'Step 2',
     'Step 3',
@@ -339,7 +348,7 @@ StepProgress(
         Radius.circular(4),
       ),
     ),
-    labelStyle: StepLabelStyle(
+    nodeLabelStyle: StepLabelStyle(
       margin: EdgeInsets.only(bottom: 6),
     ),
     stepNodeStyle: StepNodeStyle(
@@ -366,7 +375,7 @@ StepProgress(
   height: 390,
   axis: Axis.vertical,
   controller: stepProgressController,
-  titles: const [
+  nodeTitles: const [
     'Step 1',
     'Step 2',
     'Step 3',
@@ -436,6 +445,126 @@ StepProgress(
   ),
 ),
 ```
+### Example 14: Horizontal Step Progress with Line Labels
+![StepProgress-horizontal-with-line-labels](https://github.com/TalebRafiepour/showcase/blob/main/step_progress/sample-14-stepprogress-line-labels.png?raw=true)
+
+#### Implementation
+
+```dart
+StepProgress(
+totalSteps: 4,
+padding: const EdgeInsets.all(10),
+lineTitles: const [
+  'line title 1',
+  'line title 2',
+  'line title 3',
+],
+controller: stepProgressController,
+nodeIconBuilder: (index, completedStepIndex) {
+  if (index <= completedStepIndex) {
+    return const Icon(
+      Icons.check,
+      color: Colors.white,
+    );
+  } else {
+    return const Icon(
+      Icons.more_horiz,
+      color: Colors.white,
+    );
+  }
+},
+theme: const StepProgressThemeData(
+  lineLabelAlignment: Alignment.bottomCenter,
+  lineLabelStyle: StepLabelStyle(
+    defualtColor: Colors.grey,
+    activeColor: Colors.green,
+  ),
+  stepLineSpacing: 20,
+  stepLineStyle: StepLineStyle(
+    lineThickness: 3,
+    borderRadius: BorderRadius.all(Radius.circular(4)),
+  ),
+),
+),
+```
+### Example 15: Customized Vertical Step Progress with Line Labels and Node Labels.
+![StepProgress-vertical-customized-with-line-labels](https://github.com/TalebRafiepour/showcase/blob/main/step_progress/sample-15-stepprogress-custom-with-line-labels.png?raw=true)
+
+#### Implementation
+
+```dart
+StepProgress(
+  totalSteps: 6,
+  padding: const EdgeInsets.all(10),
+  axis: Axis.vertical,
+  reversed: true,
+  controller: stepProgressController,
+  nodeIconBuilder: (index, completedStepIndex) {
+    if (index <= completedStepIndex) {
+      //step completed
+      return const Icon(
+        Icons.check,
+        size: 18,
+        color: Colors.white,
+      );
+    }
+    return null;
+  },
+  lineLabelBuilder: (index, completedStepIndex) {
+    // here index is index of current line
+    // (numbers of lines is equal to toalSteps - 1)
+    if (index.isEven) {
+      return Text(
+        'December ${index + 10} 2020',
+        style: Theme.of(context)
+            .textTheme
+            .titleSmall
+            ?.copyWith(color: Colors.white),
+      );
+    }
+    return null;
+  },
+  nodeLabelBuilder: (index, completedStepIndex) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 2,
+      children: [
+        Text(
+          'Invisalign ClinCheck $index',
+          maxLines: 3,
+          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                decorationColor: const Color(0xFF4e97fc),
+                color: const Color(0xFF4e97fc),
+                decoration: TextDecoration.underline,
+              ),
+        ),
+        Text(
+          '9:20 AM - 9:40 AM',
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                color: const Color(0xFF7e7971),
+              ),
+        ),
+      ],
+    );
+  },
+  theme: const StepProgressThemeData(
+    defaultForegroundColor: Color(0xFF666666),
+    activeForegroundColor: Color(0xFF4e97fc),
+    lineLabelAlignment: Alignment.topLeft,
+    nodeLabelStyle: StepLabelStyle(
+      maxWidth: double.infinity,
+      margin: EdgeInsets.all(4),
+    ),
+    lineLabelStyle: StepLabelStyle(
+      maxWidth: double.infinity,
+      margin: EdgeInsets.only(
+        right: 18,
+      ),
+    ),
+  ),
+)
+```
 
 ## Installation
 
@@ -488,8 +617,10 @@ StepProgress(
 |`shape`                  | The shape of the step nodes (e.g., circle, square).| StepNodeShape       | `StepNodeShape.circle`              |
 |`stepAnimationDuration`  | The duration of the animation for step transitions.| Duration            |`Duration(milliseconds: 150)`        |
 |`stepLineSpacing`        | The spacing between step lines.                    | double              | `0.0`                               |
-|`stepLabelAlignment`     | The alignment of the labels for the step nodes.    | StepLabelAlignment? |`null`                               |
-|`labelStyle`             | The style of the labels for the step nodes.        | StepLabelStyle      | `StepLabelStyle()`                  |
+|`nodeLabelAlignment`     | The alignment of the labels for the step nodes.    | StepLabelAlignment? |`null`                               |
+|`lineLabelAlignment`     | The alignment of the labels for the step lines.    | Alignment?          |`null`                               |
+|`nodeLabelStyle`         | The style of the labels for the step nodes.        | StepLabelStyle      | `StepLabelStyle()`                  |
+|`lineLabelStyle`         | The style of the labels for the step lines.        | StepLabelStyle      | `StepLabelStyle(maxWidth: double.infinity)`|
 |`stepNodeStyle`          | The style of the step nodes.                       | StepNodeStyle       | `StepNodeStyle()`                   |
 |`stepLineStyle`          | The style of the lines connecting the step nodes.  | StepLineStyle       | `StepLineStyle()`                   |
 |`rippleEffectStyle`      | The style of the ripple effect on step nodes.      | RippleEffectStyle   | `RippleEffectStyle()`               |
@@ -544,7 +675,7 @@ StepProgress(
 | `textAlign`          | `TextAlign`         | `TextAlign.center`         | How the text should be aligned horizontally.                                |
 | `titleMaxLines`      | `int`               | `3`                        | The maximum number of lines for the title text.                             |
 | `maxWidth`           | `double`            | `48`                       | The maximum width of the step label.                                        |
-| `subTitleMaxLines`   | `int`               | `1`                        | The maximum number of lines for the subtitle text.                          |
+| `subTitleMaxLines`   | `int`               | `3`                        | The maximum number of lines for the subtitle text.                          |
 | `overflow`           | `TextOverflow`      | `TextOverflow.ellipsis`    | How visual overflow should be handled.                                      |
 | `padding`            | `EdgeInsets`        | `EdgeInsets.zero`          | The amount of space to surround the label with.                             |
 | `margin`             | `EdgeInsets`        | `EdgeInsets.all(2)`        | The amount of space to surround the label with.                             |

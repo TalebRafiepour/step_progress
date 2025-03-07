@@ -17,7 +17,7 @@ class ExampleNine extends StatelessWidget {
           StepProgress(
             totalSteps: 4,
             controller: stepProgressController,
-            titles: const [
+            nodeTitles: const [
               'Step 1',
               'Step 2',
               'Step 3',
@@ -26,7 +26,7 @@ class ExampleNine extends StatelessWidget {
             padding: const EdgeInsets.all(18),
             theme: const StepProgressThemeData(
               shape: StepNodeShape.square,
-              stepLabelAlignment: StepLabelAlignment.top,
+              nodeLabelAlignment: StepLabelAlignment.top,
               stepLineSpacing: 24,
               stepNodeStyle: StepNodeStyle(
                 decoration: BoxDecoration(

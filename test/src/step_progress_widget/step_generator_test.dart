@@ -18,8 +18,8 @@ StepProgressThemeData get dummyThemeData => const StepProgressThemeData(
     defaultForegroundColor: Colors.grey,
     activeForegroundColor: Colors.green,
   ),
-  labelStyle: StepLabelStyle(titleStyle: TextStyle(color: Colors.black)),
-  stepLabelAlignment: StepLabelAlignment.top,
+  nodeLabelStyle: StepLabelStyle(titleStyle: TextStyle(color: Colors.black)),
+  nodeLabelAlignment: StepLabelAlignment.top,
 );
 
 void main() {
@@ -47,7 +47,6 @@ void main() {
                   tapped = true;
                 },
                 stepNodeIcon: const Icon(Icons.check),
-                stepNodeActiveIcon: const Icon(Icons.check_circle),
               ),
             ),
           ),
@@ -145,7 +144,7 @@ void main() {
       (tester) async {
         // Override the theme with a vertical axis scenario for testing.
         final customThemeData = dummyThemeData.copyWith(
-          stepLabelAlignment: StepLabelAlignment.right,
+          nodeLabelAlignment: StepLabelAlignment.right,
         );
 
         await tester.pumpWidget(
@@ -230,7 +229,7 @@ void main() {
     ) async {
       // Testing the multi-side alignment with alternating label positions.
       final customThemeData = dummyThemeData.copyWith(
-        stepLabelAlignment: StepLabelAlignment.topBottom,
+        nodeLabelAlignment: StepLabelAlignment.topBottom,
       );
 
       // Step with even index (should use one ordering)

@@ -3,6 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:step_progress/src/step_label/step_label.dart';
 import 'package:step_progress/step_progress.dart';
 
+import '../helper/test_theme_wrapper.dart';
+
 void main() {
   // Create a dummy StepLabelStyle with required fields.
   const dummyLabelStyle = StepLabelStyle(
@@ -19,26 +21,19 @@ void main() {
 
   // Create a dummy StepProgressThemeData
   const dummyThemeData = StepProgressThemeData(
-    labelStyle: dummyLabelStyle,
+    nodeLabelStyle: dummyLabelStyle,
     stepAnimationDuration: Duration(milliseconds: 350),
     activeForegroundColor: Colors.blue,
     defaultForegroundColor: Colors.red,
   );
 
-  // Helper widget to wrap our StepLabel with MaterialApp and StepProgressTheme.
-  Widget buildTestableWidget(Widget child) {
-    return MaterialApp(
-      home: Scaffold(
-        body: StepProgressTheme(data: dummyThemeData, child: child),
-      ),
-    );
-  }
-
   group('StepLabel Widget Tests', () {
     testWidgets('Displays title and subtitle when provided', (tester) async {
       await tester.pumpWidget(
-        buildTestableWidget(
-          const StepLabel(
+        const TestThemeWrapper(
+          themeData: dummyThemeData,
+          child: StepLabel(
+            style: dummyLabelStyle,
             title: 'Step 1',
             subTitle: 'Introduction',
             isActive: true,
@@ -51,7 +46,10 @@ void main() {
 
     testWidgets('Displays only title when subTitle is null', (tester) async {
       await tester.pumpWidget(
-        buildTestableWidget(const StepLabel(title: 'Only Title')),
+        const TestThemeWrapper(
+          themeData: dummyThemeData,
+          child: StepLabel(style: dummyLabelStyle, title: 'Only Title'),
+        ),
       );
       expect(find.text('Only Title'), findsOneWidget);
       // There should be no widget with an empty subtitle.
@@ -65,7 +63,10 @@ void main() {
 
     testWidgets('Displays only subtitle when title is null', (tester) async {
       await tester.pumpWidget(
-        buildTestableWidget(const StepLabel(subTitle: 'Only Subtitle')),
+        const TestThemeWrapper(
+          themeData: dummyThemeData,
+          child: StepLabel(style: dummyLabelStyle, subTitle: 'Only Subtitle'),
+        ),
       );
       expect(find.text('Only Subtitle'), findsOneWidget);
       expect(
@@ -78,8 +79,13 @@ void main() {
 
     testWidgets('Uses active color when isActive is true', (tester) async {
       await tester.pumpWidget(
-        buildTestableWidget(
-          const StepLabel(title: 'Active Step', isActive: true),
+        const TestThemeWrapper(
+          themeData: dummyThemeData,
+          child: StepLabel(
+            style: dummyLabelStyle,
+            title: 'Active Step',
+            isActive: true,
+          ),
         ),
       );
 
@@ -99,7 +105,10 @@ void main() {
 
     testWidgets('Uses default color when isActive is false', (tester) async {
       await tester.pumpWidget(
-        buildTestableWidget(const StepLabel(title: 'Inactive Step')),
+        const TestThemeWrapper(
+          themeData: dummyThemeData,
+          child: StepLabel(style: dummyLabelStyle, title: 'Inactive Step'),
+        ),
       );
 
       final defaultTextWidget = tester.widget<AnimatedDefaultTextStyle>(
@@ -124,13 +133,9 @@ void main() {
           defaultForegroundColor: Colors.red,
         );
         await tester.pumpWidget(
-          const MaterialApp(
-            home: Scaffold(
-              body: StepProgressTheme(
-                data: customThemeData,
-                child: StepLabel(title: 'Test Title'),
-              ),
-            ),
+          const TestThemeWrapper(
+            themeData: customThemeData,
+            child: StepLabel(title: 'Test Title'),
           ),
         );
         // Grab the AnimatedDefaultTextStyle for title.
@@ -161,13 +166,9 @@ void main() {
           defaultForegroundColor: Colors.red,
         );
         await tester.pumpWidget(
-          const MaterialApp(
-            home: Scaffold(
-              body: StepProgressTheme(
-                data: customThemeData,
-                child: StepLabel(subTitle: 'Test Subtitle'),
-              ),
-            ),
+          const TestThemeWrapper(
+            themeData: customThemeData,
+            child: StepLabel(subTitle: 'Test Subtitle'),
           ),
         );
         // Grab the AnimatedDefaultTextStyle for subtitle.
@@ -200,13 +201,9 @@ void main() {
           defaultForegroundColor: Colors.red,
         );
         await tester.pumpWidget(
-          const MaterialApp(
-            home: Scaffold(
-              body: StepProgressTheme(
-                data: customThemeData,
-                child: StepLabel(title: 'Fallback TitleStyle'),
-              ),
-            ),
+          const TestThemeWrapper(
+            themeData: customThemeData,
+            child: StepLabel(title: 'Fallback TitleStyle'),
           ),
         );
         // The AnimatedDefaultTextStyle widget used should have style similar
@@ -238,13 +235,9 @@ void main() {
           defaultForegroundColor: Colors.red,
         );
         await tester.pumpWidget(
-          const MaterialApp(
-            home: Scaffold(
-              body: StepProgressTheme(
-                data: customThemeData,
-                child: StepLabel(subTitle: 'Fallback SubTitleStyle'),
-              ),
-            ),
+          const TestThemeWrapper(
+            themeData: customThemeData,
+            child: StepLabel(subTitle: 'Fallback SubTitleStyle'),
           ),
         );
         final widgetSubTitle = tester.widget<AnimatedDefaultTextStyle>(

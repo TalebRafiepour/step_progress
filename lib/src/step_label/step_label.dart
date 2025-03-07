@@ -12,10 +12,15 @@ import 'package:step_progress/src/step_progress_theme.dart';
 /// additional information about the step. The [isActive] flag indicates whether
 /// the step is currently active, and defaults to `false`.
 ///
+/// The [style] property allows you to customize the appearance of the label,
+/// including text styles, colors, and other visual properties.
+///
 /// Example usage:
 ///
 /// ```dart
 /// StepLabel(
+///   style: StepLabelStyle(),
+///   alignment: Alignment.center,
 ///   title: 'Step 1',
 ///   subTitle: 'Introduction',
 ///   isActive: true,
@@ -23,6 +28,9 @@ import 'package:step_progress/src/step_progress_theme.dart';
 /// ```
 class StepLabel extends StatelessWidget {
   const StepLabel({
+    this.style = const StepLabelStyle(),
+    this.alignment = Alignment.center,
+    this.customLabel,
     this.title,
     this.subTitle,
     this.isActive = false,
@@ -38,17 +46,31 @@ class StepLabel extends StatelessWidget {
   /// Indicates whether the step label is active.
   final bool isActive;
 
+  /// The style to appliy on label
+  final StepLabelStyle style;
+
+  /// The alignment for whole label
+  final Alignment alignment;
+
+  /// A custom widget to display as the label for the step.
+  ///
+  /// If a custom label widget is provided, it takes priority over the title and
+  /// subtitle.
+  final Widget? customLabel;
+
   @override
   Widget build(BuildContext context) {
     final theme = StepProgressTheme.of(context)!.data;
-    final style = theme.labelStyle;
+    //
     return Container(
       padding: style.padding,
       margin: style.margin,
-      alignment: Alignment.center,
+      alignment: alignment,
       constraints: BoxConstraints(maxWidth: style.maxWidth),
       child:
-          (title == null && subTitle == null)
+          customLabel != null
+              ? customLabel!
+              : (title == null && subTitle == null)
               ? null
               : Column(
                 mainAxisSize: MainAxisSize.min,

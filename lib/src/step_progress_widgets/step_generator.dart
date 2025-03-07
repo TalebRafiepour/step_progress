@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:step_progress/src/helpers/keep_size_visibility.dart';
 import 'package:step_progress/src/step_label/step_label.dart';
 import 'package:step_progress/src/step_node/step_node.dart';
 import 'package:step_progress/src/step_node/step_node_ripple.dart';
-import 'package:step_progress/src/step_progress_widgets/keep_size_visibility.dart';
 import 'package:step_progress/step_progress.dart';
 
 /// A widget that generates a step in a step progress indicator.
@@ -25,8 +25,6 @@ import 'package:step_progress/step_progress.dart';
 /// when the widget is tapped.
 /// The [stepNodeIcon] parameter is an optional widget to display inside the
 /// `StepNode` by default.
-/// The [stepNodeActiveIcon] parameter is an optional widget to display inside
-/// the `StepNode` when the step is active.
 /// The [stepIndex] parameter specifies the index of the current step in the
 /// step progress.
 ///
@@ -45,7 +43,7 @@ import 'package:step_progress/step_progress.dart';
 ///     print('Step tapped');
 ///   },
 ///   stepNodeIcon: Icon(Icons.check),
-///   stepNodeActiveIcon: Icon(Icons.check_circle),
+///   customLabelWidget: Icon(Icons.arrow_right)
 /// )
 /// ```
 class StepGenerator extends StatelessWidget {
@@ -60,7 +58,7 @@ class StepGenerator extends StatelessWidget {
     this.subTitle,
     this.onTap,
     this.stepNodeIcon,
-    this.stepNodeActiveIcon,
+    this.customLabelWidget,
     super.key,
   });
 
@@ -88,14 +86,14 @@ class StepGenerator extends StatelessWidget {
   /// Icon widget to display inside `StepNode` by default.
   final Widget? stepNodeIcon;
 
-  /// Icon widget to display inside `StepNode` when the step is active.
-  final Widget? stepNodeActiveIcon;
-
   /// The index of the current step in the step progress.
   final int stepIndex;
 
   /// This means any other step nodes has label or not
   final bool anyLabelExist;
+
+  /// A widget that is built specifically for the step label.
+  final Widget? customLabelWidget;
 
   /// Builds a widget that represents a step in a step progress indicator.
   ///
@@ -144,7 +142,7 @@ class StepGenerator extends StatelessWidget {
               height: themeData.enableRippleEffect ? height / 1.5 : height,
               isActive: isActive,
               icon: stepNodeIcon,
-              activeIcon: stepNodeActiveIcon,
+              activeIcon: stepNodeIcon,
             ),
           ],
         ),
@@ -152,9 +150,9 @@ class StepGenerator extends StatelessWidget {
     }
 
     Widget buildStepLabel() {
-      if (title == null && subTitle == null) {
+      if (title == null && subTitle == null && customLabelWidget == null) {
         if (anyLabelExist) {
-          final style = themeData.labelStyle;
+          final style = themeData.nodeLabelStyle;
           return Container(
             padding: style.padding,
             margin: style.margin,
@@ -165,7 +163,13 @@ class StepGenerator extends StatelessWidget {
           return const SizedBox.shrink();
         }
       }
-      return StepLabel(title: title, subTitle: subTitle, isActive: isActive);
+      return StepLabel(
+        style: themeData.nodeLabelStyle,
+        title: title,
+        subTitle: subTitle,
+        customLabel: customLabelWidget,
+        isActive: isActive,
+      );
     }
 
     Widget buildStep({
@@ -210,7 +214,7 @@ class StepGenerator extends StatelessWidget {
     }
 
     final labelAlignment =
-        themeData.stepLabelAlignment ??
+        themeData.nodeLabelAlignment ??
         (axis == Axis.horizontal
             ? StepLabelAlignment.top
             : StepLabelAlignment.right);

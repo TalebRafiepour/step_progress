@@ -17,7 +17,7 @@ void main() {
       expect(style.subTitleStyle, isNull);
       expect(style.textAlign, TextAlign.center);
       expect(style.titleMaxLines, 3);
-      expect(style.subTitleMaxLines, 1);
+      expect(style.subTitleMaxLines, 3);
       expect(style.overflow, TextOverflow.ellipsis);
       expect(style.padding, EdgeInsets.zero);
       expect(style.margin, const EdgeInsets.all(2));
@@ -91,7 +91,7 @@ void main() {
       expect(updated2.textAlign, TextAlign.right);
       expect(updated2.titleMaxLines, 10);
       // The rest of the properties should remain at their default values.
-      expect(updated2.subTitleMaxLines, 1);
+      expect(updated2.subTitleMaxLines, 3);
     });
 
     // Negative test (conceptual): Ensure that providing null for parameters

@@ -17,14 +17,14 @@ class ExampleSix extends StatelessWidget {
           StepProgress(
             totalSteps: 4,
             controller: stepProgressController,
-            titles: const [
+            nodeTitles: const [
               'Step 1',
               'Step 2',
               'Step 3',
               'Step 4',
             ],
             theme: const StepProgressThemeData(
-              stepLabelAlignment: StepLabelAlignment.topBottom,
+              nodeLabelAlignment: StepLabelAlignment.topBottom,
               stepLineSpacing: 2,
               stepLineStyle: StepLineStyle(
                 lineThickness: 2,

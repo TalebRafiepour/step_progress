@@ -24,7 +24,7 @@ class ExampleSeven extends StatelessWidget {
             //   'Step 3',
             //   'Step 4',
             // ],
-            subTitles: const [
+            nodeSubTitles: const [
               'sub 1',
               'sub 2',
               'sub 3',
@@ -32,8 +32,8 @@ class ExampleSeven extends StatelessWidget {
             ],
             padding: const EdgeInsets.all(18),
             theme: const StepProgressThemeData(
-              stepLabelAlignment: StepLabelAlignment.right,
-              labelStyle: StepLabelStyle(
+              nodeLabelAlignment: StepLabelAlignment.right,
+              nodeLabelStyle: StepLabelStyle(
                 labelAxisAlignment: CrossAxisAlignment.start,
               ),
             ),
