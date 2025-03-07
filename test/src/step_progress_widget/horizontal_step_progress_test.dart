@@ -36,9 +36,7 @@ void main() {
               visibilityOptions: visibilityOptions,
               nodeTitles: nodeTitles,
               nodeSubTitles: nodeSubTitles,
-              needsRebuildWidget: () {
-                tester.pumpAndSettle();
-              },
+              needsRebuildWidget: () {},
             ),
           ),
         ),
@@ -96,9 +94,7 @@ void main() {
               currentStep: currentStep,
               stepSize: stepSize,
               visibilityOptions: visibilityOptions,
-              needsRebuildWidget: () {
-                tester.pumpAndSettle();
-              },
+              needsRebuildWidget: () {},
             ),
           ),
         ),
@@ -154,9 +150,7 @@ void main() {
               onStepNodeTapped: (index) {
                 tappedIndex = index;
               },
-              needsRebuildWidget: () {
-                tester.pumpAndSettle();
-              },
+              needsRebuildWidget: () {},
             ),
           ),
         ),
@@ -199,9 +193,7 @@ void main() {
                 visibilityOptions: visibilityOptions,
                 // No need to specify titles/subtitles for line testing.
                 onStepLineTapped: (_) {},
-                needsRebuildWidget: () {
-                  tester.pumpAndSettle();
-                },
+                needsRebuildWidget: () {},
               ),
             ),
           ),
@@ -259,9 +251,7 @@ void main() {
               onStepLineTapped: (index) {
                 tappedLineIndex = index;
               },
-              needsRebuildWidget: () {
-                tester.pumpAndSettle();
-              },
+              needsRebuildWidget: () {},
             ),
           ),
         ),
@@ -297,9 +287,7 @@ void main() {
               currentStep: currentStep,
               stepSize: stepSize,
               visibilityOptions: visibilityOptions,
-              needsRebuildWidget: () {
-                tester.pumpAndSettle();
-              },
+              needsRebuildWidget: () {},
             ),
           ),
         ),
@@ -333,9 +321,7 @@ void main() {
                 currentStep: currentStep,
                 stepSize: stepSize,
                 visibilityOptions: visibilityOptions,
-                needsRebuildWidget: () {
-                  tester.pumpAndSettle();
-                },
+                needsRebuildWidget: () {},
               ),
             ),
           ),
@@ -350,5 +336,181 @@ void main() {
       final stepLineFinder = find.byType(StepLine);
       expect(stepLineFinder, findsNWidgets(totalSteps - 1));
     });
+
+    testWidgets('HorizontalStepProgress renders line titles correctly', (
+      tester,
+    ) async {
+      const totalSteps = 3;
+      const currentStep = 1;
+      final lineTitles = List.generate(
+        totalSteps - 1,
+        (index) => 'Line Title $index',
+      );
+
+      await tester.pumpWidget(
+        TestThemeWrapper(
+          child: StatefulBuilder(
+            builder: (context, setState) {
+              return Scaffold(
+                body: HorizontalStepProgress(
+                  totalStep: totalSteps,
+                  currentStep: currentStep,
+                  stepSize: 50,
+                  visibilityOptions: StepProgressVisibilityOptions.both,
+                  lineTitles: lineTitles,
+                  needsRebuildWidget: () {
+                    setState(() {});
+                  },
+                ),
+              );
+            },
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Verify each line title is rendered
+      for (final title in lineTitles) {
+        expect(find.text(title), findsOneWidget);
+      }
+    });
+
+    testWidgets('HorizontalStepProgress renders line subtitles correctly', (
+      tester,
+    ) async {
+      const totalSteps = 3;
+      const currentStep = 1;
+      final lineSubTitles = List.generate(
+        totalSteps - 1,
+        (index) => 'Line SubTitle $index',
+      );
+
+      await tester.pumpWidget(
+        TestThemeWrapper(
+          child: StatefulBuilder(
+            builder: (context, setState) {
+              return Scaffold(
+                body: HorizontalStepProgress(
+                  totalStep: totalSteps,
+                  currentStep: currentStep,
+                  stepSize: 50,
+                  visibilityOptions: StepProgressVisibilityOptions.both,
+                  lineSubTitles: lineSubTitles,
+                  needsRebuildWidget: () {
+                    setState(() {});
+                  },
+                ),
+              );
+            },
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Verify each line subtitle is rendered
+      for (final subtitle in lineSubTitles) {
+        expect(find.text(subtitle), findsOneWidget);
+      }
+    });
+
+    testWidgets(
+      'HorizontalStepProgress uses custom lineLabelBuilder correctly',
+      (tester) async {
+        const totalSteps = 3;
+        const currentStep = 1;
+
+        Widget customLineLabel(int index, int currentStep) {
+          return Container(
+            key: Key('custom_line_label_$index'),
+            child: Text('Custom Label $index'),
+          );
+        }
+
+        await tester.pumpWidget(
+          TestThemeWrapper(
+            child: StatefulBuilder(
+              builder: (context, setState) {
+                return Scaffold(
+                  body: HorizontalStepProgress(
+                    totalStep: totalSteps,
+                    currentStep: currentStep,
+                    stepSize: 50,
+                    visibilityOptions: StepProgressVisibilityOptions.both,
+                    lineLabelBuilder: customLineLabel,
+                    needsRebuildWidget: () {
+                      setState(() {});
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        // Verify custom labels are rendered
+        for (var i = 0; i < totalSteps - 1; i++) {
+          expect(find.byKey(Key('custom_line_label_$i')), findsOneWidget);
+          expect(find.text('Custom Label $i'), findsOneWidget);
+        }
+      },
+    );
+
+    testWidgets(
+      'HorizontalStepProgress renders line labels with different alignments',
+      (tester) async {
+        const totalSteps = 3;
+        const currentStep = 1;
+        final lineTitles = List.generate(
+          totalSteps - 1,
+          (index) => 'Line $index',
+        );
+
+        Future<void> buildWithAlignment(Alignment alignment) async {
+          await tester.pumpWidget(
+            TestThemeWrapper(
+              themeData: StepProgressThemeData(lineLabelAlignment: alignment),
+              child: StatefulBuilder(
+                builder: (context, setState) {
+                  return Scaffold(
+                    body: HorizontalStepProgress(
+                      totalStep: totalSteps,
+                      currentStep: currentStep,
+                      stepSize: 50,
+                      visibilityOptions: StepProgressVisibilityOptions.both,
+                      lineTitles: lineTitles,
+                      needsRebuildWidget: () {
+                        setState(() {});
+                      },
+                    ),
+                  );
+                },
+              ),
+            ),
+          );
+          await tester.pumpAndSettle();
+        }
+
+        // Test with top alignment
+        await buildWithAlignment(Alignment.topCenter);
+        expect(find.byType(Column), findsWidgets);
+
+        // Test with bottom alignment
+        await buildWithAlignment(Alignment.bottomCenter);
+        expect(find.byType(Column), findsWidgets);
+
+        // Test with center alignment
+        await buildWithAlignment(Alignment.center);
+        expect(find.byType(Column), findsWidgets);
+
+        // Verify labels are still visible with each alignment
+        for (final title in lineTitles) {
+          expect(find.text(title), findsOneWidget);
+        }
+      },
+    );
   });
 }
