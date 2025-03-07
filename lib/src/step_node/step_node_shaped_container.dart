@@ -1,9 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:step_progress/src/step_node/polygon_clipper.dart';
-import 'package:step_progress/src/step_node/star_clipper.dart';
-import 'package:step_progress/src/step_node/triangle_clipper.dart';
+import 'package:step_progress/src/step_node/custom_clippers/custom_clippers.dart';
 import 'package:step_progress/step_progress.dart';
 
 /// A container widget that shapes its child according to the provided
