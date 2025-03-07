@@ -14,7 +14,7 @@ class ExampleSixteen extends StatelessWidget {
       ),
       body: StepProgress(
         totalSteps: 6,
-        stepSize: 28,
+        stepSize: 18,
         padding: const EdgeInsets.all(10),
         axis: Axis.vertical,
         reversed: true,
@@ -52,6 +52,7 @@ class ExampleSixteen extends StatelessWidget {
             children: [
               Text(
                 'Invisalign ClinCheck $index',
+                maxLines: 3,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       decorationColor: const Color(0xFF4e97fc),
                       color: const Color(0xFF4e97fc),

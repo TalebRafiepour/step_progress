@@ -177,7 +177,7 @@ class VerticalStepProgress extends StepProgressWidget {
 
     return Padding(
       padding: EdgeInsets.symmetric(
-        vertical: stepSize / 2,
+        vertical: maxStepSize / 2,
         horizontal:
             style.lineThickness >= stepSize
                 ? 0
@@ -256,7 +256,7 @@ class VerticalStepProgress extends StepProgressWidget {
         labelMargin.bottom;
 
     // Calculate the maximum size for the step node.
-    return ((nodeTitles != null || nodeSubTitles != null) &&
+    return (hasNodeLabels &&
             labelMaxHeight.isFinite &&
             labelMaxHeight > stepSize)
         ? labelMaxHeight

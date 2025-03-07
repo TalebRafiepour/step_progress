@@ -230,9 +230,7 @@ class HorizontalStepProgress extends StepProgressWidget {
         labelMargin.right;
 
     // Calculate the maximum size for the step node.
-    return ((nodeTitles != null || nodeSubTitles != null) &&
-            labelMaxWidth.isFinite &&
-            labelMaxWidth > stepSize)
+    return (hasNodeLabels && labelMaxWidth.isFinite && labelMaxWidth > stepSize)
         ? labelMaxWidth
         : stepSize;
   }
