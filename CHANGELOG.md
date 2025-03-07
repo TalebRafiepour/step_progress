@@ -1,3 +1,17 @@
+## 2.2.0
+
+- **Enhanced Customization**: Introduced `lineLabelAlignment` property in the theme for better positioning of `lineLabels`.
+- **New Feature**: Added the `reversed` option to allow users to change the order of steps.
+- **Improved Labeling**: Enabled display of `title` and `subtitles` relative to line segments.
+- **Code Simplification**: Removed `nodeActiveIconBuilder` in favor of using `nodeIconBuilder` to reduce redundancy.
+- **Renaming**: Renamed `stepLabelAlignment` theme property to `nodeLabelAlignment`.
+- **New Builders**: Added `nodeLabelBuilder` and `lineLabelBuilder` to create customized labels.
+- **Bug Fixes**:
+  - Corrected vertical misalignment of lines and nodes.
+  - Resolved rendering issue when `lineThickness` exceeds `stepSize`.
+- **Documentation**: Updated `README.md` with additional examples showcasing `lineLabels`.
+- **Testing**: Added new tests and updated existing ones, increasing code coverage to 96%.
+
 ## 2.1.2
 
 - **Bug Fix**: Corrected the misalignment issue with step nodes [#18](https://github.com/TalebRafiepour/step_progress/issues/18).
