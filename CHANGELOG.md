@@ -1,3 +1,8 @@
+## 2.2.1
+
+- **Configuration Update**: Modified `analysis_options.yaml` to ignore the trailing commas rule.
+- **Code Formatting**: Applied `dart format .` to ensure consistent code style.
+
 ## 2.2.0
 
 - **Enhanced Customization**: Introduced `lineLabelAlignment` property in the theme for better positioning of `lineLabels`.

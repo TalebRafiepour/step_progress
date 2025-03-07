@@ -143,7 +143,6 @@ analyzer:
     prefer_void_to_null: error
     provide_deprecation_message: error
     recursive_getters: error
-    require_trailing_commas: error
     sized_box_for_whitespace: error
     slash_for_doc_comments: error
     sort_child_properties_last: error
@@ -321,7 +320,6 @@ linter:
     - prefer_void_to_null
     - provide_deprecation_message
     - recursive_getters
-    - require_trailing_commas
     - sized_box_for_whitespace
     - slash_for_doc_comments
     - sort_child_properties_last

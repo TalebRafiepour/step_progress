@@ -170,7 +170,7 @@ void main() {
             ),
           ),
         );
-      }, throwsA(isA<AssertionError>()),);
+      }, throwsA(isA<AssertionError>()));
     });
 
     testWidgets(

@@ -1,5 +1,5 @@
 /// A class that provides caching functionality for data.
-/// 
+///
 /// This class can be used to store and retrieve data efficiently,
 /// reducing the need for repeated data fetching operations.
 class DataCache {
@@ -28,7 +28,7 @@ class DataCache {
 }
 
 /// An abstract class that represents a key for data caching.
-/// 
+///
 /// This class is intended to be extended by other classes that define
 /// specific keys for caching data. It provides a common interface for
 /// all cache keys, ensuring consistency and type safety.

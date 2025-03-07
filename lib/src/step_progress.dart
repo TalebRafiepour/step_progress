@@ -303,7 +303,7 @@ class _StepProgressState extends State<StepProgress>
 
   /// Triggers a rebuild of the widget if it is currently mounted.
   ///
-  /// This method checks if the widget is mounted, and if so, 
+  /// This method checks if the widget is mounted, and if so,
   /// calls `setState` to request a rebuild of the widget.
   void _needsRebuildWidget() {
     if (mounted) {

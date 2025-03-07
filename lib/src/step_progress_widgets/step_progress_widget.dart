@@ -38,7 +38,7 @@ import 'package:step_progress/src/step_progress_visibility_options.dart';
 ///  lines.
 /// - [reversed]: Indicates whether the step progress is displayed in reverse
 /// order. It defaults to false.
-/// - [needsRebuildWidget]: Callback to request a rebuild of the parent widget. 
+/// - [needsRebuildWidget]: Callback to request a rebuild of the parent widget.
 /// This is triggered when dynamic size calculations are needed.
 abstract class StepProgressWidget extends StatelessWidget {
   const StepProgressWidget({
