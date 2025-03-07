@@ -36,8 +36,10 @@ import 'package:step_progress/src/step_progress_visibility_options.dart';
 /// step nodes.
 /// - [lineLabelBuilder]: A builder for creating custom label widgets for step
 ///  lines.
-/// - [reversed]: indicates whether the step progress is displayed in reverse 
+/// - [reversed]: Indicates whether the step progress is displayed in reverse
 /// order. It defaults to false.
+/// - [needsRebuildWidget]: Callback to request a rebuild of the parent widget. 
+/// This is triggered when dynamic size calculations are needed.
 abstract class StepProgressWidget extends StatelessWidget {
   const StepProgressWidget({
     required this.totalStep,
@@ -45,6 +47,7 @@ abstract class StepProgressWidget extends StatelessWidget {
     required this.stepSize,
     required this.axis,
     required this.visibilityOptions,
+    required this.needsRebuildWidget,
     this.reversed = false,
     this.nodeTitles,
     this.nodeSubTitles,
@@ -117,6 +120,10 @@ abstract class StepProgressWidget extends StatelessWidget {
 
   /// Indicates whether the step progress is displayed in reverse order.
   final bool reversed;
+
+  /// Callback to request a rebuild of the parent widget. This is triggered when
+  /// dynamic size calculations are needed.
+  final VoidCallback needsRebuildWidget;
 
   /// Determine if the step nodes have associated labels.
   bool get hasNodeLabels =>

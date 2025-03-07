@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:step_progress/src/helpers/data_cache.dart';
 import 'package:step_progress/src/helpers/rendering_box_widget.dart';
@@ -28,6 +30,9 @@ import 'package:step_progress/src/step_progress_widgets/step_progress_widget.dar
 /// subtitles.
 ///
 /// The [reversed] parameter allows you to reverse the order of the steps.
+///
+/// The [needsRebuildWidget] parameter is a [VoidCallback] function that can be
+/// used to trigger a rebuild of the widget when necessary.
 ///
 /// Optional parameters include [nodeTitles], [nodeSubTitles], [lineTitles],
 /// and [lineSubTitles], which allow you to provide titles and subtitles for
@@ -68,6 +73,9 @@ import 'package:step_progress/src/step_progress_widgets/step_progress_widget.dar
 ///   lineLabelBuilder: (step, completedStepIndex) {
 ///     return Text('Line Label $step');
 ///   },
+///   needsRebuildWidget: () {
+///     // Trigger a rebuild calling `setState((){})` in parent widget
+///   },
 /// );
 /// ```
 class VerticalStepProgress extends StepProgressWidget {
@@ -76,6 +84,7 @@ class VerticalStepProgress extends StepProgressWidget {
     required super.currentStep,
     required super.stepSize,
     required super.visibilityOptions,
+    required super.needsRebuildWidget,
     super.reversed,
     super.nodeTitles,
     super.nodeSubTitles,
@@ -398,8 +407,9 @@ class VerticalStepProgress extends StepProgressWidget {
                     linePosition,
                   );
                   DataCache().setData(DataCacheKey.wholeWidgetSize, wholeSize);
-                  //
-                  return positionLineLabels(wholeSize, lineSize, linePosition);
+                  // then we rebuild widget with new sizes that cached
+                  scheduleMicrotask(needsRebuildWidget.call);
+                  return const SizedBox.shrink();
                 },
               );
             },

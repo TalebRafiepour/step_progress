@@ -36,6 +36,9 @@ void main() {
               visibilityOptions: visibilityOptions,
               nodeTitles: nodeTitles,
               nodeSubTitles: nodeSubTitles,
+              needsRebuildWidget: () {
+                tester.pumpAndSettle();
+              },
             ),
           ),
         ),
@@ -81,8 +84,10 @@ void main() {
       const visibilityOptions = StepProgressVisibilityOptions.both;
 
       await tester.pumpWidget(
-        const TestThemeWrapper(
-          themeData: StepProgressThemeData(highlightCompletedSteps: false),
+        TestThemeWrapper(
+          themeData: const StepProgressThemeData(
+            highlightCompletedSteps: false,
+          ),
           child: Scaffold(
             // Here we pass null for titles and subtitles to simulate
             // missing data.
@@ -91,6 +96,9 @@ void main() {
               currentStep: currentStep,
               stepSize: stepSize,
               visibilityOptions: visibilityOptions,
+              needsRebuildWidget: () {
+                tester.pumpAndSettle();
+              },
             ),
           ),
         ),
@@ -146,6 +154,9 @@ void main() {
               onStepNodeTapped: (index) {
                 tappedIndex = index;
               },
+              needsRebuildWidget: () {
+                tester.pumpAndSettle();
+              },
             ),
           ),
         ),
@@ -188,6 +199,9 @@ void main() {
                 visibilityOptions: visibilityOptions,
                 // No need to specify titles/subtitles for line testing.
                 onStepLineTapped: (_) {},
+                needsRebuildWidget: () {
+                  tester.pumpAndSettle();
+                },
               ),
             ),
           ),
@@ -245,6 +259,9 @@ void main() {
               onStepLineTapped: (index) {
                 tappedLineIndex = index;
               },
+              needsRebuildWidget: () {
+                tester.pumpAndSettle();
+              },
             ),
           ),
         ),
@@ -273,13 +290,16 @@ void main() {
       const visibilityOptions = StepProgressVisibilityOptions.both;
 
       await tester.pumpWidget(
-        const TestThemeWrapper(
+        TestThemeWrapper(
           child: Scaffold(
             body: HorizontalStepProgress(
               totalStep: totalSteps,
               currentStep: currentStep,
               stepSize: stepSize,
               visibilityOptions: visibilityOptions,
+              needsRebuildWidget: () {
+                tester.pumpAndSettle();
+              },
             ),
           ),
         ),
@@ -304,7 +324,7 @@ void main() {
       const visibilityOptions = StepProgressVisibilityOptions.both;
 
       await tester.pumpWidget(
-        const TestThemeWrapper(
+        TestThemeWrapper(
           child: Scaffold(
             body: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -313,6 +333,9 @@ void main() {
                 currentStep: currentStep,
                 stepSize: stepSize,
                 visibilityOptions: visibilityOptions,
+                needsRebuildWidget: () {
+                  tester.pumpAndSettle();
+                },
               ),
             ),
           ),

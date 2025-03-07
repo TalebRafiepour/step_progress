@@ -47,6 +47,9 @@ void main() {
               nodeIconBuilder: (step, completedStepIndex) {
                 return Icon(Icons.circle, key: Key('node_$step'));
               },
+              needsRebuildWidget: () {
+                tester.pumpAndSettle();
+              },
             ),
           ),
         );
@@ -111,6 +114,9 @@ void main() {
                 return Icon(Icons.circle, key: Key('node_$step'));
               }
             },
+            needsRebuildWidget: () {
+              tester.pumpAndSettle();
+            },
           ),
         ),
       );
@@ -159,6 +165,9 @@ void main() {
               } else {
                 return Icon(Icons.circle, key: Key('node_$step'));
               }
+            },
+            needsRebuildWidget: () {
+              tester.pumpAndSettle();
             },
           ),
         ),
@@ -209,6 +218,9 @@ void main() {
                 return Icon(Icons.circle, key: Key('node_$step'));
               }
             },
+            needsRebuildWidget: () {
+              tester.pumpAndSettle();
+            },
           ),
         ),
       );
@@ -254,6 +266,9 @@ void main() {
               } else {
                 return Icon(Icons.circle, key: Key('node_$step'));
               }
+            },
+            needsRebuildWidget: () {
+              tester.pumpAndSettle();
             },
           ),
         ),

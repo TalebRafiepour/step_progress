@@ -14,7 +14,6 @@ class ExampleSixteen extends StatelessWidget {
       ),
       body: StepProgress(
         totalSteps: 6,
-        stepSize: 18,
         padding: const EdgeInsets.all(10),
         axis: Axis.vertical,
         reversed: true,
@@ -48,7 +47,7 @@ class ExampleSixteen extends StatelessWidget {
           return Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: 6,
+            spacing: 2,
             children: [
               Text(
                 'Invisalign ClinCheck $index',

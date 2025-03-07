@@ -243,9 +243,9 @@ class _StepProgressState extends State<StepProgress>
 
   @override
   void dispose() {
-    /// Clears the cache by calling the `clearCache` method on the `DataCache` 
+    /// Clears the cache by calling the `clearCache` method on the `DataCache`
     /// instance.
-    /// This method is used to remove all cached data, ensuring that the cache 
+    /// This method is used to remove all cached data, ensuring that the cache
     /// is empty.
     DataCache().clearCache();
     super.dispose();
@@ -301,6 +301,16 @@ class _StepProgressState extends State<StepProgress>
     widget.onStepChanged?.call(_currentStep);
   }
 
+  /// Triggers a rebuild of the widget if it is currently mounted.
+  ///
+  /// This method checks if the widget is mounted, and if so, 
+  /// calls `setState` to request a rebuild of the widget.
+  void _needsRebuildWidget() {
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return StepProgressTheme(
@@ -317,6 +327,7 @@ class _StepProgressState extends State<StepProgress>
                   totalStep: widget.totalSteps,
                   currentStep: _currentStep,
                   reversed: widget.reversed,
+                  needsRebuildWidget: _needsRebuildWidget,
                   nodeTitles: widget.nodeTitles,
                   nodeSubTitles: widget.nodeSubTitles,
                   lineTitles: widget.lineTitles,
@@ -333,6 +344,7 @@ class _StepProgressState extends State<StepProgress>
                   totalStep: widget.totalSteps,
                   currentStep: _currentStep,
                   reversed: widget.reversed,
+                  needsRebuildWidget: _needsRebuildWidget,
                   nodeTitles: widget.nodeTitles,
                   nodeSubTitles: widget.nodeSubTitles,
                   lineTitles: widget.lineTitles,

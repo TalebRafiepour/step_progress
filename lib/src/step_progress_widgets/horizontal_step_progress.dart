@@ -1,5 +1,6 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:step_progress/src/helpers/data_cache.dart';
 import 'package:step_progress/src/helpers/rendering_box_widget.dart';
 import 'package:step_progress/src/step_label/step_label.dart';
@@ -20,6 +21,8 @@ import 'package:step_progress/step_progress.dart';
 /// - [stepSize]: The size of each step.
 /// - [visibilityOptions]: Options to control the visibility of various
 /// elements.
+/// - [needsRebuildWidget]: A callback that indicates if the widget needs to be
+/// rebuilt.
 ///
 /// Optional parameters include:
 /// - [reversed]: A boolean to reverse the order of steps.
@@ -44,6 +47,7 @@ class HorizontalStepProgress extends StepProgressWidget {
     required super.currentStep,
     required super.stepSize,
     required super.visibilityOptions,
+    required super.needsRebuildWidget,
     super.reversed,
     super.nodeTitles,
     super.nodeSubTitles,
@@ -363,8 +367,9 @@ class HorizontalStepProgress extends StepProgressWidget {
                     linePosition,
                   );
                   DataCache().setData(DataCacheKey.wholeWidgetSize, wholeSize);
-                  //
-                  return positionLineLabels(wholeSize, lineSize, linePosition);
+                  // then we rebuild widget with new sizes that cached.
+                  scheduleMicrotask(needsRebuildWidget.call);
+                  return const SizedBox.shrink();
                 },
               );
             },
