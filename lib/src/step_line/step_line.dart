@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:step_progress/src/step_progress_theme.dart';
+import 'package:step_progress/step_progress.dart';
 
 /// A widget that represents a step line in a step progress indicator.
 ///
 /// The [StepLine] widget is used to display a line that connects steps in a
 /// step progress indicator. It can be oriented either horizontally or
 /// vertically, and its appearance can be customized using the
-/// `StepLineStyle` parameter.
+/// `stepLineStyle` parameter.
+///
+/// The [stepLineStyle] parameter allows customization of the step line's
+/// appearance.
 ///
 /// The [isActive] parameter indicates whether the step line is active or not.
 ///
@@ -25,6 +28,10 @@ import 'package:step_progress/src/step_progress_theme.dart';
 /// StepLine(
 ///   axis: Axis.vertical,
 ///   isActive: true,
+///   stepLineStyle: StepLineStyle(
+///     color: Colors.blue,
+///     thickness: 2.0,
+///   ),
 ///   onTap: () {
 ///     print('Step line tapped');
 ///   },
@@ -33,6 +40,7 @@ import 'package:step_progress/src/step_progress_theme.dart';
 class StepLine extends StatelessWidget {
   const StepLine({
     this.axis = Axis.horizontal,
+    this.stepLineStyle,
     this.isActive = false,
     this.onTap,
     super.key,
@@ -47,10 +55,13 @@ class StepLine extends StatelessWidget {
   /// Callback function to be executed when the step line is tapped.
   final VoidCallback? onTap;
 
+  /// The style of the step line.
+  final StepLineStyle? stepLineStyle;
+
   @override
   Widget build(BuildContext context) {
     final theme = StepProgressTheme.of(context)!.data;
-    final style = theme.stepLineStyle;
+    final style = stepLineStyle ?? theme.stepLineStyle;
     final borderWidth = theme.borderWidth;
     final borderColor = theme.borderColor;
     final activeBorderColor = theme.activeBorderColor;

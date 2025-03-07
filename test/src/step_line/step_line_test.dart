@@ -1,22 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:step_progress/src/step_line/step_line.dart';
+import 'package:step_progress/step_progress.dart';
+
+import '../helper/test_theme_wrapper.dart';
 
 void main() {
   group('StepLine Widget Tests', () {
+    const lineThickness = 5.0;
+    const dummyStepLineStyle = StepLineStyle(lineThickness: lineThickness);
     testWidgets(
       'Horizontal StepLine active has full width and specified thickness',
       (tester) async {
-        const lineThickness = 5.0;
         const testKey = Key('step_line_active_horizontal');
 
         await tester.pumpWidget(
-          const MaterialApp(
-            home: Scaffold(
-              body: SizedBox(
-                width: 200,
-                height: 50,
-                child: Row(children: [StepLine(key: testKey, isActive: true)]),
+          const TestThemeWrapper(
+            child: SizedBox(
+              width: 200,
+              height: 50,
+              child: Row(
+                children: [
+                  StepLine(
+                    key: testKey,
+                    stepLineStyle: dummyStepLineStyle,
+                    isActive: true,
+                  ),
+                ],
               ),
             ),
           ),
@@ -45,16 +55,17 @@ void main() {
     testWidgets(
       'Horizontal StepLine inactive has zero width for AnimatedContainer',
       (tester) async {
-        const lineThickness = 5.0;
         const testKey = Key('step_line_inactive_horizontal');
 
         await tester.pumpWidget(
-          const MaterialApp(
-            home: Scaffold(
-              body: SizedBox(
-                width: 200,
-                height: 50,
-                child: Row(children: [StepLine(key: testKey)]),
+          const TestThemeWrapper(
+            child: SizedBox(
+              width: 200,
+              height: 50,
+              child: Row(
+                children: [
+                  StepLine(stepLineStyle: dummyStepLineStyle, key: testKey),
+                ],
               ),
             ),
           ),
@@ -79,20 +90,22 @@ void main() {
     testWidgets(
       'Vertical StepLine active has full height and  specified thickness',
       (tester) async {
-        const lineThickness = 5.0;
         const testKey = Key('step_line_active_vertical');
 
         await tester.pumpWidget(
-          const MaterialApp(
-            home: Scaffold(
-              body: SizedBox(
-                width: 50,
-                height: 200,
-                child: Column(
-                  children: [
-                    StepLine(key: testKey, axis: Axis.vertical, isActive: true),
-                  ],
-                ),
+          const TestThemeWrapper(
+            child: SizedBox(
+              width: 50,
+              height: 200,
+              child: Column(
+                children: [
+                  StepLine(
+                    key: testKey,
+                    stepLineStyle: dummyStepLineStyle,
+                    axis: Axis.vertical,
+                    isActive: true,
+                  ),
+                ],
               ),
             ),
           ),
@@ -117,18 +130,21 @@ void main() {
     testWidgets(
       'Vertical StepLine inactive has zero height for  AnimatedContainer',
       (tester) async {
-        const lineThickness = 5.0;
         const testKey = Key('step_line_inactive_vertical');
 
         await tester.pumpWidget(
-          const MaterialApp(
-            home: Scaffold(
-              body: SizedBox(
-                width: 50,
-                height: 200,
-                child: Column(
-                  children: [StepLine(key: testKey, axis: Axis.vertical)],
-                ),
+          const TestThemeWrapper(
+            child: SizedBox(
+              width: 50,
+              height: 200,
+              child: Column(
+                children: [
+                  StepLine(
+                    key: testKey,
+                    stepLineStyle: dummyStepLineStyle,
+                    axis: Axis.vertical,
+                  ),
+                ],
               ),
             ),
           ),
@@ -155,19 +171,17 @@ void main() {
       const testKey = Key('step_line_tap');
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: Row(
-              children: [
-                StepLine(
-                  key: testKey,
-                  isActive: true,
-                  onTap: () {
-                    tapped = true;
-                  },
-                ),
-              ],
-            ),
+        TestThemeWrapper(
+          child: Row(
+            children: [
+              StepLine(
+                key: testKey,
+                isActive: true,
+                onTap: () {
+                  tapped = true;
+                },
+              ),
+            ],
           ),
         ),
       );
@@ -191,10 +205,8 @@ void main() {
       const testKey = Key('step_line_no_theme');
 
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: Row(children: [StepLine(key: testKey, isActive: true)]),
-          ),
+        const TestThemeWrapper(
+          child: Row(children: [StepLine(key: testKey, isActive: true)]),
         ),
       );
 
