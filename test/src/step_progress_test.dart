@@ -489,4 +489,115 @@ void main() {
       expect(find.text('Sub 2'), findsOneWidget);
     });
   });
+
+  group('StepProgress nodeLabelBuilder tests', () {
+    testWidgets('nodeLabelBuilder should render custom widgets for each node', (
+      tester,
+    ) async {
+      const key1 = Key('node_label_0');
+      const key2 = Key('node_label_1');
+      const key3 = Key('node_label_2');
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: StepProgress(
+            totalSteps: 3,
+            currentStep: 1,
+            nodeLabelBuilder: (index, completedStepIndex) {
+              return Container(
+                key: Key('node_label_$index'),
+                child: Text(
+                  'Custom Label $index',
+                  style: const TextStyle(fontSize: 14),
+                ),
+              );
+            },
+          ),
+        ),
+      );
+
+      expect(find.byKey(key1), findsOneWidget);
+      expect(find.byKey(key2), findsOneWidget);
+      expect(find.byKey(key3), findsOneWidget);
+      expect(find.text('Custom Label 0'), findsOneWidget);
+      expect(find.text('Custom Label 1'), findsOneWidget);
+      expect(find.text('Custom Label 2'), findsOneWidget);
+    });
+
+    testWidgets('nodeLabelBuilder receives correct parameters', (tester) async {
+      final List<int> receivedIndices = [];
+      final List<int> receivedCompletedSteps = [];
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: StepProgress(
+            totalSteps: 3,
+            currentStep: 1,
+            nodeLabelBuilder: (index, completedStepIndex) {
+              receivedIndices.add(index);
+              receivedCompletedSteps.add(completedStepIndex);
+              return Text('Label $index');
+            },
+          ),
+        ),
+      );
+
+      expect(receivedIndices, [0, 1, 2]);
+      expect(receivedCompletedSteps, [1, 1, 1]);
+    });
+
+    testWidgets('nodeLabelBuilder works with reversed order', (tester) async {
+      final List<String> labels = [];
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: StepProgress(
+            totalSteps: 3,
+            currentStep: 1,
+            reversed: true,
+            nodeLabelBuilder: (index, completedStepIndex) {
+              final widget = Text('Label $index');
+              labels.add('Label $index');
+              return widget;
+            },
+          ),
+        ),
+      );
+
+      // Even though builder is called in normal order
+      expect(labels, ['Label 0', 'Label 1', 'Label 2']);
+
+      // Labels should appear in reversed order in the widget tree
+      final labelFinders = find.byType(Text);
+      final labelWidgets = tester.widgetList<Text>(labelFinders);
+      expect(labelWidgets.map((text) => text.data).toList(), [
+        'Label 2',
+        'Label 1',
+        'Label 0',
+      ]);
+    });
+
+    testWidgets('nodeLabelBuilder can return null for specific nodes', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: StepProgress(
+            totalSteps: 3,
+            currentStep: 1,
+            nodeLabelBuilder: (index, completedStepIndex) {
+              // Only build label for middle node
+              return index == 1 ? const Text('Middle Node') : null;
+            },
+          ),
+        ),
+      );
+
+      expect(find.text('Middle Node'), findsOneWidget);
+      expect(
+        find.byType(Text),
+        findsOneWidget,
+      ); // Only one text widget should exist
+    });
+  });
 }
