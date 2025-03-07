@@ -28,7 +28,7 @@ import 'package:step_progress/src/step_progress_theme.dart';
 /// ```
 class StepLabel extends StatelessWidget {
   const StepLabel({
-    required this.style,
+    this.style = const StepLabelStyle(),
     this.alignment = Alignment.center,
     this.customLabel,
     this.title,

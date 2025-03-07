@@ -135,7 +135,7 @@ void main() {
         await tester.pumpWidget(
           const TestThemeWrapper(
             themeData: customThemeData,
-            child: StepLabel(style: dummyLabelStyle, title: 'Test Title'),
+            child: StepLabel(title: 'Test Title'),
           ),
         );
         // Grab the AnimatedDefaultTextStyle for title.
@@ -168,7 +168,7 @@ void main() {
         await tester.pumpWidget(
           const TestThemeWrapper(
             themeData: customThemeData,
-            child: StepLabel(style: dummyLabelStyle, subTitle: 'Test Subtitle'),
+            child: StepLabel(subTitle: 'Test Subtitle'),
           ),
         );
         // Grab the AnimatedDefaultTextStyle for subtitle.
@@ -203,10 +203,7 @@ void main() {
         await tester.pumpWidget(
           const TestThemeWrapper(
             themeData: customThemeData,
-            child: StepLabel(
-              style: dummyLabelStyle,
-              title: 'Fallback TitleStyle',
-            ),
+            child: StepLabel(title: 'Fallback TitleStyle'),
           ),
         );
         // The AnimatedDefaultTextStyle widget used should have style similar
@@ -240,10 +237,7 @@ void main() {
         await tester.pumpWidget(
           const TestThemeWrapper(
             themeData: customThemeData,
-            child: StepLabel(
-              style: dummyLabelStyle,
-              subTitle: 'Fallback SubTitleStyle',
-            ),
+            child: StepLabel(subTitle: 'Fallback SubTitleStyle'),
           ),
         );
         final widgetSubTitle = tester.widget<AnimatedDefaultTextStyle>(
