@@ -22,6 +22,9 @@ import 'package:step_progress/step_progress.dart';
 /// The [onTap] parameter is a callback function that is executed when the step
 /// line is tapped. It is optional and defaults to `null`.
 ///
+/// The [flex] parameter determines how much space the step line should occupy
+/// in a [Flex] widget. It defaults to `1`.
+///
 /// Example usage:
 ///
 /// ```dart
@@ -42,6 +45,7 @@ class StepLine extends StatelessWidget {
     this.axis = Axis.horizontal,
     this.stepLineStyle,
     this.isActive = false,
+    this.flex = 1,
     this.onTap,
     super.key,
   });
@@ -58,6 +62,10 @@ class StepLine extends StatelessWidget {
   /// The style of the step line.
   final StepLineStyle? stepLineStyle;
 
+  /// The flex factor to determine how much space this step line should occupy 
+  /// in a Flex widget.
+  final int flex;
+
   @override
   Widget build(BuildContext context) {
     final theme = StepProgressTheme.of(context)!.data;
@@ -68,6 +76,7 @@ class StepLine extends StatelessWidget {
 
     //
     return Expanded(
+      flex: flex,
       child: LayoutBuilder(
         builder: (_, constraint) {
           final lineSpacing = EdgeInsets.symmetric(

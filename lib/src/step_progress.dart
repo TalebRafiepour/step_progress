@@ -106,6 +106,9 @@ typedef OnStepNodeTapped = void Function(int index);
 ///
 /// The [reversed] parameter indicates whether the step progress is displayed
 /// in reverse order. It defaults to false.
+///
+/// The [enableLineExpandable] parameter determines whether the line between
+/// steps can expand dynamically. It defaults to false.
 class StepProgress extends StatefulWidget {
   const StepProgress({
     required this.totalSteps,
@@ -120,6 +123,7 @@ class StepProgress extends StatefulWidget {
     this.padding = EdgeInsets.zero,
     this.axis = Axis.horizontal,
     this.reversed = false,
+    this.enableLineExpandable = false,
     this.visibilityOptions = StepProgressVisibilityOptions.both,
     this.nodeTitles,
     this.nodeSubTitles,
@@ -218,6 +222,9 @@ class StepProgress extends StatefulWidget {
 
   /// Indicates whether the step progress is displayed in reverse order.
   final bool reversed;
+
+  /// Determines whether the line between steps can expand dynamically.
+  final bool enableLineExpandable;
 
   @override
   _StepProgressState createState() {
@@ -324,9 +331,10 @@ class _StepProgressState extends State<StepProgress>
         child:
             widget.axis == Axis.horizontal
                 ? HorizontalStepProgress(
-                  totalStep: widget.totalSteps,
+                  totalSteps: widget.totalSteps,
                   currentStep: _currentStep,
                   reversed: widget.reversed,
+                  enableLineExpandable: widget.enableLineExpandable,
                   needsRebuildWidget: _needsRebuildWidget,
                   nodeTitles: widget.nodeTitles,
                   nodeSubTitles: widget.nodeSubTitles,
@@ -341,9 +349,10 @@ class _StepProgressState extends State<StepProgress>
                   nodeLabelBuilder: widget.nodeLabelBuilder,
                 )
                 : VerticalStepProgress(
-                  totalStep: widget.totalSteps,
+                  totalSteps: widget.totalSteps,
                   currentStep: _currentStep,
                   reversed: widget.reversed,
+                  enableLineExpandable: widget.enableLineExpandable,
                   needsRebuildWidget: _needsRebuildWidget,
                   nodeTitles: widget.nodeTitles,
                   nodeSubTitles: widget.nodeSubTitles,

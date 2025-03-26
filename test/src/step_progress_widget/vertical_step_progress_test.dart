@@ -21,7 +21,7 @@ void main() {
         final widget = TestThemeWrapper(
           child: Scaffold(
             body: VerticalStepProgress(
-              totalStep: 5,
+              totalSteps: 5,
               currentStep: 1,
               stepSize: 30,
               visibilityOptions: StepProgressVisibilityOptions.both,
@@ -95,7 +95,7 @@ void main() {
       final widget = TestThemeWrapper(
         child: Scaffold(
           body: VerticalStepProgress(
-            totalStep: 5,
+            totalSteps: 5,
             currentStep: -1,
             stepSize: 30,
             visibilityOptions: StepProgressVisibilityOptions.both,
@@ -142,7 +142,7 @@ void main() {
       final widget = TestThemeWrapper(
         child: Scaffold(
           body: VerticalStepProgress(
-            totalStep: totalSteps,
+            totalSteps: totalSteps,
             currentStep: currentStep,
             stepSize: 30,
             visibilityOptions: StepProgressVisibilityOptions.both,
@@ -196,7 +196,7 @@ void main() {
       final widget = TestThemeWrapper(
         child: Scaffold(
           body: VerticalStepProgress(
-            totalStep: 5,
+            totalSteps: 5,
             currentStep: 3,
             stepSize: 40,
             visibilityOptions: StepProgressVisibilityOptions.both,
@@ -242,7 +242,7 @@ void main() {
       final widget = TestThemeWrapper(
         child: Scaffold(
           body: VerticalStepProgress(
-            totalStep: 4,
+            totalSteps: 4,
             currentStep: 1,
             stepSize: 30,
             visibilityOptions: StepProgressVisibilityOptions.both,
@@ -299,7 +299,7 @@ void main() {
             builder: (context, setState) {
               return Scaffold(
                 body: VerticalStepProgress(
-                  totalStep: totalSteps,
+                  totalSteps: totalSteps,
                   currentStep: currentStep,
                   stepSize: 50,
                   visibilityOptions: StepProgressVisibilityOptions.both,
@@ -338,7 +338,7 @@ void main() {
             builder: (context, setState) {
               return Scaffold(
                 body: VerticalStepProgress(
-                  totalStep: totalSteps,
+                  totalSteps: totalSteps,
                   currentStep: currentStep,
                   stepSize: 50,
                   visibilityOptions: StepProgressVisibilityOptions.both,
@@ -380,7 +380,7 @@ void main() {
             builder: (context, setState) {
               return Scaffold(
                 body: VerticalStepProgress(
-                  totalStep: totalSteps,
+                  totalSteps: totalSteps,
                   currentStep: currentStep,
                   stepSize: 50,
                   visibilityOptions: StepProgressVisibilityOptions.both,
@@ -422,7 +422,7 @@ void main() {
                 builder: (context, setState) {
                   return Scaffold(
                     body: VerticalStepProgress(
-                      totalStep: totalSteps,
+                      totalSteps: totalSteps,
                       currentStep: currentStep,
                       stepSize: 50,
                       visibilityOptions: StepProgressVisibilityOptions.both,

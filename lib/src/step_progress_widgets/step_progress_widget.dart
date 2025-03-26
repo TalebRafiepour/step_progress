@@ -17,7 +17,7 @@ import 'package:step_progress/src/step_progress_visibility_options.dart';
 /// provides options for customizing the appearance and behavior of the steps.
 ///
 /// Parameters:
-/// - [totalStep]: The total number of steps in the progress indicator.
+/// - [totalSteps]: The total number of steps in the progress indicator.
 /// - [currentStep]: The current step in the progress indicator.
 /// - [stepSize]: The size of each step in the progress indicator.
 /// - [nodeTitles]: An optional list of titles for each step.
@@ -35,19 +35,22 @@ import 'package:step_progress/src/step_progress_visibility_options.dart';
 /// - [nodeLabelBuilder]: A builder for creating custom label widgets for
 /// step nodes.
 /// - [lineLabelBuilder]: A builder for creating custom label widgets for step
-///  lines.
+/// lines.
 /// - [reversed]: Indicates whether the step progress is displayed in reverse
 /// order. It defaults to false.
 /// - [needsRebuildWidget]: Callback to request a rebuild of the parent widget.
 /// This is triggered when dynamic size calculations are needed.
+/// - [enableLineExpandable]: A boolean that determines whether the step lines
+/// can dynamically expand based on the current step. Defaults to false.
 abstract class StepProgressWidget extends StatelessWidget {
   const StepProgressWidget({
-    required this.totalStep,
+    required this.totalSteps,
     required this.currentStep,
     required this.stepSize,
     required this.axis,
     required this.visibilityOptions,
     required this.needsRebuildWidget,
+    this.enableLineExpandable = false,
     this.reversed = false,
     this.nodeTitles,
     this.nodeSubTitles,
@@ -60,24 +63,24 @@ abstract class StepProgressWidget extends StatelessWidget {
     this.lineLabelBuilder,
     super.key,
   }) : assert(
-         nodeTitles == null || nodeTitles.length <= totalStep,
+         nodeTitles == null || nodeTitles.length <= totalSteps,
          'nodeTitles lenght must be equals to or less than total steps',
        ),
        assert(
-         nodeSubTitles == null || nodeSubTitles.length <= totalStep,
+         nodeSubTitles == null || nodeSubTitles.length <= totalSteps,
          'nodeSubTitles lenght must be equals to or less than total steps',
        ),
        assert(
-         lineTitles == null || lineTitles.length < totalStep,
+         lineTitles == null || lineTitles.length < totalSteps,
          'lineTitles lenght must be less than total steps',
        ),
        assert(
-         lineSubTitles == null || lineSubTitles.length < totalStep,
+         lineSubTitles == null || lineSubTitles.length < totalSteps,
          'lineSubTitles lenght must be less than total steps',
        );
 
   /// The total number of steps in the progress indicator.
-  final int totalStep;
+  final int totalSteps;
 
   /// The current step that is active or completed.
   final int currentStep;
@@ -125,6 +128,8 @@ abstract class StepProgressWidget extends StatelessWidget {
   /// dynamic size calculations are needed.
   final VoidCallback needsRebuildWidget;
 
+  final bool enableLineExpandable;
+
   /// Determine if the step nodes have associated labels.
   bool get hasNodeLabels =>
       (nodeTitles != null && nodeTitles!.isNotEmpty) ||
@@ -136,6 +141,21 @@ abstract class StepProgressWidget extends StatelessWidget {
       (lineTitles != null && lineTitles!.isNotEmpty) ||
       (lineSubTitles != null && lineSubTitles!.isNotEmpty) ||
       lineLabelBuilder != null;
+
+  /// Determines the flex value for the step line at a given index.
+  ///
+  /// Calculates the flex value for step lines in the progress widget. If
+  /// [enableLineExpandable] is true, the line at [currentStep] expands with
+  /// a flex value of `totalSteps - 1`, while others have a flex value of `1`.
+  /// If false, all lines have a flex value of `1`. This provides dynamic
+  /// resizing of step lines based on the current step.
+  int getStepLineFlexNumber(int index) {
+    if (!enableLineExpandable || 
+        visibilityOptions == StepProgressVisibilityOptions.nodeOnly) {
+      return 1;
+    }
+    return index == currentStep ? totalSteps - 1 : 1;
+  }
 
   /// Builds the step nodes widget.
   ///

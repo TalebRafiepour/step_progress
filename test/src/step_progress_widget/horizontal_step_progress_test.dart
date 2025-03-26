@@ -30,7 +30,7 @@ void main() {
         TestThemeWrapper(
           child: Scaffold(
             body: HorizontalStepProgress(
-              totalStep: totalSteps,
+              totalSteps: totalSteps,
               currentStep: currentStep,
               stepSize: stepSize,
               visibilityOptions: visibilityOptions,
@@ -90,7 +90,7 @@ void main() {
             // Here we pass null for titles and subtitles to simulate
             // missing data.
             body: HorizontalStepProgress(
-              totalStep: totalSteps,
+              totalSteps: totalSteps,
               currentStep: currentStep,
               stepSize: stepSize,
               visibilityOptions: visibilityOptions,
@@ -143,7 +143,7 @@ void main() {
         TestThemeWrapper(
           child: Scaffold(
             body: HorizontalStepProgress(
-              totalStep: totalSteps,
+              totalSteps: totalSteps,
               currentStep: currentStep,
               stepSize: stepSize,
               visibilityOptions: visibilityOptions,
@@ -187,7 +187,7 @@ void main() {
             ),
             child: Scaffold(
               body: HorizontalStepProgress(
-                totalStep: totalSteps,
+                totalSteps: totalSteps,
                 currentStep: currentStep,
                 stepSize: stepSize,
                 visibilityOptions: visibilityOptions,
@@ -244,7 +244,7 @@ void main() {
         TestThemeWrapper(
           child: Scaffold(
             body: HorizontalStepProgress(
-              totalStep: totalSteps,
+              totalSteps: totalSteps,
               currentStep: currentStep,
               stepSize: stepSize,
               visibilityOptions: visibilityOptions,
@@ -283,7 +283,7 @@ void main() {
         TestThemeWrapper(
           child: Scaffold(
             body: HorizontalStepProgress(
-              totalStep: totalSteps,
+              totalSteps: totalSteps,
               currentStep: currentStep,
               stepSize: stepSize,
               visibilityOptions: visibilityOptions,
@@ -317,7 +317,7 @@ void main() {
             body: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: HorizontalStepProgress(
-                totalStep: totalSteps,
+                totalSteps: totalSteps,
                 currentStep: currentStep,
                 stepSize: stepSize,
                 visibilityOptions: visibilityOptions,
@@ -353,7 +353,7 @@ void main() {
             builder: (context, setState) {
               return Scaffold(
                 body: HorizontalStepProgress(
-                  totalStep: totalSteps,
+                  totalSteps: totalSteps,
                   currentStep: currentStep,
                   stepSize: 50,
                   visibilityOptions: StepProgressVisibilityOptions.both,
@@ -392,7 +392,7 @@ void main() {
             builder: (context, setState) {
               return Scaffold(
                 body: HorizontalStepProgress(
-                  totalStep: totalSteps,
+                  totalSteps: totalSteps,
                   currentStep: currentStep,
                   stepSize: 50,
                   visibilityOptions: StepProgressVisibilityOptions.both,
@@ -434,7 +434,7 @@ void main() {
               builder: (context, setState) {
                 return Scaffold(
                   body: HorizontalStepProgress(
-                    totalStep: totalSteps,
+                    totalSteps: totalSteps,
                     currentStep: currentStep,
                     stepSize: 50,
                     visibilityOptions: StepProgressVisibilityOptions.both,
@@ -477,7 +477,7 @@ void main() {
                 builder: (context, setState) {
                   return Scaffold(
                     body: HorizontalStepProgress(
-                      totalStep: totalSteps,
+                      totalSteps: totalSteps,
                       currentStep: currentStep,
                       stepSize: 50,
                       visibilityOptions: StepProgressVisibilityOptions.both,

@@ -20,7 +20,7 @@ import 'package:step_progress/src/step_progress_widgets/step_progress_widget.dar
 /// [StepProgressWidget] class and provides additional properties for
 /// customization.
 ///
-/// The [totalStep] parameter specifies the total number of steps in the
+/// The [totalSteps] parameter specifies the total number of steps in the
 /// process, while the [currentStep] parameter indicates the current step
 /// that the user is on. The [stepSize] parameter defines the size of each
 /// step indicator.
@@ -31,6 +31,9 @@ import 'package:step_progress/src/step_progress_widgets/step_progress_widget.dar
 ///
 /// The [reversed] parameter allows you to reverse the order of the steps.
 ///
+/// The [enableLineExpandable] parameter determines whether the step lines
+/// should be expandable to fill the available space between steps.
+///
 /// The [needsRebuildWidget] parameter is a [VoidCallback] function that can be
 /// used to trigger a rebuild of the widget when necessary.
 ///
@@ -40,7 +43,7 @@ import 'package:step_progress/src/step_progress_widgets/step_progress_widget.dar
 /// tap events on individual steps. The [onStepLineTapped] callback can be used
 /// to handle tap events on the step lines.
 ///
-/// The [nodeIconBuilder] allow you to customize the icons for each step.
+/// The [nodeIconBuilder] allows you to customize the icons for each step.
 ///
 /// The [nodeLabelBuilder] and [lineLabelBuilder] parameters allow you to
 /// customize the labels for each step node and step line respectively.
@@ -53,8 +56,9 @@ import 'package:step_progress/src/step_progress_widgets/step_progress_widget.dar
 ///   stepSize: 30.0,
 ///   visibilityOptions: StepProgressVisibilityOptions.both,
 ///   reversed: false,
-///   lineTitles: ['Line1', 'Line2', 'Line3', 'Line4' ],
-///   lineSubTitles: ['sub1', 'sub2', 'sub3', 'sub4', ]
+///   enableLineExpandable: true,
+///   lineTitles: ['Line1', 'Line2', 'Line3', 'Line4'],
+///   lineSubTitles: ['sub1', 'sub2', 'sub3', 'sub4'],
 ///   nodeTitles: ['Step 1', 'Step 2', 'Step 3', 'Step 4', 'Step 5'],
 ///   nodeSubTitles: ['Description 1', 'Description 2', 'Description 3',
 ///    'Description 4', 'Description 5'],
@@ -80,11 +84,12 @@ import 'package:step_progress/src/step_progress_widgets/step_progress_widget.dar
 /// ```
 class VerticalStepProgress extends StepProgressWidget {
   const VerticalStepProgress({
-    required super.totalStep,
+    required super.totalSteps,
     required super.currentStep,
     required super.stepSize,
     required super.visibilityOptions,
     required super.needsRebuildWidget,
+    super.enableLineExpandable,
     super.reversed,
     super.nodeTitles,
     super.nodeSubTitles,
@@ -115,7 +120,7 @@ class VerticalStepProgress extends StepProgressWidget {
     required bool highlightCompletedSteps,
     required StepLabelAlignment labelAlignment,
   }) {
-    List<Widget> children = List.generate(totalStep, (index) {
+    List<Widget> children = List.generate(totalSteps, (index) {
       final title = nodeTitles?.elementAtOrNull(index);
       final subTitle = nodeSubTitles?.elementAtOrNull(index);
       final isActive =
@@ -165,8 +170,9 @@ class VerticalStepProgress extends StepProgressWidget {
     ValueNotifier<RenderBox?>? boxNotifier,
   }) {
     Widget buildWidget() {
-      List<Widget> children = List.generate(totalStep - 1, (index) {
+      List<Widget> children = List.generate(totalSteps - 1, (index) {
         return StepLine(
+          flex: getStepLineFlexNumber(index),
           axis: Axis.vertical,
           isActive:
               highlightCompletedSteps
@@ -210,8 +216,9 @@ class VerticalStepProgress extends StepProgressWidget {
     final theme = StepProgressTheme.of(context)!.data;
     final maxStepHeight = maxStepSize(theme.nodeLabelStyle);
     //
-    List<Widget> children = List.generate(totalStep - 1, (index) {
+    List<Widget> children = List.generate(totalSteps - 1, (index) {
       return Expanded(
+        flex: getStepLineFlexNumber(index),
         child: StepLabel(
           style: theme.lineLabelStyle,
           alignment: theme.lineLabelAlignment ?? Alignment.centerRight,
@@ -249,7 +256,7 @@ class VerticalStepProgress extends StepProgressWidget {
   @override
   BoxConstraints getBoxConstraint({required BoxConstraints constraints}) {
     final height =
-        !constraints.hasBoundedHeight ? totalStep * 1.45 * stepSize : null;
+        !constraints.hasBoundedHeight ? totalSteps * 1.45 * stepSize : null;
     return BoxConstraints.tightFor(height: height);
   }
 
