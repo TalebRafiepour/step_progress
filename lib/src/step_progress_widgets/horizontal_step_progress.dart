@@ -16,7 +16,7 @@ import 'package:step_progress/step_progress.dart';
 /// [StepProgressWidget] class.
 ///
 /// The widget requires the following parameters:
-/// - [totalStep]: The total number of steps.
+/// - [totalSteps]: The total number of steps.
 /// - [currentStep]: The current step index.
 /// - [stepSize]: The size of each step.
 /// - [visibilityOptions]: Options to control the visibility of various
@@ -43,7 +43,7 @@ import 'package:step_progress/step_progress.dart';
 /// - [key]: An optional key for the widget.
 class HorizontalStepProgress extends StepProgressWidget {
   const HorizontalStepProgress({
-    required super.totalStep,
+    required super.totalSteps,
     required super.currentStep,
     required super.stepSize,
     required super.visibilityOptions,
@@ -86,7 +86,7 @@ class HorizontalStepProgress extends StepProgressWidget {
       }
     }
 
-    List<Widget> children = List.generate(totalStep, (index) {
+    List<Widget> children = List.generate(totalSteps, (index) {
       final title = nodeTitles?.elementAtOrNull(index);
       final subTitle = nodeSubTitles?.elementAtOrNull(index);
       final isActive =
@@ -133,7 +133,7 @@ class HorizontalStepProgress extends StepProgressWidget {
     ValueNotifier<RenderBox?>? boxNotifier,
   }) {
     Widget buildWidget() {
-      List<Widget> children = List.generate(totalStep - 1, (index) {
+      List<Widget> children = List.generate(totalSteps - 1, (index) {
         return StepLine(
           isActive:
               highlightCompletedSteps
@@ -175,7 +175,7 @@ class HorizontalStepProgress extends StepProgressWidget {
     final theme = StepProgressTheme.of(context)!.data;
     final maxStepWidth = maxStepSize(theme.nodeLabelStyle);
     //
-    List<Widget> children = List.generate(totalStep - 1, (index) {
+    List<Widget> children = List.generate(totalSteps - 1, (index) {
       return Expanded(
         child: StepLabel(
           style: theme.lineLabelStyle,
@@ -217,7 +217,7 @@ class HorizontalStepProgress extends StepProgressWidget {
   BoxConstraints getBoxConstraint({required BoxConstraints constraints}) {
     final width =
         axis == Axis.horizontal && !constraints.hasBoundedWidth
-            ? totalStep * 1.45 * stepSize
+            ? totalSteps * 1.45 * stepSize
             : null;
     return BoxConstraints.tightFor(width: width);
   }
@@ -251,8 +251,7 @@ class HorizontalStepProgress extends StepProgressWidget {
     final theme = StepProgressTheme.of(context)!.data;
 
     // Determine the alignment for the line labels.
-    final lineLabelAlignment =
-        theme.lineLabelAlignment ?? Alignment.centerRight;
+    final lineLabelAlignment = theme.lineLabelAlignment ?? Alignment.topCenter;
     bool isTopAligned() =>
         lineLabelAlignment == Alignment.topCenter ||
         lineLabelAlignment == Alignment.topRight ||

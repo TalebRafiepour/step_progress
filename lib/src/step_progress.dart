@@ -324,7 +324,7 @@ class _StepProgressState extends State<StepProgress>
         child:
             widget.axis == Axis.horizontal
                 ? HorizontalStepProgress(
-                  totalStep: widget.totalSteps,
+                  totalSteps: widget.totalSteps,
                   currentStep: _currentStep,
                   reversed: widget.reversed,
                   needsRebuildWidget: _needsRebuildWidget,
@@ -341,7 +341,7 @@ class _StepProgressState extends State<StepProgress>
                   nodeLabelBuilder: widget.nodeLabelBuilder,
                 )
                 : VerticalStepProgress(
-                  totalStep: widget.totalSteps,
+                  totalSteps: widget.totalSteps,
                   currentStep: _currentStep,
                   reversed: widget.reversed,
                   needsRebuildWidget: _needsRebuildWidget,

@@ -20,7 +20,7 @@ import 'package:step_progress/src/step_progress_widgets/step_progress_widget.dar
 /// [StepProgressWidget] class and provides additional properties for
 /// customization.
 ///
-/// The [totalStep] parameter specifies the total number of steps in the
+/// The [totalSteps] parameter specifies the total number of steps in the
 /// process, while the [currentStep] parameter indicates the current step
 /// that the user is on. The [stepSize] parameter defines the size of each
 /// step indicator.
@@ -80,7 +80,7 @@ import 'package:step_progress/src/step_progress_widgets/step_progress_widget.dar
 /// ```
 class VerticalStepProgress extends StepProgressWidget {
   const VerticalStepProgress({
-    required super.totalStep,
+    required super.totalSteps,
     required super.currentStep,
     required super.stepSize,
     required super.visibilityOptions,
@@ -115,7 +115,7 @@ class VerticalStepProgress extends StepProgressWidget {
     required bool highlightCompletedSteps,
     required StepLabelAlignment labelAlignment,
   }) {
-    List<Widget> children = List.generate(totalStep, (index) {
+    List<Widget> children = List.generate(totalSteps, (index) {
       final title = nodeTitles?.elementAtOrNull(index);
       final subTitle = nodeSubTitles?.elementAtOrNull(index);
       final isActive =
@@ -165,7 +165,7 @@ class VerticalStepProgress extends StepProgressWidget {
     ValueNotifier<RenderBox?>? boxNotifier,
   }) {
     Widget buildWidget() {
-      List<Widget> children = List.generate(totalStep - 1, (index) {
+      List<Widget> children = List.generate(totalSteps - 1, (index) {
         return StepLine(
           axis: Axis.vertical,
           isActive:
@@ -210,7 +210,7 @@ class VerticalStepProgress extends StepProgressWidget {
     final theme = StepProgressTheme.of(context)!.data;
     final maxStepHeight = maxStepSize(theme.nodeLabelStyle);
     //
-    List<Widget> children = List.generate(totalStep - 1, (index) {
+    List<Widget> children = List.generate(totalSteps - 1, (index) {
       return Expanded(
         child: StepLabel(
           style: theme.lineLabelStyle,
@@ -249,7 +249,7 @@ class VerticalStepProgress extends StepProgressWidget {
   @override
   BoxConstraints getBoxConstraint({required BoxConstraints constraints}) {
     final height =
-        !constraints.hasBoundedHeight ? totalStep * 1.45 * stepSize : null;
+        !constraints.hasBoundedHeight ? totalSteps * 1.45 * stepSize : null;
     return BoxConstraints.tightFor(height: height);
   }
 

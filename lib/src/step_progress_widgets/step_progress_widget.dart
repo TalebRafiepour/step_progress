@@ -17,7 +17,7 @@ import 'package:step_progress/src/step_progress_visibility_options.dart';
 /// provides options for customizing the appearance and behavior of the steps.
 ///
 /// Parameters:
-/// - [totalStep]: The total number of steps in the progress indicator.
+/// - [totalSteps]: The total number of steps in the progress indicator.
 /// - [currentStep]: The current step in the progress indicator.
 /// - [stepSize]: The size of each step in the progress indicator.
 /// - [nodeTitles]: An optional list of titles for each step.
@@ -42,7 +42,7 @@ import 'package:step_progress/src/step_progress_visibility_options.dart';
 /// This is triggered when dynamic size calculations are needed.
 abstract class StepProgressWidget extends StatelessWidget {
   const StepProgressWidget({
-    required this.totalStep,
+    required this.totalSteps,
     required this.currentStep,
     required this.stepSize,
     required this.axis,
@@ -60,24 +60,24 @@ abstract class StepProgressWidget extends StatelessWidget {
     this.lineLabelBuilder,
     super.key,
   }) : assert(
-         nodeTitles == null || nodeTitles.length <= totalStep,
+         nodeTitles == null || nodeTitles.length <= totalSteps,
          'nodeTitles lenght must be equals to or less than total steps',
        ),
        assert(
-         nodeSubTitles == null || nodeSubTitles.length <= totalStep,
+         nodeSubTitles == null || nodeSubTitles.length <= totalSteps,
          'nodeSubTitles lenght must be equals to or less than total steps',
        ),
        assert(
-         lineTitles == null || lineTitles.length < totalStep,
+         lineTitles == null || lineTitles.length < totalSteps,
          'lineTitles lenght must be less than total steps',
        ),
        assert(
-         lineSubTitles == null || lineSubTitles.length < totalStep,
+         lineSubTitles == null || lineSubTitles.length < totalSteps,
          'lineSubTitles lenght must be less than total steps',
        );
 
   /// The total number of steps in the progress indicator.
-  final int totalStep;
+  final int totalSteps;
 
   /// The current step that is active or completed.
   final int currentStep;
