@@ -24,6 +24,7 @@
   - **Visibility Control**: Show or hide titles, subtitles, and connecting lines using `StepProgressVisibilityOptions`.
   - **Custom Icons**: Utilize custom icons for step nodes using `nodeIconBuilder`.
   - **Custom Labels**: Use `nodeLabelBuilder` and `lineLabelBuilder` to provide custom labels for step nodes and connecting lines.
+  - **Breadcrumb Support**: Display connecting lines as breadcrumbs for a unique visual style using the `isBreadcrumb` property in `StepLineStyle`.
   
 - **Interactive Elements**:
   - **Step Tapping**: Enable user interaction with steps using `onStepNodeTapped` callbacks.
