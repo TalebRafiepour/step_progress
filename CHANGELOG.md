@@ -1,3 +1,8 @@
+## 2.3.0
+
+- **New Feature**: Added support for breadcrumb line style for enhanced visual representation. [#17](https://github.com/TalebRafiepour/step_progress/issues/17)
+- **Bug Fix**: Adjusted the default alignment of step line titles to `topCenter` for improved consistency in horizontal axis.
+
 ## 2.2.1
 
 - **Configuration Update**: Modified `analysis_options.yaml` to ignore the trailing commas rule.
