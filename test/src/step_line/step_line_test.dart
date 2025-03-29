@@ -1,5 +1,8 @@
+// ignore_for_file: avoid_redundant_argument_values
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:step_progress/src/step_line/breadcrumb_clipper.dart';
 import 'package:step_progress/src/step_line/step_line.dart';
 import 'package:step_progress/step_progress.dart';
 
@@ -222,5 +225,91 @@ void main() {
       );
       expect(containerFinder, findsWidgets);
     });
+
+    testWidgets('StepLine with breadcrumb style creates ClipPath widget', (
+      tester,
+    ) async {
+      const testKey = Key('step_line_breadcrumb');
+      const chevronAngle = 30.0;
+
+      const breadcrumbStyle = StepLineStyle(
+        lineThickness: lineThickness,
+        isBreadcrumb: true,
+        chevronAngle: chevronAngle,
+      );
+
+      await tester.pumpWidget(
+        const TestThemeWrapper(
+          child: Row(
+            children: [
+              StepLine(
+                key: testKey,
+                stepLineStyle: breadcrumbStyle,
+                isActive: true,
+              ),
+            ],
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Verify ClipPath is used when isBreadcrumb is true
+      final clipPathFinder = find.descendant(
+        of: find.byKey(testKey),
+        matching: find.byType(ClipPath),
+      );
+      expect(
+        clipPathFinder,
+        findsNWidgets(2),
+      ); // One for container, one for animated
+
+      // Verify BreadcrumbClipper parameters
+      final clipPath = tester.widget<ClipPath>(clipPathFinder.first);
+      final clipper = clipPath.clipper! as BreadcrumbClipper;
+      expect(clipper.angle, equals(chevronAngle));
+      expect(clipper.axis, equals(Axis.horizontal));
+      expect(clipper.isReversed, equals(false));
+    });
+
+    testWidgets(
+      'StepLine with reversed breadcrumb style sets correct direction',
+      (tester) async {
+        const testKey = Key('step_line_breadcrumb_reversed');
+        const chevronAngle = 30.0;
+
+        const breadcrumbStyle = StepLineStyle(
+          lineThickness: lineThickness,
+          isBreadcrumb: true,
+          chevronAngle: chevronAngle,
+        );
+
+        await tester.pumpWidget(
+          const TestThemeWrapper(
+            child: Row(
+              children: [
+                StepLine(
+                  key: testKey,
+                  stepLineStyle: breadcrumbStyle,
+                  isActive: true,
+                  isReversed: true,
+                ),
+              ],
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        final clipPathFinder = find.descendant(
+          of: find.byKey(testKey),
+          matching: find.byType(ClipPath),
+        );
+
+        final clipPath = tester.widget<ClipPath>(clipPathFinder.first);
+        final clipper = clipPath.clipper! as BreadcrumbClipper;
+        expect(clipper.isReversed, equals(true));
+      },
+    );
   });
 }

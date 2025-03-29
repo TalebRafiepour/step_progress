@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:step_progress/src/step_line/breadcrumb_clipper.dart';
 import 'package:step_progress/step_progress.dart';
 
 /// A widget that represents a step line in a step progress indicator.
@@ -19,6 +20,9 @@ import 'package:step_progress/step_progress.dart';
 /// The [isActive] parameter indicates whether the step line is active. It
 /// defaults to `false`.
 ///
+/// The [isReversed] parameter indicates whether the step line is displayed in
+/// reverse order. It defaults to `false`.
+///
 /// The [onTap] parameter is a callback function that is executed when the step
 /// line is tapped. It is optional and defaults to `null`.
 ///
@@ -28,6 +32,7 @@ import 'package:step_progress/step_progress.dart';
 /// StepLine(
 ///   axis: Axis.vertical,
 ///   isActive: true,
+///   isReversed: true,
 ///   stepLineStyle: StepLineStyle(
 ///     color: Colors.blue,
 ///     thickness: 2.0,
@@ -42,6 +47,7 @@ class StepLine extends StatelessWidget {
     this.axis = Axis.horizontal,
     this.stepLineStyle,
     this.isActive = false,
+    this.isReversed = false,
     this.onTap,
     super.key,
   });
@@ -57,6 +63,9 @@ class StepLine extends StatelessWidget {
 
   /// The style of the step line.
   final StepLineStyle? stepLineStyle;
+
+  /// Indicates whether the step line is displayed in reverse order.
+  final bool isReversed;
 
   @override
   Widget build(BuildContext context) {
@@ -109,24 +118,55 @@ class StepLine extends StatelessWidget {
           final animationDuration =
               style.animationDuration ?? theme.stepAnimationDuration;
 
-          return Padding(
-            padding: lineSpacing,
-            child: GestureDetector(
-              onTap: onTap,
+          late final Widget lineWidget;
+
+          if (style.isBreadcrumb) {
+            lineWidget = ClipPath(
+              clipper: BreadcrumbClipper(
+                angle: style.chevronAngle,
+                axis: axis,
+                isReversed: isReversed,
+              ),
               child: Container(
                 width: _width(constraint, style.lineThickness),
                 height: _height(constraint, style.lineThickness),
                 decoration: containerDecoration,
                 alignment: AlignmentDirectional.centerStart,
-                child: AnimatedContainer(
-                  width: animatedContainerWidth,
-                  height: animatedContainerHeight,
-                  decoration: animatedContainerDecoration,
-                  curve: Curves.fastLinearToSlowEaseIn,
-                  duration: animationDuration,
+                child: ClipPath(
+                  clipper: BreadcrumbClipper(
+                    angle: style.chevronAngle,
+                    axis: axis,
+                    isReversed: isReversed,
+                  ),
+                  child: AnimatedContainer(
+                    width: animatedContainerWidth,
+                    height: animatedContainerHeight,
+                    decoration: animatedContainerDecoration,
+                    curve: Curves.fastLinearToSlowEaseIn,
+                    duration: animationDuration,
+                  ),
                 ),
               ),
-            ),
+            );
+          } else {
+            lineWidget = Container(
+              width: _width(constraint, style.lineThickness),
+              height: _height(constraint, style.lineThickness),
+              decoration: containerDecoration,
+              alignment: AlignmentDirectional.centerStart,
+              child: AnimatedContainer(
+                width: animatedContainerWidth,
+                height: animatedContainerHeight,
+                decoration: animatedContainerDecoration,
+                curve: Curves.fastLinearToSlowEaseIn,
+                duration: animationDuration,
+              ),
+            );
+          }
+
+          return Padding(
+            padding: lineSpacing,
+            child: GestureDetector(onTap: onTap, child: lineWidget),
           );
         },
       ),

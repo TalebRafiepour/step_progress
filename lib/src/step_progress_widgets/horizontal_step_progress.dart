@@ -135,6 +135,7 @@ class HorizontalStepProgress extends StepProgressWidget {
     Widget buildWidget() {
       List<Widget> children = List.generate(totalSteps - 1, (index) {
         return StepLine(
+          isReversed: reversed,
           isActive:
               highlightCompletedSteps
                   ? index < currentStep

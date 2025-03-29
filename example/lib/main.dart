@@ -8,6 +8,7 @@ import 'package:example/example_nine.dart';
 import 'package:example/example_one.dart';
 import 'package:example/example_reproduce_issues.dart';
 import 'package:example/example_seven.dart';
+import 'package:example/example_seventeen.dart';
 import 'package:example/example_six.dart';
 import 'package:example/example_sixteen.dart';
 import 'package:example/example_ten.dart';
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
       title: 'FlutterStepProgressDemo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Colors.white,
       ),
       home: const HomePage(),
     );
@@ -224,6 +226,17 @@ class HomePage extends StatelessWidget {
                   );
                 },
                 child: const Text('Example Sixteen (CustomVerticalTimeLine)'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const ExampleSeventeen(),
+                    ),
+                  );
+                },
+                child: const Text('Example Seventeen (BreadCrumbLine)'),
               ),
               ElevatedButton(
                 onPressed: () {

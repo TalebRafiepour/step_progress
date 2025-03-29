@@ -202,5 +202,66 @@ void main() {
         reason: 'borderRadius should remain unchanged',
       );
     });
+
+    test('Default constructor sets correct default values for breadcrumb '
+        'properties', () {
+      const style = StepLineStyle();
+      expect(
+        style.isBreadcrumb,
+        equals(false),
+        reason: 'Default isBreadcrumb should be false',
+      );
+      expect(
+        style.chevronAngle,
+        equals(30),
+        reason: 'Default chevronAngle should be 30',
+      );
+    });
+
+    test('Constructor sets provided breadcrumb-related values', () {
+      const isBreadcrumb = true;
+      const chevronAngle = 45.0;
+
+      const style = StepLineStyle(
+        isBreadcrumb: isBreadcrumb,
+        chevronAngle: chevronAngle,
+      );
+
+      expect(
+        style.isBreadcrumb,
+        equals(isBreadcrumb),
+        reason: 'isBreadcrumb should match provided value',
+      );
+      expect(
+        style.chevronAngle,
+        equals(chevronAngle),
+        reason: 'chevronAngle should match provided value',
+      );
+    });
+
+    test('copyWith correctly handles breadcrumb-related properties', () {
+      const style = StepLineStyle(isBreadcrumb: false, chevronAngle: 30);
+
+      final copiedStyle = style.copyWith(isBreadcrumb: true, chevronAngle: 60);
+
+      expect(
+        copiedStyle.isBreadcrumb,
+        equals(true),
+        reason: 'isBreadcrumb should be updated',
+      );
+      expect(
+        copiedStyle.chevronAngle,
+        equals(60),
+        reason: 'chevronAngle should be updated',
+      );
+
+      // Test that original values are preserved when not specified
+      final partialCopy = style.copyWith(isBreadcrumb: true);
+      expect(
+        partialCopy.chevronAngle,
+        equals(style.chevronAngle),
+        reason: 'chevronAngle should remain unchanged when not specified',
+      );
+    });
   });
 }

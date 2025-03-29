@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 class StepLineStyle {
   const StepLineStyle({
     this.lineThickness = 4,
+    this.isBreadcrumb = false,
+    this.chevronAngle = 30,
     this.foregroundColor,
     this.activeColor,
     this.animationDuration,
@@ -34,6 +36,12 @@ class StepLineStyle {
   /// The border radius of the line in the step progress.
   final BorderRadius borderRadius;
 
+  /// Indicates whether the step line is displayed as a breadcrumb.
+  final bool isBreadcrumb;
+
+  /// Specifies the angle of the chevron in the step line.
+  final double chevronAngle;
+
   /// Creates a copy of this [StepLineStyle] but with the given fields replaced
   /// with the new values.
   ///
@@ -41,18 +49,22 @@ class StepLineStyle {
   /// [StepLineStyle] instance. If a parameter is not provided, the value from
   /// the current instance will be used.
   ///
-  /// - `color`: The color of the step line.
-  /// - `thickness`: The thickness of the step line.
-  /// - `dashPattern`: The dash pattern of the step line.
-  /// - `spacing`: The spacing between dashes in the step line.
-  ///
-  /// Returns a new [StepLineStyle] object with the updated properties.
+  /// - `foregroundColor`: The color of the foreground elements.
+  /// - `activeColor`: The color used when the step is active.
+  /// - `animationDuration`: The duration of the animation.
+  /// - `lineThickness`: The thickness of the step line.
+  /// - `borderRadius`: The border radius of the step line.
+  /// - `isBreadcrumb`: Indicates whether the step line is displayed as a
+  /// breadcrumb.
+  /// - `chevronAngle`: Specifies the angle of the chevron in the step line.
   StepLineStyle copyWith({
     Color? foregroundColor,
     Color? activeColor,
     Duration? animationDuration,
     double? lineThickness,
     BorderRadius? borderRadius,
+    bool? isBreadcrumb,
+    double? chevronAngle,
   }) {
     return StepLineStyle(
       foregroundColor: foregroundColor ?? this.foregroundColor,
@@ -60,6 +72,8 @@ class StepLineStyle {
       animationDuration: animationDuration ?? this.animationDuration,
       lineThickness: lineThickness ?? this.lineThickness,
       borderRadius: borderRadius ?? this.borderRadius,
+      isBreadcrumb: isBreadcrumb ?? this.isBreadcrumb,
+      chevronAngle: chevronAngle ?? this.chevronAngle,
     );
   }
 }

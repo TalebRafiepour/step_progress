@@ -565,6 +565,31 @@ StepProgress(
   ),
 )
 ```
+### Example 16: Horizontal Step Progress with Breadcrumb Lines.
+![StepProgress-horizontal-with-breadcrumb-lines](https://github.com/TalebRafiepour/showcase/blob/main/step_progress/sample-16-stepprogress-breadcrumb-lines.png?raw=true)
+
+#### Implementation
+
+```dart
+StepProgress(
+  totalSteps: 5,
+  padding: const EdgeInsets.all(10),
+  controller: stepProgressController,
+  lineSubTitles: const [
+    'Step 2',
+    'Step 3',
+    'Step 4',
+    'Step 5',
+  ],
+  theme: const StepProgressThemeData(
+    stepLineSpacing: 28,
+    stepLineStyle: StepLineStyle(
+      lineThickness: 10,
+      isBreadcrumb: true,
+    ),
+  ),
+)
+```
 
 ## Installation
 
@@ -661,6 +686,8 @@ StepProgress(
 | `animationDuration`| `Duration?`   | The duration of the animation. If not set, it will be determined by the theme.         | `null`                |
 | `lineThickness`    | `double`      | The thickness of the line in the step progress.                                        | `4.0`                 |
 | `borderRadius`     | `BorderRadius`| The border radius of the line in the step progress.                                    | `BorderRadius.zero`   |
+| `isBreadcrumb`     | `bool`        | Indicates whether the step line is displayed as a breadcrumb.                          | `false`               |
+| `chevronAngle`     | `double`      | Specifies the angle of the chevron in the step line.                                   | `30.0`                |
 
 
 ## StepLabelStyle Properties
