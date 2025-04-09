@@ -730,21 +730,21 @@ StepProgress(
 
 ## StepLabelStyle Properties
 
-| Property             | Type                | Default Value              | Description                                                                 |
-| -------------------- | ------------------- | -------------------------- | --------------------------------------------------------------------------- |
-| `labelAxisAlignment` | `CrossAxisAlignment`| `CrossAxisAlignment.center`| The alignment of the label along the cross axis.                            |
-| `titleStyle`         | `TextStyle?`        | `null`                     | The style to use for the title text.                                        |
-| `subTitleStyle`      | `TextStyle?`        | `null`                     | The style to use for the subtitle text.                                     |
-| `activeColor`        | `Color?`            | `null`                     | The color to use when the step is active.                                   |
-| `defualtColor`       | `Color?`            | `null`                     | The color to use when the step is not active.                               |
-| `textAlign`          | `TextAlign`         | `TextAlign.center`         | How the text should be aligned horizontally.                                |
-| `titleMaxLines`      | `int`               | `3`                        | The maximum number of lines for the title text.                             |
-| `maxWidth`           | `double`            | `48`                       | The maximum width of the step label.                                        |
-| `subTitleMaxLines`   | `int`               | `3`                        | The maximum number of lines for the subtitle text.                          |
-| `overflow`           | `TextOverflow`      | `TextOverflow.ellipsis`    | How visual overflow should be handled.                                      |
-| `padding`            | `EdgeInsets`        | `EdgeInsets.zero`          | The amount of space to surround the label with.                             |
-| `margin`             | `EdgeInsets`        | `EdgeInsets.all(2)`        | The amount of space to surround the label with.                             |
-| `animationDuration`  | `Duration?`         | `null`                     | The duration of the animation when the style changes.                       |
+| Property             | Type                | Description                                                                | Default Value              |
+| -------------------- | ------------------- | ---------------------------------------------------------------------------| -------------------------- |
+| `labelAxisAlignment` | `CrossAxisAlignment`| The alignment of the label along the cross axis.                           | `CrossAxisAlignment.center`|
+| `titleStyle`         | `TextStyle?`        | The style to use for the title text.                                       | `null`                     |
+| `subTitleStyle`      | `TextStyle?`        | The style to use for the subtitle text.                                    | `null`                     |
+| `activeColor`        | `Color?`            | The color to use when the step is active.                                  | `null`                     |
+| `defualtColor`       | `Color?`            | The color to use when the step is not active.                              | `null`                     |
+| `textAlign`          | `TextAlign`         | How the text should be aligned horizontally.                               | `TextAlign.center`         |
+| `titleMaxLines`      | `int`               | The maximum number of lines for the title text.                            | `3`                        |
+| `maxWidth`           | `double`            | The maximum width of the step label.                                       | `48`                       |
+| `subTitleMaxLines`   | `int`               | The maximum number of lines for the subtitle text.                         | `3`                        |
+| `overflow`           | `TextOverflow`      | How visual overflow should be handled.                                     | `TextOverflow.ellipsis`    |
+| `padding`            | `EdgeInsets`        | The amount of space to surround the label with.                            | `EdgeInsets.zero`          |
+| `margin`             | `EdgeInsets`        | The amount of space to surround the label with.                            | `EdgeInsets.all(2)`        |
+| `animationDuration`  | `Duration?`         | The duration of the animation when the style changes.                      | `null`                     |
 
 --------------
 ## Support the Package
