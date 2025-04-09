@@ -604,6 +604,21 @@ StepProgress(
   ),
 )
 ```
+### Example 18: Horizontal Step Progress with RippleEffect nodes.
+![StepProgress-horizontal-with-rippleeffect-nodes](https://github.com/TalebRafiepour/showcase/blob/main/step_progress/sample-18-stepprogress-rippleeffect-nodes.png?raw=true)
+
+#### Implementation
+
+```dart
+StepProgress(
+  totalSteps: 5,
+  padding: const EdgeInsets.all(10),
+  controller: stepProgressController,
+  theme: const StepProgressThemeData(
+    enableRippleEffect: true,
+  ),
+)
+```
 
 ## Installation
 
