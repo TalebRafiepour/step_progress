@@ -1,3 +1,8 @@
+## 2.4.0
+
+- **New Feature**: Introduced support for a dotted border line style, enhancing the visual appeal of step progress indicators. [#15](https://github.com/TalebRafiepour/step_progress/issues/15)
+- **Breaking Change**: Updated the `borderRadius` property in `StepLineStyle` to use the `Radius` type instead of `BorderRadius`, ensuring more consistent customization options.
+
 ## 2.3.0
 
 - **New Feature**: Added support for breadcrumb line style for enhanced visual representation. [#17](https://github.com/TalebRafiepour/step_progress/issues/17)
