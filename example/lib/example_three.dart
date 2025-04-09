@@ -34,7 +34,7 @@ class ExampleThree extends StatelessWidget {
               highlightCompletedSteps: false,
               stepLineStyle: StepLineStyle(
                 lineThickness: 9,
-                borderRadius: BorderRadius.all(Radius.circular(2)),
+                borderRadius: Radius.circular(2),
               ),
             ),
           ),

@@ -17,8 +17,7 @@ void main() {
         equals(const Color.fromARGB(255, 0, 167, 160)),
       );
       expect(themeData.highlightCompletedSteps, isTrue);
-      expect(themeData.borderColor, equals(Colors.white));
-      expect(themeData.borderWidth, equals(0));
+      expect(themeData.borderStyle, isNull);
       expect(themeData.enableRippleEffect, isFalse);
       expect(themeData.shape, equals(StepNodeShape.circle));
       expect(
@@ -38,9 +37,11 @@ void main() {
       final newTheme = original.copyWith(
         defaultForegroundColor: Colors.red,
         activeForegroundColor: Colors.blue,
-        borderColor: Colors.green,
-        activeBorderColor: Colors.yellow,
-        borderWidth: 2,
+        borderStyle: const OuterBorderStyle(
+          defaultBorderColor: Colors.green,
+          activeBorderColor: Colors.yellow,
+          borderWidth: 2,
+        ),
         stepAnimationDuration: const Duration(seconds: 1),
         enableRippleEffect: true,
         shape: StepNodeShape.square,
@@ -57,9 +58,9 @@ void main() {
 
       expect(newTheme.defaultForegroundColor, equals(Colors.red));
       expect(newTheme.activeForegroundColor, equals(Colors.blue));
-      expect(newTheme.borderColor, equals(Colors.green));
-      expect(newTheme.activeBorderColor, equals(Colors.yellow));
-      expect(newTheme.borderWidth, equals(2.0));
+      expect(newTheme.borderStyle?.defaultBorderColor, equals(Colors.green));
+      expect(newTheme.borderStyle?.activeBorderColor, equals(Colors.yellow));
+      expect(newTheme.borderStyle?.borderWidth, equals(2.0));
       expect(
         newTheme.stepAnimationDuration,
         equals(const Duration(seconds: 1)),
@@ -80,9 +81,11 @@ void main() {
       const original = StepProgressThemeData(
         defaultForegroundColor: Colors.red,
         activeForegroundColor: Colors.blue,
-        borderColor: Colors.green,
-        activeBorderColor: Colors.yellow,
-        borderWidth: 2,
+        borderStyle: OuterBorderStyle(
+          defaultBorderColor: Colors.green,
+          activeBorderColor: Colors.yellow,
+          borderWidth: 2,
+        ),
         stepAnimationDuration: Duration(seconds: 1),
         enableRippleEffect: true,
         shape: StepNodeShape.square,
@@ -105,9 +108,18 @@ void main() {
         newTheme.activeForegroundColor,
         equals(original.activeForegroundColor),
       );
-      expect(newTheme.borderColor, equals(original.borderColor));
-      expect(newTheme.activeBorderColor, equals(original.activeBorderColor));
-      expect(newTheme.borderWidth, equals(original.borderWidth));
+      expect(
+        newTheme.borderStyle?.defaultBorderColor,
+        equals(original.borderStyle?.defaultBorderColor),
+      );
+      expect(
+        newTheme.borderStyle?.activeBorderColor,
+        equals(original.borderStyle?.activeBorderColor),
+      );
+      expect(
+        newTheme.borderStyle?.borderWidth,
+        equals(original.borderStyle?.borderWidth),
+      );
       expect(
         newTheme.stepAnimationDuration,
         equals(original.stepAnimationDuration),
@@ -128,7 +140,10 @@ void main() {
 
     test('copyWith negative test: invalid values throws assertion error', () {
       const original = StepProgressThemeData();
-      expect(() => original.copyWith(borderWidth: -5), throwsAssertionError);
+      expect(
+        () => original.copyWith(borderStyle: OuterBorderStyle(borderWidth: -5)),
+        throwsAssertionError,
+      );
     });
 
     test('Boundary test: setting duration to zero', () {

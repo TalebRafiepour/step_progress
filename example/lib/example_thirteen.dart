@@ -27,9 +27,7 @@ class ExampleThirteen extends StatelessWidget {
               stepLineSpacing: 18,
               stepLineStyle: StepLineStyle(
                 lineThickness: 3,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(3),
-                ),
+                borderRadius: Radius.circular(3),
               ),
               stepNodeStyle: StepNodeStyle(
                 activeIcon: Icon(

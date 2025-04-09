@@ -3,8 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:step_progress/src/step_node/step_node.dart';
 import 'package:step_progress/src/step_node/step_node_core.dart';
 import 'package:step_progress/src/step_node/step_node_shaped_container.dart';
-import 'package:step_progress/src/step_node/step_node_style.dart';
-import 'package:step_progress/src/step_progress_theme_data.dart';
+import 'package:step_progress/step_progress.dart';
 
 import '../helper/test_theme_wrapper.dart';
 
@@ -22,9 +21,10 @@ void main() {
 
     const dummyThemeData = StepProgressThemeData(
       stepNodeStyle: dummyStyle,
-      borderWidth: 2,
-      borderColor: Colors.black,
-      activeBorderColor: Colors.red,
+      borderStyle: OuterBorderStyle(
+        defaultBorderColor: Colors.black,
+        activeBorderColor: Colors.red,
+      ),
       stepAnimationDuration: Duration(milliseconds: 200),
       defaultForegroundColor: Colors.grey,
       activeForegroundColor: Colors.white,

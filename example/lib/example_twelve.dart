@@ -32,9 +32,7 @@ class ExampleTwelve extends StatelessWidget {
               shape: StepNodeShape.hexagon,
               stepLineSpacing: 18,
               stepLineStyle: StepLineStyle(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(4),
-                ),
+                borderRadius: Radius.circular(4),
               ),
               stepNodeStyle: StepNodeStyle(
                 decoration: BoxDecoration(

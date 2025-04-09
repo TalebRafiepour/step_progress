@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:step_progress/src/step_node/step_node_shape.dart';
+import 'package:step_progress/step_progress.dart';
 
 /// A class that defines the style for a step node in a step progress indicator.
 ///
@@ -24,6 +24,7 @@ import 'package:step_progress/src/step_node/step_node_shape.dart';
 /// teal color.
 /// * [enableRippleEffect]: Whether to enable the ripple effect on the step
 /// node. Defaults to true.
+/// * [borderStyle]: The style of the outer border for the step node.
 class StepNodeStyle {
   const StepNodeStyle({
     this.defaultForegroundColor,
@@ -38,6 +39,7 @@ class StepNodeStyle {
     this.activeIcon = const Icon(Icons.check, size: 18, color: Colors.white),
     this.iconColor = const Color.fromARGB(253, 6, 138, 129),
     this.enableRippleEffect = true,
+    this.borderStyle,
   });
 
   /// The default color for the foreground of the step node.
@@ -73,6 +75,9 @@ class StepNodeStyle {
   /// Whether to enable the ripple effect.
   final bool enableRippleEffect;
 
+  /// The style of the outer border for the step node.
+  final OuterBorderStyle? borderStyle;
+
   /// Creates a copy of this [StepNodeStyle] but with the given fields replaced
   /// with the new values.
   ///
@@ -88,6 +93,7 @@ class StepNodeStyle {
   /// - [activeIcon]: The icon widget when active.
   /// - [enableRippleEffect]: Whether to enable the ripple effect.
   /// - [animationDuration]: The duration of the animation.
+  /// - [borderStyle]: The style of the border for the step node.
   StepNodeStyle copyWith({
     Color? defaultForegroundColor,
     Color? activeForegroundColor,
@@ -99,6 +105,7 @@ class StepNodeStyle {
     Widget? activeIcon,
     bool? enableRippleEffect,
     Duration? animationDuration,
+    OuterBorderStyle? borderStyle,
   }) {
     return StepNodeStyle(
       defaultForegroundColor:
@@ -113,6 +120,7 @@ class StepNodeStyle {
       activeIcon: activeIcon ?? this.activeIcon,
       enableRippleEffect: enableRippleEffect ?? this.enableRippleEffect,
       animationDuration: animationDuration ?? this.animationDuration,
+      borderStyle: borderStyle ?? this.borderStyle,
     );
   }
 }

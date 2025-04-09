@@ -29,9 +29,7 @@ class ExampleEleven extends StatelessWidget {
               shape: StepNodeShape.diamond,
               stepLineSpacing: 18,
               stepLineStyle: StepLineStyle(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(4),
-                ),
+                borderRadius: Radius.circular(4),
               ),
               nodeLabelStyle: StepLabelStyle(
                 margin: EdgeInsets.only(bottom: 6),
