@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:step_progress/src/outter_border_style.dart';
+import 'package:step_progress/src/outer_border_style.dart';
 
 /// A class that defines the style for a step line in a step progress.
 ///
