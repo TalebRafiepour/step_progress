@@ -76,7 +76,7 @@ class StepNodeStyle {
   final bool enableRippleEffect;
 
   /// The style of the outer border for the step node.
-  final OutterBorderStyle? borderStyle;
+  final OuterBorderStyle? borderStyle;
 
   /// Creates a copy of this [StepNodeStyle] but with the given fields replaced
   /// with the new values.
@@ -105,7 +105,7 @@ class StepNodeStyle {
     Widget? activeIcon,
     bool? enableRippleEffect,
     Duration? animationDuration,
-    OutterBorderStyle? borderStyle,
+    OuterBorderStyle? borderStyle,
   }) {
     return StepNodeStyle(
       defaultForegroundColor:

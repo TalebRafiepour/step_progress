@@ -42,7 +42,7 @@ class StepLineStyle {
   final double chevronAngle;
 
   /// The style of the outer border for the step line.
-  final OutterBorderStyle? borderStyle;
+  final OuterBorderStyle? borderStyle;
 
   /// The radius of the border corners for the step line.
   final Radius borderRadius;
@@ -70,7 +70,7 @@ class StepLineStyle {
     double? lineThickness,
     bool? isBreadcrumb,
     double? chevronAngle,
-    OutterBorderStyle? borderStyle,
+    OuterBorderStyle? borderStyle,
     Radius? borderRadius,
   }) {
     return StepLineStyle(

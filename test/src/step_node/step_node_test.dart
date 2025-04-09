@@ -21,7 +21,7 @@ void main() {
 
     const dummyThemeData = StepProgressThemeData(
       stepNodeStyle: dummyStyle,
-      borderStyle: OutterBorderStyle(
+      borderStyle: OuterBorderStyle(
         defaultBorderColor: Colors.black,
         activeBorderColor: Colors.red,
       ),

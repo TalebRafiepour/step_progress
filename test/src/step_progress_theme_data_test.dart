@@ -37,7 +37,7 @@ void main() {
       final newTheme = original.copyWith(
         defaultForegroundColor: Colors.red,
         activeForegroundColor: Colors.blue,
-        borderStyle: const OutterBorderStyle(
+        borderStyle: const OuterBorderStyle(
           defaultBorderColor: Colors.green,
           activeBorderColor: Colors.yellow,
           borderWidth: 2,
@@ -81,7 +81,7 @@ void main() {
       const original = StepProgressThemeData(
         defaultForegroundColor: Colors.red,
         activeForegroundColor: Colors.blue,
-        borderStyle: OutterBorderStyle(
+        borderStyle: OuterBorderStyle(
           defaultBorderColor: Colors.green,
           activeBorderColor: Colors.yellow,
           borderWidth: 2,
@@ -141,8 +141,7 @@ void main() {
     test('copyWith negative test: invalid values throws assertion error', () {
       const original = StepProgressThemeData();
       expect(
-        () =>
-            original.copyWith(borderStyle: OutterBorderStyle(borderWidth: -5)),
+        () => original.copyWith(borderStyle: OuterBorderStyle(borderWidth: -5)),
         throwsAssertionError,
       );
     });

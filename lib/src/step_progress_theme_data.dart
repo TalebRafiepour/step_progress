@@ -87,7 +87,7 @@ class StepProgressThemeData {
   final bool highlightCompletedSteps;
 
   /// The style of the outer border for the step progress widget.
-  final OutterBorderStyle? borderStyle;
+  final OuterBorderStyle? borderStyle;
 
   /// Creates a copy of this [StepProgressThemeData] but with the given fields
   /// replaced with the new values.
@@ -130,7 +130,7 @@ class StepProgressThemeData {
     bool? highlightCompletedSteps,
     StepLabelAlignment? nodeLabelAlignment,
     Alignment? lineLabelAlignment,
-    OutterBorderStyle? borderStyle,
+    OuterBorderStyle? borderStyle,
   }) {
     return StepProgressThemeData(
       defaultForegroundColor:

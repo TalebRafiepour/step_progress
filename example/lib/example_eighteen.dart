@@ -15,17 +15,12 @@ class ExampleEighteen extends StatelessWidget {
         totalSteps: 5,
         padding: const EdgeInsets.all(10),
         controller: stepProgressController,
-        lineSubTitles: const [
-          'Step 2',
-          'Step 3',
-          'Step 4',
-          'Step 5',
-        ],
         theme: const StepProgressThemeData(
           stepLineStyle: StepLineStyle(
             borderRadius: Radius.circular(8),
-            borderStyle: OutterBorderStyle(
+            borderStyle: OuterBorderStyle(
               isDotted: true,
+              borderWidth: 3,
             ),
           ),
         ),

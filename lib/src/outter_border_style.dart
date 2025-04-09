@@ -5,8 +5,8 @@ import 'dart:ui' show Color;
 ///
 /// This class can be used to customize the appearance of the outer border,
 /// such as its color, width, and other visual properties.
-class OutterBorderStyle {
-  const OutterBorderStyle({
+class OuterBorderStyle {
+  const OuterBorderStyle({
     this.borderWidth = 2,
     this.defaultBorderColor = const Color.fromARGB(255, 191, 196, 195),
     this.activeBorderColor = const Color.fromARGB(255, 0, 167, 160),
@@ -31,14 +31,14 @@ class OutterBorderStyle {
 
   /// Creates a copy of this `OutterBorderStyle` with the given fields replaced
   /// by new values.
-  OutterBorderStyle copyWith({
+  OuterBorderStyle copyWith({
     double? borderWidth,
     Color? defaultBorderColor,
     Color? activeBorderColor,
     bool? isDotted,
     List<double>? dashPattern,
   }) {
-    return OutterBorderStyle(
+    return OuterBorderStyle(
       borderWidth: borderWidth ?? this.borderWidth,
       defaultBorderColor: defaultBorderColor ?? this.defaultBorderColor,
       activeBorderColor: activeBorderColor ?? this.activeBorderColor,
