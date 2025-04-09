@@ -1,4 +1,5 @@
 import 'package:example/example_eight.dart';
+import 'package:example/example_eighteen.dart';
 import 'package:example/example_eleven.dart';
 import 'package:example/example_fifteen.dart';
 import 'package:example/example_five.dart';
@@ -237,6 +238,17 @@ class HomePage extends StatelessWidget {
                   );
                 },
                 child: const Text('Example Seventeen (BreadCrumbLine)'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const ExampleEighteen(),
+                    ),
+                  );
+                },
+                child: const Text('Example Eighteen (DottedLine)'),
               ),
               ElevatedButton(
                 onPressed: () {

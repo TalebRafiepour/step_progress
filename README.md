@@ -248,9 +248,7 @@ StepProgress(
     ),
     stepLineSpacing: 24,
     stepLineStyle: StepLineStyle(
-      borderRadius: BorderRadius.all(
-        Radius.circular(4),
-      ),
+      borderRadius: Radius.circular(4),
     ),
   ),
 ),
@@ -289,9 +287,7 @@ StepProgress(
       ),
     ),
     stepLineStyle: StepLineStyle(
-      borderRadius: BorderRadius.all(
-        Radius.circular(4),
-      ),
+      borderRadius: Radius.circular(4),
     ),
   ),
 ),
@@ -345,9 +341,7 @@ StepProgress(
     shape: StepNodeShape.diamond,
     stepLineSpacing: 18,
     stepLineStyle: StepLineStyle(
-      borderRadius: BorderRadius.all(
-        Radius.circular(4),
-      ),
+      borderRadius: Radius.circular(4),
     ),
     nodeLabelStyle: StepLabelStyle(
       margin: EdgeInsets.only(bottom: 6),
@@ -422,9 +416,7 @@ StepProgress(
     stepLineSpacing: 18,
     stepLineStyle: StepLineStyle(
       lineThickness: 3,
-      borderRadius: BorderRadius.all(
-        Radius.circular(3),
-      ),
+      borderRadius: Radius.circular(3),
     ),
     stepNodeStyle: StepNodeStyle(
       activeIcon: Icon(
@@ -483,7 +475,7 @@ theme: const StepProgressThemeData(
   stepLineSpacing: 20,
   stepLineStyle: StepLineStyle(
     lineThickness: 3,
-    borderRadius: BorderRadius.all(Radius.circular(4)),
+    borderRadius: Radius.circular(4),
   ),
 ),
 ),

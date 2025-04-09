@@ -42,7 +42,7 @@ class ExampleFifteen extends StatelessWidget {
           stepLineSpacing: 20,
           stepLineStyle: StepLineStyle(
             lineThickness: 3,
-            borderRadius: BorderRadius.all(Radius.circular(4)),
+            borderRadius: Radius.circular(4),
           ),
         ),
       ),

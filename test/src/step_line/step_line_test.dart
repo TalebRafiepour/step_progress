@@ -261,11 +261,11 @@ void main() {
       );
       expect(
         clipPathFinder,
-        findsNWidgets(2),
-      ); // One for container, one for animated
+        findsOneWidget,
+      ); // Ensure that the ClipPath is present in the widget tree.
 
       // Verify BreadcrumbClipper parameters
-      final clipPath = tester.widget<ClipPath>(clipPathFinder.first);
+      final clipPath = tester.widget<ClipPath>(clipPathFinder);
       final clipper = clipPath.clipper! as BreadcrumbClipper;
       expect(clipper.angle, equals(chevronAngle));
       expect(clipper.axis, equals(Axis.horizontal));

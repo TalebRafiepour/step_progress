@@ -33,9 +33,7 @@ class ExampleEight extends StatelessWidget {
               ),
               stepLineSpacing: 24,
               stepLineStyle: StepLineStyle(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(4),
-                ),
+                borderRadius: Radius.circular(8),
               ),
             ),
           ),

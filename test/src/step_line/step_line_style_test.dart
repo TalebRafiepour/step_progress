@@ -15,8 +15,8 @@ void main() {
       );
       expect(
         style.borderRadius,
-        equals(BorderRadius.zero),
-        reason: 'Default borderRadius should be BorderRadius.zero',
+        equals(Radius.zero),
+        reason: 'Default borderRadius should be Radius.zero',
       );
       expect(
         style.foregroundColor,
@@ -40,9 +40,9 @@ void main() {
       const active = Colors.green;
       const duration = Duration(milliseconds: 300);
       const thickness = 6.0;
-      final border = BorderRadius.circular(8);
+      const border = Radius.circular(8);
 
-      final style = StepLineStyle(
+      const style = StepLineStyle(
         foregroundColor: foreground,
         activeColor: active,
         animationDuration: duration,
@@ -59,12 +59,12 @@ void main() {
 
     test('copyWith returns a new instance with same values if no arguments'
         ' provided', () {
-      final style = StepLineStyle(
+      const style = StepLineStyle(
         foregroundColor: Colors.blue,
         activeColor: Colors.yellow,
-        animationDuration: const Duration(seconds: 1),
+        animationDuration: Duration(seconds: 1),
         lineThickness: 10,
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: Radius.circular(5),
       );
 
       final copiedStyle = style.copyWith();
@@ -97,18 +97,18 @@ void main() {
     });
 
     test('copyWith correctly overrides provided values', () {
-      final style = StepLineStyle(
+      const style = StepLineStyle(
         foregroundColor: Colors.blue,
         activeColor: Colors.yellow,
-        animationDuration: const Duration(seconds: 1),
+        animationDuration: Duration(seconds: 1),
         lineThickness: 10,
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: Radius.circular(5),
       );
 
       const newForeground = Colors.purple;
       const newDuration = Duration(milliseconds: 500);
       const newThickness = 12.0;
-      final newBorderRadius = BorderRadius.circular(15);
+      const newBorderRadius = Radius.circular(15);
 
       final copiedStyle = style.copyWith(
         foregroundColor: newForeground,
@@ -158,12 +158,12 @@ void main() {
     test('copyWith with null parameters retains original non-null values', () {
       // This test checks that if a field is set in the original instance,
       // providing a null value explicitly in copyWith does not override it.
-      final style = StepLineStyle(
+      const style = StepLineStyle(
         foregroundColor: Colors.orange,
         activeColor: Colors.green,
-        animationDuration: const Duration(seconds: 2),
+        animationDuration: Duration(seconds: 2),
         lineThickness: 8,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: Radius.circular(10),
       );
 
       // Passing null will trigger the fallback (null ?? original) which will

@@ -41,9 +41,7 @@ class ExampleNine extends StatelessWidget {
                 ),
               ),
               stepLineStyle: StepLineStyle(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(4),
-                ),
+                borderRadius: Radius.circular(4),
               ),
             ),
           ),

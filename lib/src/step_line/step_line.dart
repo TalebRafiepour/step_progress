@@ -1,3 +1,4 @@
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:step_progress/src/step_line/breadcrumb_clipper.dart';
 import 'package:step_progress/step_progress.dart';
@@ -71,104 +72,104 @@ class StepLine extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = StepProgressTheme.of(context)!.data;
     final style = stepLineStyle ?? theme.stepLineStyle;
-    final borderWidth = theme.borderWidth;
-    final borderColor = theme.borderColor;
-    final activeBorderColor = theme.activeBorderColor;
+    final isBreadcrumb = style.isBreadcrumb;
+    final borderStyle = style.borderStyle ?? theme.borderStyle;
+    final borderRadius = style.borderRadius;
 
-    //
-    return Expanded(
-      child: LayoutBuilder(
-        builder: (_, constraint) {
-          final lineSpacing = EdgeInsets.symmetric(
-            horizontal: _isHorizontal ? theme.stepLineSpacing : 0,
-            vertical: !_isHorizontal ? theme.stepLineSpacing : 0,
-          );
+    final lineSpacing = EdgeInsets.symmetric(
+      horizontal: _isHorizontal ? theme.stepLineSpacing : 0,
+      vertical: !_isHorizontal ? theme.stepLineSpacing : 0,
+    );
 
-          final containerDecoration = BoxDecoration(
-            color: style.foregroundColor ?? theme.defaultForegroundColor,
-            borderRadius: style.borderRadius,
-            border:
-                borderWidth > 0
-                    ? Border.all(
-                      color:
-                          (isActive && activeBorderColor != null)
-                              ? activeBorderColor
-                              : borderColor,
-                      width: borderWidth,
-                      strokeAlign: BorderSide.strokeAlignOutside,
-                    )
-                    : null,
-          );
+    final containerDecoration = BoxDecoration(
+      color: style.foregroundColor ?? theme.defaultForegroundColor,
+      borderRadius: BorderRadius.all(borderRadius),
+      border:
+          borderStyle != null && !borderStyle.isDotted
+              ? Border.all(
+                color:
+                    isActive
+                        ? borderStyle.activeBorderColor
+                        : borderStyle.defaultBorderColor,
+                width: borderStyle.borderWidth,
+                strokeAlign: BorderSide.strokeAlignOutside,
+              )
+              : null,
+    );
 
-          final animatedContainerDecoration = BoxDecoration(
+    Widget buildLineWidget(BoxConstraints constraint) {
+      final lineSize = Size(
+        _width(constraint, style.lineThickness),
+        _height(constraint, style.lineThickness),
+      );
+
+      Widget lineWidget = Container(
+        width: lineSize.width,
+        height: lineSize.height,
+        decoration: containerDecoration,
+        alignment: AlignmentDirectional.centerStart,
+        child: AnimatedContainer(
+          width:
+              _isHorizontal ? (isActive ? lineSize.width : 0) : lineSize.width,
+          height:
+              !_isHorizontal
+                  ? (isActive ? lineSize.height : 0)
+                  : lineSize.height,
+          decoration: BoxDecoration(
             color: style.activeColor ?? theme.activeForegroundColor,
-            borderRadius: style.borderRadius,
-          );
+            borderRadius: BorderRadius.all(borderRadius),
+          ),
+          curve: Curves.fastLinearToSlowEaseIn,
+          duration: style.animationDuration ?? theme.stepAnimationDuration,
+        ),
+      );
 
-          final double animatedContainerWidth =
-              _isHorizontal
-                  ? (isActive ? _width(constraint, style.lineThickness) : 0)
-                  : _width(constraint, style.lineThickness);
+      if (isBreadcrumb) {
+        final breadcrumbClipper = BreadcrumbClipper(
+          angle: style.chevronAngle,
+          axis: axis,
+          isReversed: isReversed,
+        );
+        lineWidget = ClipPath(clipper: breadcrumbClipper, child: lineWidget);
+      }
 
-          final double animatedContainerHeight =
-              _isHorizontal
-                  ? _height(constraint, style.lineThickness)
-                  : (isActive ? _height(constraint, style.lineThickness) : 0);
-
-          final animationDuration =
-              style.animationDuration ?? theme.stepAnimationDuration;
-
-          late final Widget lineWidget;
-
-          if (style.isBreadcrumb) {
-            lineWidget = ClipPath(
-              clipper: BreadcrumbClipper(
-                angle: style.chevronAngle,
-                axis: axis,
-                isReversed: isReversed,
-              ),
-              child: Container(
-                width: _width(constraint, style.lineThickness),
-                height: _height(constraint, style.lineThickness),
-                decoration: containerDecoration,
-                alignment: AlignmentDirectional.centerStart,
-                child: ClipPath(
-                  clipper: BreadcrumbClipper(
+      if (borderStyle?.isDotted ?? false) {
+        lineWidget = DottedBorder(
+          strokeWidth: borderStyle!.borderWidth,
+          color:
+              isActive
+                  ? borderStyle.activeBorderColor
+                  : borderStyle.defaultBorderColor,
+          radius: borderRadius,
+          padding: EdgeInsets.all(borderStyle.borderWidth / 2),
+          strokeCap: StrokeCap.round,
+          borderType: BorderType.RRect,
+          dashPattern: borderStyle.dashPattern,
+          customPath:
+              isBreadcrumb
+                  ? (size) => BreadcrumbClipper(
                     angle: style.chevronAngle,
                     axis: axis,
                     isReversed: isReversed,
-                  ),
-                  child: AnimatedContainer(
-                    width: animatedContainerWidth,
-                    height: animatedContainerHeight,
-                    decoration: animatedContainerDecoration,
-                    curve: Curves.fastLinearToSlowEaseIn,
-                    duration: animationDuration,
-                  ),
-                ),
-              ),
-            );
-          } else {
-            lineWidget = Container(
-              width: _width(constraint, style.lineThickness),
-              height: _height(constraint, style.lineThickness),
-              decoration: containerDecoration,
-              alignment: AlignmentDirectional.centerStart,
-              child: AnimatedContainer(
-                width: animatedContainerWidth,
-                height: animatedContainerHeight,
-                decoration: animatedContainerDecoration,
-                curve: Curves.fastLinearToSlowEaseIn,
-                duration: animationDuration,
-              ),
-            );
-          }
+                  ).getClip(size)
+                  : null,
+          child: lineWidget,
+        );
+      }
 
-          return Padding(
-            padding: lineSpacing,
-            child: GestureDetector(onTap: onTap, child: lineWidget),
-          );
-        },
+      return lineWidget;
+    }
+
+    return Expanded(
+      child: LayoutBuilder(
+        builder:
+            (_, constraint) => Padding(
+              padding: lineSpacing,
+              child: GestureDetector(
+                onTap: onTap,
+                child: buildLineWidget(constraint),
+              ),
+            ),
       ),
     );
   }

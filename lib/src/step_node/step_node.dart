@@ -54,19 +54,19 @@ class StepNode extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = StepProgressTheme.of(context)!.data;
     final style = theme.stepNodeStyle;
-    final borderWidth = theme.borderWidth;
-    final borderColor = theme.borderColor;
-    final activeBorderColor = theme.activeBorderColor;
+    final borderStyle = style.borderStyle ?? theme.borderStyle;
     //
     BoxDecoration applyBorder(BoxDecoration decoration) {
-      if (borderWidth > 0 && decoration.border == null) {
+      if (borderStyle != null &&
+          //!borderStyle.isDotted &&
+          decoration.border == null) {
         return decoration.copyWith(
           border: Border.all(
             color:
-                (isActive && activeBorderColor != null)
-                    ? activeBorderColor
-                    : borderColor,
-            width: borderWidth,
+                isActive
+                    ? borderStyle.activeBorderColor
+                    : borderStyle.defaultBorderColor,
+            width: borderStyle.borderWidth,
             strokeAlign: BorderSide.strokeAlignOutside,
           ),
         );
