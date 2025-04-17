@@ -207,5 +207,185 @@ void main() {
         expect(animatedScaleWidget.duration, equals(expectedDuration));
       },
     );
+
+    testWidgets('renders with square shape correctly', (tester) async {
+      await tester.pumpWidget(
+        const TestThemeWrapper(
+          child: StepNodeRipple(
+            stepNodeShape: StepNodeShape.square,
+            width: 50,
+            height: 50,
+            isVisible: true,
+            count: 1,
+            style: RippleEffectStyle(),
+          ),
+        ),
+      );
+
+      final container = tester.widget<StepNodeShapedContainer>(
+        find.byType(StepNodeShapedContainer),
+      );
+      expect(container.stepNodeShape, equals(StepNodeShape.square));
+    });
+
+    testWidgets('respects custom border color from style', (tester) async {
+      const customColor = Color(0xFF123456);
+
+      await tester.pumpWidget(
+        const TestThemeWrapper(
+          child: StepNodeRipple(
+            stepNodeShape: StepNodeShape.circle,
+            width: 50,
+            height: 50,
+            isVisible: true,
+            count: 1,
+            style: RippleEffectStyle(borderColor: customColor, borderWidth: 2),
+          ),
+        ),
+      );
+
+      final container = tester.widget<StepNodeShapedContainer>(
+        find.byType(StepNodeShapedContainer),
+      );
+      final decoration = container.decoration!;
+      final border = decoration.border! as Border;
+
+      expect(border.top.color, equals(customColor));
+    });
+
+    testWidgets('verifies size reduction in nested ripples', (tester) async {
+      await tester.pumpWidget(
+        const TestThemeWrapper(
+          child: StepNodeRipple(
+            stepNodeShape: StepNodeShape.circle,
+            width: 100,
+            height: 100,
+            isVisible: true,
+            count: 3,
+            style: RippleEffectStyle(borderWidth: 2),
+          ),
+        ),
+      );
+
+      final containers =
+          tester
+              .widgetList<StepNodeShapedContainer>(
+                find.byType(StepNodeShapedContainer),
+              )
+              .toList();
+
+      // Verify each container is smaller than the previous one
+      for (var i = 1; i < containers.length; i++) {
+        expect(containers[i].width, lessThan(containers[i - 1].width ?? 0));
+        expect(
+          containers[i].height ?? 0,
+          lessThan(containers[i - 1].height ?? 0),
+        );
+      }
+    });
+
+    testWidgets('handles maximum count gracefully', (tester) async {
+      await tester.pumpWidget(
+        const TestThemeWrapper(
+          child: StepNodeRipple(
+            stepNodeShape: StepNodeShape.circle,
+            width: 100,
+            height: 100,
+            isVisible: true,
+            count: 10, // Testing with a large count
+            style: RippleEffectStyle(borderWidth: 2),
+          ),
+        ),
+      );
+
+      final containers = find.byType(StepNodeShapedContainer);
+      expect(containers, findsNWidgets(10));
+    });
+
+    testWidgets('updates visibility state correctly', (tester) async {
+      await tester.pumpWidget(
+        const TestThemeWrapper(
+          child: StepNodeRipple(
+            stepNodeShape: StepNodeShape.circle,
+            width: 50,
+            height: 50,
+            isVisible: true,
+            count: 1,
+            style: RippleEffectStyle(),
+          ),
+        ),
+      );
+
+      // Check initial state
+      AnimatedOpacity opacityWidget = tester.widget(
+        find.byType(AnimatedOpacity),
+      );
+      expect(opacityWidget.opacity, equals(1.0));
+
+      // Update visibility
+      await tester.pumpWidget(
+        const TestThemeWrapper(
+          child: StepNodeRipple(
+            stepNodeShape: StepNodeShape.circle,
+            width: 50,
+            height: 50,
+            isVisible: false,
+            count: 1,
+            style: RippleEffectStyle(),
+          ),
+        ),
+      );
+
+      // Verify updated state
+      opacityWidget = tester.widget(find.byType(AnimatedOpacity));
+      expect(opacityWidget.opacity, equals(0.0));
+    });
+
+    testWidgets('respects custom border width from style', (tester) async {
+      const customBorderWidth = 5.0;
+
+      await tester.pumpWidget(
+        const TestThemeWrapper(
+          child: StepNodeRipple(
+            stepNodeShape: StepNodeShape.circle,
+            width: 50,
+            height: 50,
+            isVisible: true,
+            count: 1,
+            style: RippleEffectStyle(borderWidth: customBorderWidth),
+          ),
+        ),
+      );
+
+      final container = tester.widget<StepNodeShapedContainer>(
+        find.byType(StepNodeShapedContainer),
+      );
+      final decoration = container.decoration!;
+      final border = decoration.border! as Border;
+
+      expect(border.top.width, equals(customBorderWidth));
+    });
+
+    testWidgets('maintains aspect ratio when width != height', (tester) async {
+      await tester.pumpWidget(
+        const TestThemeWrapper(
+          child: StepNodeRipple(
+            stepNodeShape: StepNodeShape.circle,
+            width: 100,
+            height: 50,
+            isVisible: true,
+            count: 1,
+            style: RippleEffectStyle(),
+          ),
+        ),
+      );
+
+      final container = tester.widget<StepNodeShapedContainer>(
+        find.byType(StepNodeShapedContainer),
+      );
+
+      expect(container.width, equals(100));
+      expect(container.height, equals(50));
+    });
   });
 }

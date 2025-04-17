@@ -248,6 +248,8 @@ class _StepProgressState extends State<StepProgress>
     /// This method is used to remove all cached data, ensuring that the cache
     /// is empty.
     DataCache().clearCache();
+    /// Disposes of the controller if it is not null.
+    widget.controller?.dispose();
     super.dispose();
   }
 
