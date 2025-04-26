@@ -1,3 +1,6 @@
+## 2.4.1
+- **Bug Fix**: Resolved a memory leak by ensuring `StepProgressController` is properly closed when the widget is disposed.
+
 ## 2.4.0
 
 - **New Feature**: Introduced support for a dotted border line style, enhancing the visual appeal of step progress indicators. [#15](https://github.com/TalebRafiepour/step_progress/issues/15)
