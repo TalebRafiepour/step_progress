@@ -1,3 +1,8 @@
+## 2.5.0
+
+- **Refactor**: Replaced the `highlightCompletedSteps` property in `StepProgressThemeData` with a new `highlightOptions` enum for improved flexibility and customization.
+- **Documentation Update**: Updated the `README.md` file with a new banner and corrected broken links.
+
 ## 2.4.1
 - **Bug Fix**: Resolved a memory leak by ensuring `StepProgressController` is properly closed when the widget is disposed.
 
