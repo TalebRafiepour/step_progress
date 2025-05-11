@@ -93,6 +93,7 @@ StepProgress(
   totalSteps: 5,
   visibilityOptions: StepProgressVisibilityOptions.lineOnly,
   controller: stepProgressController,
+  highlightOptions: StepProgressHighlightOptions.highlightCurrentLine,
   onStepChanged: (currentIndex) {
     debugPrint('onStepChanged: $currentIndex');
   },
@@ -103,7 +104,6 @@ StepProgress(
     stepLineSpacing: 6,
     defaultForegroundColor: Color.fromARGB(255, 55, 55, 55),
     activeForegroundColor: Color.fromARGB(255, 105, 105, 105),
-    highlightCompletedSteps: false,
     stepLineStyle: StepLineStyle(
       lineThickness: 9,
       borderRadius: Radius.circular(2),

@@ -11,24 +11,24 @@ import 'package:step_progress/src/step_progress_theme.dart';
 ///
 /// The [width] and [height] properties define the size of the step node.
 ///
-/// The [isActive] property indicates whether the step node is active or not.
+/// The [highlighted] property indicates whether the step node is active or not.
 ///
 /// The [label] property can be used to display a label for the step node.
 ///
 /// The [icon] property is used to display an icon for the step node.
 ///
-/// The [activeIcon] property is used to display an icon when the step node is
-/// active.
+/// The [highlightIcon] property is used to display an icon when the step node
+/// is active.
 ///
 /// The [key] property is used to uniquely identify the widget.
 class StepNode extends StatelessWidget {
   const StepNode({
     required this.width,
     required this.height,
-    this.isActive = false,
+    this.highlighted = false,
     this.label,
     this.icon,
-    this.activeIcon,
+    this.highlightIcon,
     super.key,
   });
 
@@ -42,13 +42,13 @@ class StepNode extends StatelessWidget {
   final String? label;
 
   /// Indicates if the step node is active.
-  final bool isActive;
+  final bool highlighted;
 
   /// The icon to display for this step node.
   final Widget? icon;
 
   /// The icon to display when this step node is active.
-  final Widget? activeIcon;
+  final Widget? highlightIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +63,7 @@ class StepNode extends StatelessWidget {
         return decoration.copyWith(
           border: Border.all(
             color:
-                isActive
+                highlighted
                     ? borderStyle.activeBorderColor
                     : borderStyle.defaultBorderColor,
             width: borderStyle.borderWidth,
@@ -83,7 +83,7 @@ class StepNode extends StatelessWidget {
         alignment: Alignment.center,
         children: [
           StepNodeCore(
-            isVisible: !isActive,
+            isVisible: !highlighted,
             animationDuration:
                 style.animationDuration ?? theme.stepAnimationDuration,
             decoration: style.decoration.copyWith(
@@ -96,7 +96,7 @@ class StepNode extends StatelessWidget {
             height: height,
           ),
           StepNodeCore(
-            isVisible: isActive,
+            isVisible: highlighted,
             animationDuration:
                 style.animationDuration ?? theme.stepAnimationDuration,
             decoration:
@@ -112,7 +112,7 @@ class StepNode extends StatelessWidget {
                       theme.activeForegroundColor,
                 ),
             stepNodeShape: style.shape ?? theme.shape,
-            icon: activeIcon ?? style.activeIcon ?? style.icon,
+            icon: highlightIcon ?? style.activeIcon ?? style.icon,
             width: width,
             height: height,
           ),

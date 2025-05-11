@@ -27,7 +27,7 @@ void main() {
                   StepLine(
                     key: testKey,
                     stepLineStyle: dummyStepLineStyle,
-                    isActive: true,
+                    highlighted: true,
                   ),
                 ],
               ),
@@ -106,7 +106,7 @@ void main() {
                     key: testKey,
                     stepLineStyle: dummyStepLineStyle,
                     axis: Axis.vertical,
-                    isActive: true,
+                    highlighted: true,
                   ),
                 ],
               ),
@@ -179,7 +179,7 @@ void main() {
             children: [
               StepLine(
                 key: testKey,
-                isActive: true,
+                highlighted: true,
                 onTap: () {
                   tapped = true;
                 },
@@ -209,7 +209,7 @@ void main() {
 
       await tester.pumpWidget(
         const TestThemeWrapper(
-          child: Row(children: [StepLine(key: testKey, isActive: true)]),
+          child: Row(children: [StepLine(key: testKey, highlighted: true)]),
         ),
       );
 
@@ -245,7 +245,7 @@ void main() {
               StepLine(
                 key: testKey,
                 stepLineStyle: breadcrumbStyle,
-                isActive: true,
+                highlighted: true,
               ),
             ],
           ),
@@ -291,7 +291,7 @@ void main() {
                 StepLine(
                   key: testKey,
                   stepLineStyle: breadcrumbStyle,
-                  isActive: true,
+                  highlighted: true,
                   isReversed: true,
                 ),
               ],

@@ -55,7 +55,7 @@ void main() {
             .elementAt(i);
         if (i <= currentStep) {
           expect(
-            widget.isActive,
+            widget.highlighted,
             isTrue,
             reason:
                 'Step $i should be active when highlightCompletedSteps is '
@@ -63,7 +63,7 @@ void main() {
           );
         } else {
           expect(
-            widget.isActive,
+            widget.highlighted,
             isFalse,
             reason:
                 'Step $i should be inactive when highlightCompletedSteps is '
@@ -111,7 +111,7 @@ void main() {
             .elementAt(i);
         if (i == currentStep) {
           expect(
-            widget.isActive,
+            widget.highlighted,
             isTrue,
             reason:
                 'Only the current step should be active when '
@@ -119,7 +119,7 @@ void main() {
           );
         } else {
           expect(
-            widget.isActive,
+            widget.highlighted,
             isFalse,
             reason:
                 'Step $i should be inactive when highlightCompletedSteps '
@@ -211,7 +211,7 @@ void main() {
           final widget = stepLineWidgets[i];
           if (i < currentStep) {
             expect(
-              widget.isActive,
+              widget.highlighted,
               isTrue,
               reason:
                   'StepLine at index $i should be active when'
@@ -219,7 +219,7 @@ void main() {
             );
           } else {
             expect(
-              widget.isActive,
+              widget.highlighted,
               isFalse,
               reason:
                   'StepLine at index $i should be inactive when'

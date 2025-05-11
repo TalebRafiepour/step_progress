@@ -10,7 +10,6 @@ import 'package:step_progress/step_progress.dart';
 ///
 /// * [defaultForegroundColor]: The default color of the step nodes.
 /// * [activeForegroundColor]: The color of the active step node.
-/// * [highlightCompletedSteps]: Whether to highlight completed steps.
 /// * [enableRippleEffect]: Whether to enable the ripple effect on step nodes.
 /// * [shape]: The shape of the step nodes (e.g., circle, square).
 /// * [stepAnimationDuration]: The duration of the animation for step
@@ -28,7 +27,6 @@ class StepProgressThemeData {
   const StepProgressThemeData({
     this.defaultForegroundColor = const Color.fromARGB(255, 191, 196, 195),
     this.activeForegroundColor = const Color.fromARGB(255, 0, 167, 160),
-    this.highlightCompletedSteps = true,
     this.borderStyle,
     this.enableRippleEffect = false,
     this.shape = StepNodeShape.circle,
@@ -82,9 +80,6 @@ class StepProgressThemeData {
 
   /// Alignment of the step node labels in the step progress indicator.
   final StepLabelAlignment? nodeLabelAlignment;
-
-  /// Determines if the completed steps should be highlighted.
-  final bool highlightCompletedSteps;
 
   /// The style of the outer border for the step progress widget.
   final OuterBorderStyle? borderStyle;
@@ -147,8 +142,6 @@ class StepProgressThemeData {
       stepNodeStyle: stepNodeStyle ?? this.stepNodeStyle,
       stepLineStyle: stepLineStyle ?? this.stepLineStyle,
       rippleEffectStyle: rippleEffectStyle ?? this.rippleEffectStyle,
-      highlightCompletedSteps:
-          highlightCompletedSteps ?? this.highlightCompletedSteps,
       nodeLabelAlignment: nodeLabelAlignment ?? this.nodeLabelAlignment,
       lineLabelAlignment: lineLabelAlignment ?? this.lineLabelAlignment,
       borderStyle: borderStyle ?? this.borderStyle,

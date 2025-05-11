@@ -25,6 +25,8 @@ import 'package:step_progress/step_progress.dart';
 /// rebuilt.
 ///
 /// Optional parameters include:
+/// - [highlightOptions]: Options to customize the highlighting behavior of
+/// steps and lines.
 /// - [reversed]: A boolean to reverse the order of steps.
 /// - [nodeTitles]: A list of titles for each step node.
 /// - [nodeSubTitles]: A list of subtitles for each step node.
@@ -39,7 +41,7 @@ import 'package:step_progress/step_progress.dart';
 /// - [nodeLabelBuilder]: A builder for creating custom label widgets for
 /// step nodes.
 /// - [lineLabelBuilder]: A builder for creating custom label widgets for step
-///  lines.
+/// lines.
 /// - [key]: An optional key for the widget.
 class HorizontalStepProgress extends StepProgressWidget {
   const HorizontalStepProgress({
@@ -48,6 +50,7 @@ class HorizontalStepProgress extends StepProgressWidget {
     required super.stepSize,
     required super.visibilityOptions,
     required super.needsRebuildWidget,
+    super.highlightOptions,
     super.reversed,
     super.nodeTitles,
     super.nodeSubTitles,
@@ -66,14 +69,11 @@ class HorizontalStepProgress extends StepProgressWidget {
   /// This method constructs the visual representation of the step nodes
   /// in the horizontal step progress indicator.
   ///
-  /// The [highlightCompletedSteps] parameter determines whether the completed
-  /// steps should be visually highlighted.
   /// The [labelAlignment] parameter to specify node alignment depends on labels
   ///
   /// Returns a [Widget] that represents the step nodes.
   @override
   Widget buildStepNodes({
-    required bool highlightCompletedSteps,
     required StepLabelAlignment labelAlignment,
   }) {
     CrossAxisAlignment crossAxisAlignment() {
@@ -89,8 +89,6 @@ class HorizontalStepProgress extends StepProgressWidget {
     List<Widget> children = List.generate(totalSteps, (index) {
       final title = nodeTitles?.elementAtOrNull(index);
       final subTitle = nodeSubTitles?.elementAtOrNull(index);
-      final isActive =
-          highlightCompletedSteps ? index <= currentStep : index == currentStep;
 
       return StepGenerator(
         width: stepSize,
@@ -99,7 +97,7 @@ class HorizontalStepProgress extends StepProgressWidget {
         anyLabelExist: nodeTitles != null || nodeSubTitles != null,
         title: title,
         subTitle: subTitle,
-        isActive: isActive,
+        highlighted: isHighlightedStepNode(index),
         stepNodeIcon: nodeIconBuilder?.call(index, currentStep),
         customLabelWidget: nodeLabelBuilder?.call(index, currentStep),
         onTap: () => onStepNodeTapped?.call(index),
@@ -121,25 +119,19 @@ class HorizontalStepProgress extends StepProgressWidget {
   ///
   /// The [style] parameter specifies the appearance of the step lines.
   /// The [maxStepSize] parameter determines the maximum size of a step.
-  /// The [highlightCompletedSteps] parameter determines whether completed steps
-  /// should be highlighted.
   ///
   /// Returns a [Widget] that represents the step lines.
   @override
   Widget buildStepLines({
     required StepLineStyle style,
     required double maxStepSize,
-    required bool highlightCompletedSteps,
     ValueNotifier<RenderBox?>? boxNotifier,
   }) {
     Widget buildWidget() {
       List<Widget> children = List.generate(totalSteps - 1, (index) {
         return StepLine(
           isReversed: reversed,
-          isActive:
-              highlightCompletedSteps
-                  ? index < currentStep
-                  : index == currentStep - 1,
+          highlighted: isHighlightedStepLine(index),
           onTap: () => onStepLineTapped?.call(index),
         );
       });

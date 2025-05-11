@@ -15,9 +15,8 @@ class ExampleTwenty extends StatelessWidget {
         totalSteps: 5,
         padding: const EdgeInsets.all(10),
         controller: stepProgressController,
-        theme: const StepProgressThemeData(
-          highlightCompletedSteps: false,
-        ),
+        highlightOptions:
+            StepProgressHighlightOptions.highlightCurrentNode,
       ),
       bottomNavigationBar: SafeArea(
         child: Row(

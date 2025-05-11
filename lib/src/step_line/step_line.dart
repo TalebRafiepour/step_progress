@@ -13,12 +13,13 @@ import 'package:step_progress/step_progress.dart';
 /// The [stepLineStyle] parameter allows customization of the step line's
 /// appearance.
 ///
-/// The [isActive] parameter indicates whether the step line is active or not.
+/// The [highlighted] parameter indicates whether the step line is highlighted
+/// or not.
 ///
 /// The [axis] parameter specifies the orientation of the step line. It defaults
 /// to [Axis.horizontal].
 ///
-/// The [isActive] parameter indicates whether the step line is active. It
+/// The [highlighted] parameter indicates whether the step line is active. It
 /// defaults to `false`.
 ///
 /// The [isReversed] parameter indicates whether the step line is displayed in
@@ -47,7 +48,7 @@ class StepLine extends StatelessWidget {
   const StepLine({
     this.axis = Axis.horizontal,
     this.stepLineStyle,
-    this.isActive = false,
+    this.highlighted = false,
     this.isReversed = false,
     this.onTap,
     super.key,
@@ -57,7 +58,7 @@ class StepLine extends StatelessWidget {
   final Axis axis;
 
   /// Indicates whether the step line is active.
-  final bool isActive;
+  final bool highlighted;
 
   /// Callback function to be executed when the step line is tapped.
   final VoidCallback? onTap;
@@ -88,7 +89,7 @@ class StepLine extends StatelessWidget {
           borderStyle != null && !borderStyle.isDotted
               ? Border.all(
                 color:
-                    isActive
+                    highlighted
                         ? borderStyle.activeBorderColor
                         : borderStyle.defaultBorderColor,
                 width: borderStyle.borderWidth,
@@ -110,10 +111,12 @@ class StepLine extends StatelessWidget {
         alignment: AlignmentDirectional.centerStart,
         child: AnimatedContainer(
           width:
-              _isHorizontal ? (isActive ? lineSize.width : 0) : lineSize.width,
+              _isHorizontal
+                  ? (highlighted ? lineSize.width : 0)
+                  : lineSize.width,
           height:
               !_isHorizontal
-                  ? (isActive ? lineSize.height : 0)
+                  ? (highlighted ? lineSize.height : 0)
                   : lineSize.height,
           decoration: BoxDecoration(
             color: style.activeColor ?? theme.activeForegroundColor,
@@ -137,7 +140,7 @@ class StepLine extends StatelessWidget {
         lineWidget = DottedBorder(
           strokeWidth: borderStyle!.borderWidth,
           color:
-              isActive
+              highlighted
                   ? borderStyle.activeBorderColor
                   : borderStyle.defaultBorderColor,
           radius: borderRadius,

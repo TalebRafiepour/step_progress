@@ -15,8 +15,8 @@ import 'package:step_progress/step_progress.dart';
 /// step.
 /// The [anyLabelExist] required to detect if any other step nodes contains
 /// label.
-/// The [isActive] parameter indicates whether the step is active or not, with
-/// a default value of false.
+/// The [highlighted] parameter indicates whether the step is active or not,
+/// with a default value of false.
 /// The [axis] parameter specifies the orientation of the step, either
 /// horizontal or vertical, with a default value of [Axis.horizontal].
 /// The [title] and [subTitle] parameters are optional and can be used to
@@ -35,7 +35,7 @@ import 'package:step_progress/step_progress.dart';
 ///   height: 50.0,
 ///   anyLabelExist: true,
 ///   stepIndex: 1,
-///   isActive: true,
+///   highlighted: true,
 ///   axis: Axis.vertical,
 ///   title: 'Step 1',
 ///   subTitle: 'Introduction',
@@ -52,7 +52,7 @@ class StepGenerator extends StatelessWidget {
     required this.height,
     required this.stepIndex,
     required this.anyLabelExist,
-    this.isActive = false,
+    this.highlighted = false,
     this.axis = Axis.horizontal,
     this.title,
     this.subTitle,
@@ -63,7 +63,7 @@ class StepGenerator extends StatelessWidget {
   });
 
   /// Indicates whether the step is active.
-  final bool isActive;
+  final bool highlighted;
 
   /// The axis along which the step is oriented.
   final Axis axis;
@@ -135,14 +135,14 @@ class StepGenerator extends StatelessWidget {
                 style: themeData.rippleEffectStyle,
                 width: width,
                 height: height,
-                isVisible: isActive,
+                isVisible: highlighted,
               ),
             StepNode(
               width: themeData.enableRippleEffect ? width / 1.5 : width,
               height: themeData.enableRippleEffect ? height / 1.5 : height,
-              isActive: isActive,
+              highlighted: highlighted,
               icon: stepNodeIcon,
-              activeIcon: stepNodeIcon,
+              highlightIcon: stepNodeIcon,
             ),
           ],
         ),
@@ -168,7 +168,7 @@ class StepGenerator extends StatelessWidget {
         title: title,
         subTitle: subTitle,
         customLabel: customLabelWidget,
-        isActive: isActive,
+        isActive: highlighted,
       );
     }
 

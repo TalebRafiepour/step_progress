@@ -31,6 +31,10 @@ import 'package:step_progress/src/step_progress_widgets/step_progress_widget.dar
 ///
 /// The [reversed] parameter allows you to reverse the order of the steps.
 ///
+/// The [highlightOptions] parameter allows you to customize the highlighting
+/// behavior of the steps and lines, such as colors or styles for highlighted
+/// elements.
+///
 /// The [needsRebuildWidget] parameter is a [VoidCallback] function that can be
 /// used to trigger a rebuild of the widget when necessary.
 ///
@@ -85,6 +89,7 @@ class VerticalStepProgress extends StepProgressWidget {
     required super.stepSize,
     required super.visibilityOptions,
     required super.needsRebuildWidget,
+    super.highlightOptions,
     super.reversed,
     super.nodeTitles,
     super.nodeSubTitles,
@@ -106,20 +111,13 @@ class VerticalStepProgress extends StepProgressWidget {
   /// Override this method to customize the appearance and behavior
   /// of the step nodes.
   ///
-  /// The [highlightCompletedSteps] parameter determines whether the
-  /// completed steps should be highlighted.
-  ///
   /// Returns a [Widget] that represents the step nodes.
   @override
-  Widget buildStepNodes({
-    required bool highlightCompletedSteps,
-    required StepLabelAlignment labelAlignment,
-  }) {
+  Widget buildStepNodes({required StepLabelAlignment labelAlignment}) {
     List<Widget> children = List.generate(totalSteps, (index) {
       final title = nodeTitles?.elementAtOrNull(index);
       final subTitle = nodeSubTitles?.elementAtOrNull(index);
-      final isActive =
-          highlightCompletedSteps ? index <= currentStep : index == currentStep;
+      //
 
       return StepGenerator(
         axis: Axis.vertical,
@@ -129,7 +127,7 @@ class VerticalStepProgress extends StepProgressWidget {
         stepIndex: index,
         title: title,
         subTitle: subTitle,
-        isActive: isActive,
+        highlighted: isHighlightedStepNode(index),
         stepNodeIcon: nodeIconBuilder?.call(index, currentStep),
         customLabelWidget: nodeLabelBuilder?.call(index, currentStep),
         onTap: () => onStepNodeTapped?.call(index),
@@ -161,18 +159,15 @@ class VerticalStepProgress extends StepProgressWidget {
   Widget buildStepLines({
     required StepLineStyle style,
     required double maxStepSize,
-    required bool highlightCompletedSteps,
     ValueNotifier<RenderBox?>? boxNotifier,
   }) {
     Widget buildWidget() {
       List<Widget> children = List.generate(totalSteps - 1, (index) {
+
         return StepLine(
           axis: Axis.vertical,
           isReversed: reversed,
-          isActive:
-              highlightCompletedSteps
-                  ? index < currentStep
-                  : index == currentStep - 1,
+          highlighted: isHighlightedStepLine(index),
           onTap: () => onStepLineTapped?.call(index),
         );
       });

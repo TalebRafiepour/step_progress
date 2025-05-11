@@ -82,6 +82,10 @@ typedef OnStepNodeTapped = void Function(int index);
 /// The [visibilityOptions] parameter can be used to control the visibility of
 /// step progress elements.
 ///
+/// The [highlightOptions] parameter specifies the highlight behavior for the
+/// step progress indicator. It defaults to
+/// [StepProgressHighlightOptions.highlightCompletedNodesAndLines].
+///
 /// The [width] parameter specifies the width of the step progress widget.
 ///
 /// The [height] parameter specifies the height of the step progress widget.
@@ -121,6 +125,8 @@ class StepProgress extends StatefulWidget {
     this.axis = Axis.horizontal,
     this.reversed = false,
     this.visibilityOptions = StepProgressVisibilityOptions.both,
+    this.highlightOptions =
+        StepProgressHighlightOptions.highlightCompletedNodesAndLines,
     this.nodeTitles,
     this.nodeSubTitles,
     this.lineTitles,
@@ -167,6 +173,9 @@ class StepProgress extends StatefulWidget {
 
   /// Options to control the visibility of step progress elements.
   final StepProgressVisibilityOptions visibilityOptions;
+
+  /// Options to customize the highlight behavior of the step progress.
+  final StepProgressHighlightOptions highlightOptions;
 
   /// Size of each step indicator
   final double stepSize;
@@ -248,6 +257,7 @@ class _StepProgressState extends State<StepProgress>
     /// This method is used to remove all cached data, ensuring that the cache
     /// is empty.
     DataCache().clearCache();
+
     /// Disposes of the controller if it is not null.
     widget.controller?.dispose();
     super.dispose();
@@ -331,6 +341,7 @@ class _StepProgressState extends State<StepProgress>
                   totalSteps: widget.totalSteps,
                   currentStep: _currentStep,
                   reversed: widget.reversed,
+                  highlightOptions: widget.highlightOptions,
                   needsRebuildWidget: _needsRebuildWidget,
                   nodeTitles: widget.nodeTitles,
                   nodeSubTitles: widget.nodeSubTitles,
@@ -348,6 +359,7 @@ class _StepProgressState extends State<StepProgress>
                   totalSteps: widget.totalSteps,
                   currentStep: _currentStep,
                   reversed: widget.reversed,
+                  highlightOptions: widget.highlightOptions,
                   needsRebuildWidget: _needsRebuildWidget,
                   nodeTitles: widget.nodeTitles,
                   nodeSubTitles: widget.nodeSubTitles,

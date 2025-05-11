@@ -61,7 +61,7 @@ void main() {
             body: StepNode(
               width: 60,
               height: 60,
-              isActive: true,
+              highlighted: true,
               label: 'Step Active',
             ),
           ),
@@ -141,7 +141,7 @@ void main() {
                   child: StepNode(
                     width: double.maxFinite,
                     height: double.maxFinite,
-                    isActive: true,
+                    highlighted: true,
                   ),
                 ),
               ],

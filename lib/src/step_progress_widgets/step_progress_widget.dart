@@ -4,6 +4,7 @@ import 'package:step_progress/src/step_label/step_label_style.dart';
 import 'package:step_progress/src/step_label_alignment.dart';
 import 'package:step_progress/src/step_line/step_line_style.dart';
 import 'package:step_progress/src/step_progress.dart';
+import 'package:step_progress/src/step_progress_highlight_options.dart';
 import 'package:step_progress/src/step_progress_theme.dart';
 import 'package:step_progress/src/step_progress_visibility_options.dart';
 
@@ -40,6 +41,8 @@ import 'package:step_progress/src/step_progress_visibility_options.dart';
 /// order. It defaults to false.
 /// - [needsRebuildWidget]: Callback to request a rebuild of the parent widget.
 /// This is triggered when dynamic size calculations are needed.
+/// - [highlightOptions]: Options to customize the highlight behavior of the
+/// step progress widget.
 abstract class StepProgressWidget extends StatelessWidget {
   const StepProgressWidget({
     required this.totalSteps,
@@ -48,6 +51,8 @@ abstract class StepProgressWidget extends StatelessWidget {
     required this.axis,
     required this.visibilityOptions,
     required this.needsRebuildWidget,
+    this.highlightOptions =
+        StepProgressHighlightOptions.highlightCompletedNodesAndLines,
     this.reversed = false,
     this.nodeTitles,
     this.nodeSubTitles,
@@ -125,6 +130,45 @@ abstract class StepProgressWidget extends StatelessWidget {
   /// dynamic size calculations are needed.
   final VoidCallback needsRebuildWidget;
 
+  /// Options to customize the highlight behavior of the step progress widget.
+  final StepProgressHighlightOptions highlightOptions;
+
+  /// Determines if a step line at the given index should be highlighted
+  /// based on the current step and highlight options.
+  bool isHighlightedStepLine(int index) {
+    if (highlightOptions ==
+            StepProgressHighlightOptions.highlightCompletedLines ||
+        highlightOptions ==
+            StepProgressHighlightOptions.highlightCompletedNodesAndLines) {
+      return index < currentStep;
+    } else if (highlightOptions ==
+            StepProgressHighlightOptions.highlightCurrentLine ||
+        highlightOptions ==
+            StepProgressHighlightOptions.highlightCurrentNodeAndLine) {
+      return index == currentStep - 1;
+    } else {
+      return false;
+    }
+  }
+
+  /// Determines if a step node at a given index should be highlighted.
+  /// The highlighting behavior depends on the specified highlight options.
+  bool isHighlightedStepNode(int index) {
+    if (highlightOptions ==
+            StepProgressHighlightOptions.highlightCompletedNodes ||
+        highlightOptions ==
+            StepProgressHighlightOptions.highlightCompletedNodesAndLines) {
+      return index <= currentStep;
+    } else if (highlightOptions ==
+            StepProgressHighlightOptions.highlightCurrentNode ||
+        highlightOptions ==
+            StepProgressHighlightOptions.highlightCurrentNodeAndLine) {
+      return index == currentStep;
+    } else {
+      return false;
+    }
+  }
+
   /// Determine if the step nodes have associated labels.
   bool get hasNodeLabels =>
       (nodeTitles != null && nodeTitles!.isNotEmpty) ||
@@ -142,13 +186,8 @@ abstract class StepProgressWidget extends StatelessWidget {
   /// This method should be implemented to create the visual representation
   /// of the step nodes in the step progress widget.
   ///
-  /// The [highlightCompletedSteps] parameter indicates whether the completed
-  /// steps should be visually highlighted.
   /// The [labelAlignment] parameters indicates the alignment of labels.
-  Widget buildStepNodes({
-    required bool highlightCompletedSteps,
-    required StepLabelAlignment labelAlignment,
-  });
+  Widget buildStepNodes({required StepLabelAlignment labelAlignment});
 
   /// Builds the step lines widget with the given style.
   ///
@@ -157,12 +196,9 @@ abstract class StepProgressWidget extends StatelessWidget {
   ///
   /// [style] defines the appearance and style of the step lines.
   /// [maxStepSize] is the maximum size of the step nodes.
-  /// [highlightCompletedSteps] indicates whether to highlight the completed
-  /// steps.
   Widget buildStepLines({
     required StepLineStyle style,
     required double maxStepSize,
-    required bool highlightCompletedSteps,
     ValueNotifier<RenderBox?>? boxNotifier,
   });
 
@@ -229,7 +265,6 @@ abstract class StepProgressWidget extends StatelessWidget {
   }) {
     final theme = StepProgressTheme.of(context)!.data;
     final stepLineStyle = theme.stepLineStyle;
-    final highlightCompletedSteps = theme.highlightCompletedSteps;
     final nodeLabelAlignment =
         theme.nodeLabelAlignment ??
         (axis == Axis.horizontal
@@ -251,13 +286,9 @@ abstract class StepProgressWidget extends StatelessWidget {
                     boxNotifier: lineBoxNotifier,
                     style: stepLineStyle,
                     maxStepSize: maxStepSize(theme.nodeLabelStyle),
-                    highlightCompletedSteps: highlightCompletedSteps,
                   ),
                 if (visibilityOptions != StepProgressVisibilityOptions.lineOnly)
-                  buildStepNodes(
-                    highlightCompletedSteps: highlightCompletedSteps,
-                    labelAlignment: nodeLabelAlignment,
-                  ),
+                  buildStepNodes(labelAlignment: nodeLabelAlignment),
               ],
             ),
           );
