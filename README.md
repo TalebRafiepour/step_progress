@@ -10,7 +10,7 @@
 
 **StepProgress** is a lightweight and highly flexible package designed to display step progress indicators for completing multi-step tasks in a user interface. This package supports both **vertical and horizontal** orientations, allowing developers to customize the display according to their application's needs. It provides a variety of customizable widgets that visually represent the progress of a task, making it easier for users to understand their current position and the steps remaining. With this flexibility, **StepProgress** can seamlessly integrate into various UI designs, enhancing user experience across different platforms.
 
-![StepProgress-banner](https://github.com/TalebRafiepour/showcase/blob/main/step_progress/stepprogress-banner.png?raw=true)
+![StepProgress-banner](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/stepprogress-banner.png)
 
 
 ## Features
@@ -43,7 +43,7 @@
 ## Showcases
 
 ### Example 1: Vertical Step Progress
-![StepProgress-vertical](https://github.com/TalebRafiepour/showcase/blob/main/step_progress/sample-1-step-progress-vertical.gif?raw=true)
+![StepProgress-vertical](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-1-step-progress-vertical.gif)
 
 #### Implementation
 
@@ -66,7 +66,7 @@ StepProgress(
 ```
 
 ### Example 2: Horizontal Step Progress without Labels
-![StepProgress-without-labels](https://github.com/TalebRafiepour/showcase/blob/main/step_progress/sample-2-step-progress-without-labels.gif?raw=true)
+![StepProgress-without-labels](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-2-step-progress-without-labels.gif)
 
 #### Implementation
 
@@ -84,7 +84,7 @@ StepProgress(
 ```
 
 ### Example 3: Horizontal Step Progress without Nodes
-![StepProgress-without-nodes](https://github.com/TalebRafiepour/showcase/blob/main/step_progress/sample-3-step-line-mode.gif?raw=true)
+![StepProgress-without-nodes](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-3-step-line-mode.gif)
 
 #### Implementation
 
@@ -113,7 +113,7 @@ StepProgress(
 ```
 
 ### Example 4: Horizontal Step Progress Line Mode - Customized
-![StepProgress-line-mode](https://github.com/TalebRafiepour/showcase/blob/main/step_progress/sample-4-step-line-mode.gif?raw=true)
+![StepProgress-line-mode](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-4-step-line-mode.gif)
 
 #### Implementation
 
@@ -147,7 +147,7 @@ Row(
 ```
 
 ### Example 5: Horizontal Step Progress Custom Node Icon
-![StepProgress-custom-node-icon](https://github.com/TalebRafiepour/showcase/blob/main/step_progress/sample-5-step-progress-custom-icon.gif?raw=true)
+![StepProgress-custom-node-icon](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-5-step-progress-custom-icon.gif)
 
 #### Implementation
 
@@ -187,7 +187,7 @@ StepProgress(
 ```
 
 ### Example 6: Horizontal Step Progress with Positioned Label
-![StepProgress-positioned-labels](https://github.com/TalebRafiepour/showcase/blob/main/step_progress/sample-6-step-progress-position-labels.gif?raw=true)
+![StepProgress-positioned-labels](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-6-step-progress-position-labels.gif)
 
 #### Implementation
 
@@ -205,7 +205,7 @@ StepProgress(
 ```
 
 ### Example 7: Horizontal Step Progress Node Only
-![StepProgress-node-only](https://github.com/TalebRafiepour/showcase/blob/main/step_progress/sample-7-step-progress-without-lines.gif?raw=true)
+![StepProgress-node-only](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-7-step-progress-without-lines.gif)
 
 #### Implementation
 
@@ -224,7 +224,7 @@ StepProgress(
 ```
 
 ### Example 8: Vertical Step Progress with lineSpacing
-![StepProgress-vertical-lineSpacing](https://github.com/TalebRafiepour/showcase/blob/main/step_progress/sample-8-stepprogress-vertical-line-spacing.gif?raw=true)
+![StepProgress-vertical-lineSpacing](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-8-stepprogress-vertical-line-spacing.gif)
 
 #### Implementation
 
@@ -255,7 +255,7 @@ StepProgress(
 ```
 
 ### Example 9: Horizontal Step Progress with Square shape
-![StepProgress-horizontal-square-shape](https://github.com/TalebRafiepour/showcase/blob/main/step_progress/sample-9-stepprogress-square-shape.gif?raw=true)
+![StepProgress-horizontal-square-shape](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-9-stepprogress-square-shape.gif)
 
 #### Implementation
 
@@ -294,7 +294,7 @@ StepProgress(
 ```
 
 ### Example 10: Horizontal Step Progress with Triangle shape
-![StepProgress-horizontal-triangle-shape](https://github.com/TalebRafiepour/showcase/blob/main/step_progress/sample-10-stepprogress-triangle-shape.gif?raw=true)
+![StepProgress-horizontal-triangle-shape](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-10-stepprogress-triangle-shape.gif)
 
 #### Implementation
 
@@ -321,7 +321,7 @@ StepProgress(
 ```
 
 ### Example 11: Horizontal Step Progress with Diamond shape
-![StepProgress-horizontal-diamond-shape](https://github.com/TalebRafiepour/showcase/blob/main/step_progress/sample-11-stepprogress-diamond-shape.gif?raw=true)
+![StepProgress-horizontal-diamond-shape](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-11-stepprogress-diamond-shape.gif)
 
 #### Implementation
 
@@ -359,7 +359,7 @@ StepProgress(
 ```
 
 ### Example 12: Vertical Step Progress with Hexagon shape
-![StepProgress-vertical-hexagon-shape](https://github.com/TalebRafiepour/showcase/blob/main/step_progress/sample-12-step-progress-vertical-hexagon-shape.gif?raw=true)
+![StepProgress-vertical-hexagon-shape](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-12-step-progress-vertical-hexagon-shape.gif)
 
 #### Implementation
 
@@ -398,7 +398,7 @@ StepProgress(
 ```
 
 ### Example 13: Vertical Step Progress with Star shape
-![StepProgress-vertical-star-shape](https://github.com/TalebRafiepour/showcase/blob/main/step_progress/sample-13-stepprogress-vertical-star-shape.gif?raw=true)
+![StepProgress-vertical-star-shape](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-13-stepprogress-vertical-star-shape.gif)
 
 #### Implementation
 
@@ -439,7 +439,7 @@ StepProgress(
 ),
 ```
 ### Example 14: Horizontal Step Progress with Line Labels
-![StepProgress-horizontal-with-line-labels](https://github.com/TalebRafiepour/showcase/blob/main/step_progress/sample-14-stepprogress-line-labels.png?raw=true)
+![StepProgress-horizontal-with-line-labels](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-14-stepprogress-line-labels.png)
 
 #### Implementation
 
@@ -481,7 +481,7 @@ theme: const StepProgressThemeData(
 ),
 ```
 ### Example 15: Customized Vertical Step Progress with Line Labels and Node Labels.
-![StepProgress-vertical-customized-with-line-labels](https://github.com/TalebRafiepour/showcase/blob/main/step_progress/sample-15-stepprogress-custom-with-line-labels.png?raw=true)
+![StepProgress-vertical-customized-with-line-labels](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-15-stepprogress-custom-with-line-labels.png)
 
 #### Implementation
 
@@ -559,7 +559,7 @@ StepProgress(
 )
 ```
 ### Example 16: Horizontal Step Progress with Breadcrumb Lines.
-![StepProgress-horizontal-with-breadcrumb-lines](https://github.com/TalebRafiepour/showcase/blob/main/step_progress/sample-16-stepprogress-breadcrumb-lines.png?raw=true)
+![StepProgress-horizontal-with-breadcrumb-lines](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-16-stepprogress-breadcrumb-lines.png)
 
 #### Implementation
 
@@ -584,7 +584,7 @@ StepProgress(
 )
 ```
 ### Example 17: Horizontal Step Progress with Dotted Lines.
-![StepProgress-horizontal-with-dotted-lines](https://github.com/TalebRafiepour/showcase/blob/main/step_progress/sample-17-stepprogress-dotted-line.png?raw=true)
+![StepProgress-horizontal-with-dotted-lines](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-17-stepprogress-dotted-line.png)
 
 #### Implementation
 
@@ -605,7 +605,7 @@ StepProgress(
 )
 ```
 ### Example 18: Horizontal Step Progress with RippleEffect nodes.
-![StepProgress-horizontal-with-rippleeffect-nodes](https://github.com/TalebRafiepour/showcase/blob/main/step_progress/sample-18-stepprogress-rippleeffect-nodes.png?raw=true)
+![StepProgress-horizontal-with-rippleeffect-nodes](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-18-stepprogress-rippleeffect-nodes.png)
 
 #### Implementation
 
@@ -620,7 +620,7 @@ StepProgress(
 )
 ```
 ### Example 19: Horizontal Step Progress with Highlighted current Step node.
-![StepProgress-horizontal-with-highlighted-current-step-node](https://github.com/TalebRafiepour/showcase/blob/main/step_progress/sample-19-stepprogress-highlightcurrentstepnode.png?raw=true)
+![StepProgress-horizontal-with-highlighted-current-step-node](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-19-stepprogress-highlightcurrentstepnode.png)
 
 #### Implementation
 
