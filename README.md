@@ -10,7 +10,7 @@
 
 **StepProgress** is a lightweight and highly flexible package designed to display step progress indicators for completing multi-step tasks in a user interface. This package supports both **vertical and horizontal** orientations, allowing developers to customize the display according to their application's needs. It provides a variety of customizable widgets that visually represent the progress of a task, making it easier for users to understand their current position and the steps remaining. With this flexibility, **StepProgress** can seamlessly integrate into various UI designs, enhancing user experience across different platforms.
 
-![StepProgress-horizontal-diamond-shape](https://github.com/TalebRafiepour/showcase/blob/main/step_progress/sample-11-stepprogress-diamond-shape.gif?raw=true)
+![StepProgress-banner](https://github.com/TalebRafiepour/showcase/blob/main/step_progress/stepprogress-banner.png?raw=true)
 
 
 ## Features
