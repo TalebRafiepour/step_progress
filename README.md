@@ -619,6 +619,19 @@ StepProgress(
   ),
 )
 ```
+### Example 19: Horizontal Step Progress with Highlighted current Step node.
+![StepProgress-horizontal-with-highlighted-current-step-node](https://github.com/TalebRafiepour/showcase/blob/main/step_progress/sample-19-stepprogress-highlightcurrentstepnode.png?raw=true)
+
+#### Implementation
+
+```dart
+StepProgress(
+  totalSteps: 5,
+  padding: const EdgeInsets.all(10),
+  controller: stepProgressController,
+  highlightOptions: StepProgressHighlightOptions.highlightCurrentNode,
+)
+```
 
 ## Installation
 
@@ -663,7 +676,6 @@ StepProgress(
 |-------------------------|---------------------|----------------------------------------------------|--------------------------------------------|
 |`defaultForegroundColor` |`Color`              | The default color of the step nodes.               | `Color.fromARGB(255, 191, 196, 195)`       |
 |`activeForegroundColor`  |`Color`              | The color of the active step node.                 | `Color.fromARGB(255, 0, 167, 160)`         |
-|`highlightCompletedSteps`|`bool`               | Whether to highlight completed steps.              | `true`                                     |
 |`borderStyle`            |`OutterBorderStyle`  | border style of line and nodes.                    | `null`                                     |
 |`enableRippleEffect`     |`bool`               | Whether to enable the ripple effect on step nodes. | `false`                                    |
 |`shape`                  |`StepNodeShape`      | The shape of the step nodes (e.g., circle, square).| `StepNodeShape.circle`                     |
