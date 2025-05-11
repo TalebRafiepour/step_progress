@@ -17,6 +17,7 @@ import 'package:example/example_ten.dart';
 import 'package:example/example_thirteen.dart';
 import 'package:example/example_three.dart';
 import 'package:example/example_twelve.dart';
+import 'package:example/example_twenty.dart';
 import 'package:example/example_two.dart';
 import 'package:flutter/material.dart';
 
@@ -261,6 +262,17 @@ class HomePage extends StatelessWidget {
                   );
                 },
                 child: const Text('Example Nineteen (RippleEffect node)'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const ExampleTwenty(),
+                    ),
+                  );
+                },
+                child: const Text('Example Twenty (HighlitCurrentStepNode)'),
               ),
               ElevatedButton(
                 onPressed: () {
