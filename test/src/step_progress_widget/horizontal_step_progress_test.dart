@@ -83,9 +83,7 @@ void main() {
 
       await tester.pumpWidget(
         TestThemeWrapper(
-          themeData: const StepProgressThemeData(
-            highlightCompletedSteps: false,
-          ),
+          themeData: const StepProgressThemeData(),
           child: Scaffold(
             // Here we pass null for titles and subtitles to simulate
             // missing data.
@@ -94,6 +92,8 @@ void main() {
               currentStep: currentStep,
               stepSize: stepSize,
               visibilityOptions: visibilityOptions,
+              highlightOptions:
+                  StepProgressHighlightOptions.highlightCurrentNodeAndLine,
               needsRebuildWidget: () {},
             ),
           ),
@@ -103,8 +103,8 @@ void main() {
       final stepGeneratorFinder = find.byType(StepGenerator);
       expect(stepGeneratorFinder, findsNWidgets(totalSteps));
 
-      // With highlightCompletedSteps false, only the current step should
-      // be active.
+      // With StepProgressHighlightOptions.highlightCurrentLine,
+      // only the current step line should be highlighted.
       for (var i = 0; i < totalSteps; i++) {
         final StepGenerator widget = tester
             .widgetList<StepGenerator>(stepGeneratorFinder)
@@ -114,16 +114,17 @@ void main() {
             widget.highlighted,
             isTrue,
             reason:
-                'Only the current step should be active when '
-                'highlightCompletedSteps is false.',
+                'Only the current step should be highlighted when '
+                'highlightOptions is '
+                'StepProgressHighlightOptions.highlightCurrentLine.',
           );
         } else {
           expect(
             widget.highlighted,
             isFalse,
             reason:
-                'Step $i should be inactive when highlightCompletedSteps '
-                'is false.',
+                'Step $i should be inactive when highlightOptions '
+                'is StepProgressHighlightOptions.highlightCurrentLine.',
           );
         }
       }
@@ -182,9 +183,6 @@ void main() {
 
         await tester.pumpWidget(
           TestThemeWrapper(
-            themeData: const StepProgressThemeData(
-              highlightCompletedSteps: true,
-            ),
             child: Scaffold(
               body: HorizontalStepProgress(
                 totalSteps: totalSteps,

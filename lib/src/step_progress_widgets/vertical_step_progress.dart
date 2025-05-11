@@ -163,7 +163,6 @@ class VerticalStepProgress extends StepProgressWidget {
   }) {
     Widget buildWidget() {
       List<Widget> children = List.generate(totalSteps - 1, (index) {
-
         return StepLine(
           axis: Axis.vertical,
           isReversed: reversed,

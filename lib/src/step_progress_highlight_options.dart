@@ -4,14 +4,19 @@
 enum StepProgressHighlightOptions {
   /// Highlights the current node in the step progress.
   highlightCurrentNode,
+
   /// Highlights the current line in the step progress.
   highlightCurrentLine,
+
   /// Highlights both the current node and line in the step progress.
   highlightCurrentNodeAndLine,
+
   /// Highlights the completed nodes in the step progress.
   highlightCompletedNodes,
+
   /// Highlights the completed lines in the step progress.
   highlightCompletedLines,
+
   /// Highlights both the completed nodes and lines in the step progress.
   highlightCompletedNodesAndLines,
 }

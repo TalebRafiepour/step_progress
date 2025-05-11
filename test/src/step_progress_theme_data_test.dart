@@ -16,7 +16,6 @@ void main() {
         themeData.activeForegroundColor,
         equals(const Color.fromARGB(255, 0, 167, 160)),
       );
-      expect(themeData.highlightCompletedSteps, isTrue);
       expect(themeData.borderStyle, isNull);
       expect(themeData.enableRippleEffect, isFalse);
       expect(themeData.shape, equals(StepNodeShape.circle));
@@ -73,7 +72,6 @@ void main() {
       expect(newTheme.stepNodeStyle, equals(const StepNodeStyle()));
       expect(newTheme.stepLineStyle, equals(const StepLineStyle()));
       expect(newTheme.rippleEffectStyle, equals(const RippleEffectStyle()));
-      expect(newTheme.highlightCompletedSteps, isFalse);
       expect(newTheme.nodeLabelAlignment, equals(StepLabelAlignment.top));
     });
 
@@ -94,7 +92,6 @@ void main() {
         stepNodeStyle: StepNodeStyle(),
         stepLineStyle: StepLineStyle(),
         rippleEffectStyle: RippleEffectStyle(),
-        highlightCompletedSteps: false,
         nodeLabelAlignment: StepLabelAlignment.top,
       );
       final newTheme = original.copyWith();
@@ -131,10 +128,6 @@ void main() {
       expect(newTheme.stepNodeStyle, equals(original.stepNodeStyle));
       expect(newTheme.stepLineStyle, equals(original.stepLineStyle));
       expect(newTheme.rippleEffectStyle, equals(original.rippleEffectStyle));
-      expect(
-        newTheme.highlightCompletedSteps,
-        equals(original.highlightCompletedSteps),
-      );
       expect(newTheme.nodeLabelAlignment, equals(original.nodeLabelAlignment));
     });
 

@@ -73,9 +73,7 @@ class HorizontalStepProgress extends StepProgressWidget {
   ///
   /// Returns a [Widget] that represents the step nodes.
   @override
-  Widget buildStepNodes({
-    required StepLabelAlignment labelAlignment,
-  }) {
+  Widget buildStepNodes({required StepLabelAlignment labelAlignment}) {
     CrossAxisAlignment crossAxisAlignment() {
       if (labelAlignment == StepLabelAlignment.top) {
         return CrossAxisAlignment.end;
