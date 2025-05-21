@@ -62,10 +62,9 @@ class StepNode extends StatelessWidget {
           decoration.border == null) {
         return decoration.copyWith(
           border: Border.all(
-            color:
-                highlighted
-                    ? borderStyle.activeBorderColor
-                    : borderStyle.defaultBorderColor,
+            color: highlighted
+                ? borderStyle.activeBorderColor
+                : borderStyle.defaultBorderColor,
             width: borderStyle.borderWidth,
             strokeAlign: BorderSide.strokeAlignOutside,
           ),

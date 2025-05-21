@@ -148,10 +148,9 @@ void main() {
               .first,
         );
         // The fallback should be Theme.of(context).textTheme.labelMedium.
-        final expectedStyle =
-            Theme.of(
-              tester.element(find.byType(StepLabel)),
-            ).textTheme.labelMedium;
+        final expectedStyle = Theme.of(
+          tester.element(find.byType(StepLabel)),
+        ).textTheme.labelMedium;
         expect(animatedText.style.fontSize, expectedStyle?.fontSize);
       },
     );
@@ -180,10 +179,9 @@ void main() {
               )
               .first,
         );
-        final expectedStyle =
-            Theme.of(
-              tester.element(find.byType(StepLabel)),
-            ).textTheme.labelSmall;
+        final expectedStyle = Theme.of(
+          tester.element(find.byType(StepLabel)),
+        ).textTheme.labelSmall;
         expect(animatedText.style.fontSize, expectedStyle?.fontSize);
       },
     );
@@ -216,10 +214,9 @@ void main() {
               )
               .first,
         );
-        final expectedStyle =
-            Theme.of(
-              tester.element(find.byType(StepLabel)),
-            ).textTheme.labelMedium;
+        final expectedStyle = Theme.of(
+          tester.element(find.byType(StepLabel)),
+        ).textTheme.labelMedium;
         expect(widgetTitle.style.fontSize, expectedStyle?.fontSize);
       },
     );
@@ -248,10 +245,9 @@ void main() {
               )
               .first,
         );
-        final expectedStyle =
-            Theme.of(
-              tester.element(find.byType(StepLabel)),
-            ).textTheme.labelSmall;
+        final expectedStyle = Theme.of(
+          tester.element(find.byType(StepLabel)),
+        ).textTheme.labelSmall;
         expect(widgetSubTitle.style.fontSize, expectedStyle?.fontSize);
       },
     );

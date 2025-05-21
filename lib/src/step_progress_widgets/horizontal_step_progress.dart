@@ -142,19 +142,14 @@ class HorizontalStepProgress extends StepProgressWidget {
 
     return Padding(
       padding: EdgeInsets.symmetric(
-        vertical:
-            style.lineThickness >= stepSize
-                ? 0
-                : stepSize / 2 - style.lineThickness / 2,
+        vertical: style.lineThickness >= stepSize
+            ? 0
+            : stepSize / 2 - style.lineThickness / 2,
         horizontal: maxStepSize / 2,
       ),
-      child:
-          boxNotifier == null
-              ? buildWidget()
-              : RenderingBoxWidget(
-                boxNotifier: boxNotifier,
-                child: buildWidget(),
-              ),
+      child: boxNotifier == null
+          ? buildWidget()
+          : RenderingBoxWidget(boxNotifier: boxNotifier, child: buildWidget()),
     );
   }
 
@@ -206,10 +201,9 @@ class HorizontalStepProgress extends StepProgressWidget {
 
   @override
   BoxConstraints getBoxConstraint({required BoxConstraints constraints}) {
-    final width =
-        axis == Axis.horizontal && !constraints.hasBoundedWidth
-            ? totalSteps * 1.45 * stepSize
-            : null;
+    final width = axis == Axis.horizontal && !constraints.hasBoundedWidth
+        ? totalSteps * 1.45 * stepSize
+        : null;
     return BoxConstraints.tightFor(width: width);
   }
 
@@ -270,13 +264,19 @@ class HorizontalStepProgress extends StepProgressWidget {
         final gap = (wholeSize.height - linePosition.dy).abs();
         child = Column(
           mainAxisSize: MainAxisSize.min,
-          children: [buildLineLabelWidget(), SizedBox(height: gap)],
+          children: [
+            buildLineLabelWidget(),
+            SizedBox(height: gap),
+          ],
         );
       } else if (isBottomAligned()) {
         final gap = (linePosition.dy + lineSize.height).abs();
         child = Column(
           mainAxisSize: MainAxisSize.min,
-          children: [SizedBox(height: gap), buildLineLabelWidget()],
+          children: [
+            SizedBox(height: gap),
+            buildLineLabelWidget(),
+          ],
         );
       } else {
         final wholeCenter = wholeSize.height / 2;
@@ -284,10 +284,9 @@ class HorizontalStepProgress extends StepProgressWidget {
         final gap = (wholeCenter - lineCenter).abs();
         child = Column(
           mainAxisSize: MainAxisSize.min,
-          children:
-              wholeCenter < lineCenter
-                  ? [SizedBox(height: gap), buildLineLabelWidget()]
-                  : [buildLineLabelWidget(), SizedBox(height: gap)],
+          children: wholeCenter < lineCenter
+              ? [SizedBox(height: gap), buildLineLabelWidget()]
+              : [buildLineLabelWidget(), SizedBox(height: gap)],
         );
       }
 

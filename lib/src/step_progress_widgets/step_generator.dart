@@ -177,39 +177,37 @@ class StepGenerator extends StatelessWidget {
       required bool showLabelFirst,
       bool isMultipleSide = false,
     }) {
-      final children =
-          isMultipleSide
-              ? [
-                KeepSizeVisibility(
-                  visible: showLabelFirst,
-                  child: buildStepLabel(),
-                ),
-                buildStepNode(),
-                KeepSizeVisibility(
-                  visible: !showLabelFirst,
-                  child: buildStepLabel(),
-                ),
-              ]
-              : [
-                if (showLabelFirst) buildStepLabel(),
-                buildStepNode(),
-                if (!showLabelFirst) buildStepLabel(),
-              ];
+      final children = isMultipleSide
+          ? [
+              KeepSizeVisibility(
+                visible: showLabelFirst,
+                child: buildStepLabel(),
+              ),
+              buildStepNode(),
+              KeepSizeVisibility(
+                visible: !showLabelFirst,
+                child: buildStepLabel(),
+              ),
+            ]
+          : [
+              if (showLabelFirst) buildStepLabel(),
+              buildStepNode(),
+              if (!showLabelFirst) buildStepLabel(),
+            ];
 
       return Directionality(
         textDirection: TextDirection.ltr,
-        child:
-            isVertical
-                ? Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: children,
-                )
-                : Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: children,
-                ),
+        child: isVertical
+            ? Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: children,
+              )
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: children,
+              ),
       );
     }
 

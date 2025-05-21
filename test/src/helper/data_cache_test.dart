@@ -95,14 +95,13 @@ void main() {
       });
 
       test('should work with DataCache operations', () {
-        final cache =
-            DataCache()
-              ..setData(DataCacheKey.lineWidgetSize, 100)
-              ..setData(DataCacheKey.lineWidgetPosition, {'x': 0, 'y': 0})
-              ..setData(DataCacheKey.wholeWidgetSize, {
-                'width': 200,
-                'height': 300,
-              });
+        final cache = DataCache()
+          ..setData(DataCacheKey.lineWidgetSize, 100)
+          ..setData(DataCacheKey.lineWidgetPosition, {'x': 0, 'y': 0})
+          ..setData(DataCacheKey.wholeWidgetSize, {
+            'width': 200,
+            'height': 300,
+          });
 
         expect(cache.getData(DataCacheKey.lineWidgetSize), equals(100));
         expect(

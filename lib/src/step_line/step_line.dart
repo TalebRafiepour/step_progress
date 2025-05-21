@@ -85,17 +85,15 @@ class StepLine extends StatelessWidget {
     final containerDecoration = BoxDecoration(
       color: style.foregroundColor ?? theme.defaultForegroundColor,
       borderRadius: BorderRadius.all(borderRadius),
-      border:
-          borderStyle != null && !borderStyle.isDotted
-              ? Border.all(
-                color:
-                    highlighted
-                        ? borderStyle.activeBorderColor
-                        : borderStyle.defaultBorderColor,
-                width: borderStyle.borderWidth,
-                strokeAlign: BorderSide.strokeAlignOutside,
-              )
-              : null,
+      border: borderStyle != null && !borderStyle.isDotted
+          ? Border.all(
+              color: highlighted
+                  ? borderStyle.activeBorderColor
+                  : borderStyle.defaultBorderColor,
+              width: borderStyle.borderWidth,
+              strokeAlign: BorderSide.strokeAlignOutside,
+            )
+          : null,
     );
 
     Widget buildLineWidget(BoxConstraints constraint) {
@@ -110,14 +108,12 @@ class StepLine extends StatelessWidget {
         decoration: containerDecoration,
         alignment: AlignmentDirectional.centerStart,
         child: AnimatedContainer(
-          width:
-              _isHorizontal
-                  ? (highlighted ? lineSize.width : 0)
-                  : lineSize.width,
-          height:
-              !_isHorizontal
-                  ? (highlighted ? lineSize.height : 0)
-                  : lineSize.height,
+          width: _isHorizontal
+              ? (highlighted ? lineSize.width : 0)
+              : lineSize.width,
+          height: !_isHorizontal
+              ? (highlighted ? lineSize.height : 0)
+              : lineSize.height,
           decoration: BoxDecoration(
             color: style.activeColor ?? theme.activeForegroundColor,
             borderRadius: BorderRadius.all(borderRadius),
@@ -139,23 +135,21 @@ class StepLine extends StatelessWidget {
       if (borderStyle?.isDotted ?? false) {
         lineWidget = DottedBorder(
           strokeWidth: borderStyle!.borderWidth,
-          color:
-              highlighted
-                  ? borderStyle.activeBorderColor
-                  : borderStyle.defaultBorderColor,
+          color: highlighted
+              ? borderStyle.activeBorderColor
+              : borderStyle.defaultBorderColor,
           radius: borderRadius,
           padding: EdgeInsets.all(borderStyle.borderWidth / 2),
           strokeCap: StrokeCap.round,
           borderType: BorderType.RRect,
           dashPattern: borderStyle.dashPattern,
-          customPath:
-              isBreadcrumb
-                  ? (size) => BreadcrumbClipper(
-                    angle: style.chevronAngle,
-                    axis: axis,
-                    isReversed: isReversed,
-                  ).getClip(size)
-                  : null,
+          customPath: isBreadcrumb
+              ? (size) => BreadcrumbClipper(
+                  angle: style.chevronAngle,
+                  axis: axis,
+                  isReversed: isReversed,
+                ).getClip(size)
+              : null,
           child: lineWidget,
         );
       }
@@ -165,14 +159,13 @@ class StepLine extends StatelessWidget {
 
     return Expanded(
       child: LayoutBuilder(
-        builder:
-            (_, constraint) => Padding(
-              padding: lineSpacing,
-              child: GestureDetector(
-                onTap: onTap,
-                child: buildLineWidget(constraint),
-              ),
-            ),
+        builder: (_, constraint) => Padding(
+          padding: lineSpacing,
+          child: GestureDetector(
+            onTap: onTap,
+            child: buildLineWidget(constraint),
+          ),
+        ),
       ),
     );
   }

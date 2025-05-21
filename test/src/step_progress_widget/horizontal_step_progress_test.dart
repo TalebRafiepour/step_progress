@@ -203,8 +203,9 @@ void main() {
 
         // Verify the active state of each line.
         // When highlightCompletedSteps is true, active if index < currentStep.
-        final stepLineWidgets =
-            tester.widgetList<StepLine>(stepLineFinder).toList();
+        final stepLineWidgets = tester
+            .widgetList<StepLine>(stepLineFinder)
+            .toList();
         for (var i = 0; i < stepLineWidgets.length; i++) {
           final widget = stepLineWidgets[i];
           if (i < currentStep) {

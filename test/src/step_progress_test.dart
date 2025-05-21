@@ -401,11 +401,10 @@ void main() {
         await tester.pumpAndSettle();
 
         // Get all text widgets
-        final textWidgets =
-            tester
-                .widgetList<Text>(find.byType(Text))
-                .where((widget) => lineTitles.contains(widget.data))
-                .toList();
+        final textWidgets = tester
+            .widgetList<Text>(find.byType(Text))
+            .where((widget) => lineTitles.contains(widget.data))
+            .toList();
 
         // Verify texts are in reverse order
         expect(textWidgets[0].data, equals('Line 3'));

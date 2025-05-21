@@ -81,33 +81,28 @@ class StepNodeRipple extends StatelessWidget {
       child: AnimatedScale(
         duration: animationDuration(),
         scale: isVisible ? 1 : 0,
-        child:
-            !isVisible
-                ? null
-                : Stack(
-                  alignment: Alignment.center,
-                  children: List.generate(count, (index) {
-                    return StepNodeShapedContainer(
-                      stepNodeShape: stepNodeShape,
-                      width: width - index * (width / count),
-                      height: height - index * (height / count),
-                      decoration: BoxDecoration(
-                        color: style.foregroundColor ?? Colors.transparent,
-                        border: Border.all(
-                          color:
-                              style.borderColor ?? theme.activeForegroundColor,
-                          width: style.borderWidth,
-                        ),
-                        borderRadius:
-                            theme
-                                .stepNodeStyle
-                                .activeDecoration
-                                ?.borderRadius ??
-                            theme.stepNodeStyle.decoration.borderRadius,
+        child: !isVisible
+            ? null
+            : Stack(
+                alignment: Alignment.center,
+                children: List.generate(count, (index) {
+                  return StepNodeShapedContainer(
+                    stepNodeShape: stepNodeShape,
+                    width: width - index * (width / count),
+                    height: height - index * (height / count),
+                    decoration: BoxDecoration(
+                      color: style.foregroundColor ?? Colors.transparent,
+                      border: Border.all(
+                        color: style.borderColor ?? theme.activeForegroundColor,
+                        width: style.borderWidth,
                       ),
-                    );
-                  }),
-                ),
+                      borderRadius:
+                          theme.stepNodeStyle.activeDecoration?.borderRadius ??
+                          theme.stepNodeStyle.decoration.borderRadius,
+                    ),
+                  );
+                }),
+              ),
       ),
     );
   }

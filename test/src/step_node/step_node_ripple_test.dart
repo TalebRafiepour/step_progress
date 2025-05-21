@@ -267,12 +267,11 @@ void main() {
         ),
       );
 
-      final containers =
-          tester
-              .widgetList<StepNodeShapedContainer>(
-                find.byType(StepNodeShapedContainer),
-              )
-              .toList();
+      final containers = tester
+          .widgetList<StepNodeShapedContainer>(
+            find.byType(StepNodeShapedContainer),
+          )
+          .toList();
 
       // Verify each container is smaller than the previous one
       for (var i = 1; i < containers.length; i++) {

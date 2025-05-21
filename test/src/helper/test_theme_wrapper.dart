@@ -17,7 +17,9 @@ class TestThemeWrapper extends StatelessWidget {
             stepAnimationDuration: Duration(milliseconds: 200),
             activeForegroundColor: Colors.red, // some theme color
           ),
-      child: MaterialApp(home: Scaffold(body: Center(child: child))),
+      child: MaterialApp(
+        home: Scaffold(body: Center(child: child)),
+      ),
     );
   }
 }

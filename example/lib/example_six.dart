@@ -16,6 +16,7 @@ class ExampleSix extends StatelessWidget {
         children: [
           StepProgress(
             totalSteps: 4,
+            padding: const EdgeInsets.all(28),
             controller: stepProgressController,
             nodeTitles: const [
               'Step 1',

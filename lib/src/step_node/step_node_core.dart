@@ -51,16 +51,15 @@ class StepNodeCore extends StatelessWidget {
       child: AnimatedScale(
         duration: animationDuration,
         scale: isVisible ? 1 : 0,
-        child:
-            !isVisible
-                ? null
-                : StepNodeShapedContainer(
-                  width: width,
-                  height: height,
-                  stepNodeShape: stepNodeShape,
-                  decoration: decoration,
-                  child: icon,
-                ),
+        child: !isVisible
+            ? null
+            : StepNodeShapedContainer(
+                width: width,
+                height: height,
+                stepNodeShape: stepNodeShape,
+                decoration: decoration,
+                child: icon,
+              ),
       ),
     );
   }
