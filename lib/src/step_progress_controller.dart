@@ -7,11 +7,11 @@ import 'package:flutter/foundation.dart';
 /// indicator, allowing for updates and state management.
 class StepProgressController extends ChangeNotifier {
   StepProgressController({required this.totalSteps, this.initialStep = 0})
-    : assert(totalSteps > 0, 'totalSteps must be greater than 0'),
-      assert(
-        initialStep < totalSteps,
-        'initialStep must be lower than $totalSteps',
-      );
+      : assert(totalSteps > 0, 'totalSteps must be greater than 0'),
+        assert(
+          initialStep < totalSteps,
+          'initialStep must be lower than $totalSteps',
+        );
 
   /// The initial step to start from.
   final int initialStep;

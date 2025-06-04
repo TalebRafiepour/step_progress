@@ -85,7 +85,8 @@ void main() {
       expect(animatedScaleWidget.scale, equals(0));
     });
 
-    testWidgets('when count > 1, widget should include (count) nested '
+    testWidgets(
+        'when count > 1, widget should include (count) nested '
         'StepNodeShapedContainer', (tester) async {
       // When count is greater than 1 the widget builds a nested StepNodeRipple.
       await tester.pumpWidget(

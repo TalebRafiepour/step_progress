@@ -211,8 +211,7 @@ class HorizontalStepProgress extends StepProgressWidget {
   double maxStepSize(StepLabelStyle labelStyle) {
     final labelPadding = labelStyle.padding;
     final labelMargin = labelStyle.margin;
-    final labelMaxWidth =
-        labelStyle.maxWidth +
+    final labelMaxWidth = labelStyle.maxWidth +
         labelPadding.left +
         labelPadding.right +
         labelMargin.left +

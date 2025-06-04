@@ -21,8 +21,8 @@ typedef StepLabelBuilder = Widget? Function(int index, int completedStepIndex);
 /// - `completedStepIndex`: The index of the last completed step.
 ///
 /// Returns an optional [Widget] that represents the icon for the step node.
-typedef StepNodeIconBuilder =
-    Widget? Function(int index, int completedStepIndex);
+typedef StepNodeIconBuilder = Widget? Function(
+    int index, int completedStepIndex);
 
 /// A typedef for a callback function that is triggered when a step line is
 /// tapped.
@@ -137,27 +137,27 @@ class StepProgress extends StatefulWidget {
     this.nodeIconBuilder,
     this.nodeLabelBuilder,
     this.lineLabelBuilder,
-  }) : assert(totalSteps > 0, 'totalSteps must be greater than 0'),
-       assert(
-         currentStep < totalSteps,
-         'currentStep must be  lower than totalSteps',
-       ),
-       assert(
-         nodeTitles == null || nodeTitles.length <= totalSteps,
-         'nodeTitles must be equals to or less than total steps',
-       ),
-       assert(
-         nodeSubTitles == null || nodeSubTitles.length <= totalSteps,
-         'nodeSubTitles must be equals to or less than total steps',
-       ),
-       assert(
-         lineTitles == null || lineTitles.length < totalSteps,
-         'lineTitles must be less than total steps',
-       ),
-       assert(
-         lineSubTitles == null || lineSubTitles.length < totalSteps,
-         'lineSubTitles must be less than total steps',
-       );
+  })  : assert(totalSteps > 0, 'totalSteps must be greater than 0'),
+        assert(
+          currentStep < totalSteps,
+          'currentStep must be  lower than totalSteps',
+        ),
+        assert(
+          nodeTitles == null || nodeTitles.length <= totalSteps,
+          'nodeTitles must be equals to or less than total steps',
+        ),
+        assert(
+          nodeSubTitles == null || nodeSubTitles.length <= totalSteps,
+          'nodeSubTitles must be equals to or less than total steps',
+        ),
+        assert(
+          lineTitles == null || lineTitles.length < totalSteps,
+          'lineTitles must be less than total steps',
+        ),
+        assert(
+          lineSubTitles == null || lineSubTitles.length < totalSteps,
+          'lineSubTitles must be less than total steps',
+        );
 
   /// List of Titles for each step in the progress
   final List<String>? nodeTitles;

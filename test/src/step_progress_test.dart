@@ -163,7 +163,8 @@ void main() {
       },
     );
 
-    testWidgets('Should not update when an out-of-range step is provided via'
+    testWidgets(
+        'Should not update when an out-of-range step is provided via'
         ' controller', (tester) async {
       final controller = StepProgressController(initialStep: 0, totalSteps: 3);
       int? changedStep;

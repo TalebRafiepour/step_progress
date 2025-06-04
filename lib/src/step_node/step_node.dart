@@ -98,16 +98,13 @@ class StepNode extends StatelessWidget {
             isVisible: highlighted,
             animationDuration:
                 style.animationDuration ?? theme.stepAnimationDuration,
-            decoration:
-                style.activeDecoration?.copyWith(
-                  color:
-                      style.activeDecoration?.color ??
+            decoration: style.activeDecoration?.copyWith(
+                  color: style.activeDecoration?.color ??
                       style.activeForegroundColor ??
                       theme.activeForegroundColor,
                 ) ??
                 style.decoration.copyWith(
-                  color:
-                      style.activeForegroundColor ??
+                  color: style.activeForegroundColor ??
                       theme.activeForegroundColor,
                 ),
             stepNodeShape: style.shape ?? theme.shape,

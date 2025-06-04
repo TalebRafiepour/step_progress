@@ -11,7 +11,8 @@ import '../helper/test_theme_wrapper.dart';
 
 void main() {
   group('HorizontalStepProgress Widget Tests', () {
-    testWidgets('buildStepNodes produces the correct number of StepGenerator'
+    testWidgets(
+        'buildStepNodes produces the correct number of StepGenerator'
         ' widgets with highlightCompletedSteps true', (tester) async {
       // Set up parameters.
       const int totalSteps = 5;
@@ -50,15 +51,13 @@ void main() {
       // When highlightCompletedSteps is true, nodes at index <= currentStep
       // should be active.
       for (var i = 0; i < totalSteps; i++) {
-        final StepGenerator widget = tester
-            .widgetList<StepGenerator>(stepGeneratorFinder)
-            .elementAt(i);
+        final StepGenerator widget =
+            tester.widgetList<StepGenerator>(stepGeneratorFinder).elementAt(i);
         if (i <= currentStep) {
           expect(
             widget.highlighted,
             isTrue,
-            reason:
-                'Step $i should be active when highlightCompletedSteps is '
+            reason: 'Step $i should be active when highlightCompletedSteps is '
                 'enabled.',
           );
         } else {
@@ -73,7 +72,8 @@ void main() {
       }
     });
 
-    testWidgets('buildStepNodes produces the correct active state when '
+    testWidgets(
+        'buildStepNodes produces the correct active state when '
         'highlightCompletedSteps is false', (tester) async {
       // Set up parameters.
       const int totalSteps = 4;
@@ -106,15 +106,13 @@ void main() {
       // With StepProgressHighlightOptions.highlightCurrentLine,
       // only the current step line should be highlighted.
       for (var i = 0; i < totalSteps; i++) {
-        final StepGenerator widget = tester
-            .widgetList<StepGenerator>(stepGeneratorFinder)
-            .elementAt(i);
+        final StepGenerator widget =
+            tester.widgetList<StepGenerator>(stepGeneratorFinder).elementAt(i);
         if (i == currentStep) {
           expect(
             widget.highlighted,
             isTrue,
-            reason:
-                'Only the current step should be highlighted when '
+            reason: 'Only the current step should be highlighted when '
                 'highlightOptions is '
                 'StepProgressHighlightOptions.highlightCurrentLine.',
           );
@@ -122,8 +120,7 @@ void main() {
           expect(
             widget.highlighted,
             isFalse,
-            reason:
-                'Step $i should be inactive when highlightOptions '
+            reason: 'Step $i should be inactive when highlightOptions '
                 'is StepProgressHighlightOptions.highlightCurrentLine.',
           );
         }
@@ -165,8 +162,7 @@ void main() {
       expect(
         tappedIndex,
         equals(1),
-        reason:
-            'Tapping step node at index 1 should trigger the callback with '
+        reason: 'Tapping step node at index 1 should trigger the callback with '
             'index 1.',
       );
     });
@@ -203,25 +199,22 @@ void main() {
 
         // Verify the active state of each line.
         // When highlightCompletedSteps is true, active if index < currentStep.
-        final stepLineWidgets = tester
-            .widgetList<StepLine>(stepLineFinder)
-            .toList();
+        final stepLineWidgets =
+            tester.widgetList<StepLine>(stepLineFinder).toList();
         for (var i = 0; i < stepLineWidgets.length; i++) {
           final widget = stepLineWidgets[i];
           if (i < currentStep) {
             expect(
               widget.highlighted,
               isTrue,
-              reason:
-                  'StepLine at index $i should be active when'
+              reason: 'StepLine at index $i should be active when'
                   ' i < currentStep.',
             );
           } else {
             expect(
               widget.highlighted,
               isFalse,
-              reason:
-                  'StepLine at index $i should be inactive when'
+              reason: 'StepLine at index $i should be inactive when'
                   ' i >= currentStep.',
             );
           }
@@ -264,8 +257,7 @@ void main() {
       expect(
         tappedLineIndex,
         equals(0),
-        reason:
-            'Tapping the first step line should trigger the callback with '
+        reason: 'Tapping the first step line should trigger the callback with '
             'index 0.',
       );
     });

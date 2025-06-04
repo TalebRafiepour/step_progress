@@ -11,8 +11,7 @@ class TestThemeWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StepProgressTheme(
-      data:
-          themeData ??
+      data: themeData ??
           const StepProgressThemeData(
             stepAnimationDuration: Duration(milliseconds: 200),
             activeForegroundColor: Colors.red, // some theme color

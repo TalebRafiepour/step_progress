@@ -57,7 +57,8 @@ void main() {
       expect(style.borderRadius, equals(border));
     });
 
-    test('copyWith returns a new instance with same values if no arguments'
+    test(
+        'copyWith returns a new instance with same values if no arguments'
         ' provided', () {
       const style = StepLineStyle(
         foregroundColor: Colors.blue,
@@ -203,7 +204,8 @@ void main() {
       );
     });
 
-    test('Default constructor sets correct default values for breadcrumb '
+    test(
+        'Default constructor sets correct default values for breadcrumb '
         'properties', () {
       const style = StepLineStyle();
       expect(

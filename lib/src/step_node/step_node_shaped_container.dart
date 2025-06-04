@@ -113,8 +113,7 @@ class StepNodeShapedContainer extends StatelessWidget {
       height: height,
       padding: padding,
       margin: margin,
-      decoration:
-          decoration?.copyWith(shape: BoxShape.rectangle) ??
+      decoration: decoration?.copyWith(shape: BoxShape.rectangle) ??
           const BoxDecoration(),
       child: child,
     );
@@ -127,8 +126,7 @@ class StepNodeShapedContainer extends StatelessWidget {
       padding: padding,
       margin: margin,
       alignment: Alignment.center,
-      decoration:
-          decoration?.copyWith(shape: BoxShape.circle) ??
+      decoration: decoration?.copyWith(shape: BoxShape.circle) ??
           const BoxDecoration(shape: BoxShape.circle),
       child: child,
     );

@@ -56,7 +56,8 @@ void main() {
       },
     );
 
-    test('copyWith does not override existing non-null values when passing '
+    test(
+        'copyWith does not override existing non-null values when passing '
         'null explicitly', () {
       const original = RippleEffectStyle(
         foregroundColor: Colors.red,

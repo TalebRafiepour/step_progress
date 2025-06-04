@@ -119,7 +119,8 @@ void main() {
       expect(copy.enableRippleEffect, isTrue);
     });
 
-    test('copyWith with explicit null values does not override existing '
+    test(
+        'copyWith with explicit null values does not override existing '
         'non-null properties', () {
       // Create a style with non-null values.
       const style = StepNodeStyle(

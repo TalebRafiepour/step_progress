@@ -8,19 +8,20 @@ import 'package:step_progress/src/step_progress_widgets/step_generator.dart';
 import 'package:step_progress/step_progress.dart';
 
 StepProgressThemeData get dummyThemeData => const StepProgressThemeData(
-  enableRippleEffect: true,
-  shape: StepNodeShape.circle,
-  rippleEffectStyle: RippleEffectStyle(
-    borderColor: Colors.blueAccent,
-    borderWidth: 30,
-  ),
-  stepNodeStyle: StepNodeStyle(
-    defaultForegroundColor: Colors.grey,
-    activeForegroundColor: Colors.green,
-  ),
-  nodeLabelStyle: StepLabelStyle(titleStyle: TextStyle(color: Colors.black)),
-  nodeLabelAlignment: StepLabelAlignment.top,
-);
+      enableRippleEffect: true,
+      shape: StepNodeShape.circle,
+      rippleEffectStyle: RippleEffectStyle(
+        borderColor: Colors.blueAccent,
+        borderWidth: 30,
+      ),
+      stepNodeStyle: StepNodeStyle(
+        defaultForegroundColor: Colors.grey,
+        activeForegroundColor: Colors.green,
+      ),
+      nodeLabelStyle:
+          StepLabelStyle(titleStyle: TextStyle(color: Colors.black)),
+      nodeLabelAlignment: StepLabelAlignment.top,
+    );
 
 void main() {
   group('StepGenerator Widget Tests', () {

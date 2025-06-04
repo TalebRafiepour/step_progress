@@ -96,7 +96,8 @@ void main() {
 
     // Negative test (conceptual): Ensure that providing null for parameters
     // that default to null does not override default behaviors.
-    test('Negative test: copyWith with explicit null values returns expected'
+    test(
+        'Negative test: copyWith with explicit null values returns expected'
         ' null fields', () {
       const original = StepLabelStyle();
       final updated = original.copyWith(

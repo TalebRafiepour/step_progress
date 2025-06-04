@@ -145,10 +145,10 @@ class StepLine extends StatelessWidget {
           dashPattern: borderStyle.dashPattern,
           customPath: isBreadcrumb
               ? (size) => BreadcrumbClipper(
-                  angle: style.chevronAngle,
-                  axis: axis,
-                  isReversed: isReversed,
-                ).getClip(size)
+                    angle: style.chevronAngle,
+                    axis: axis,
+                    isReversed: isReversed,
+                  ).getClip(size)
               : null,
           child: lineWidget,
         );

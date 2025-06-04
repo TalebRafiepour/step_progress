@@ -238,9 +238,8 @@ class VerticalStepProgress extends StepProgressWidget {
 
   @override
   BoxConstraints getBoxConstraint({required BoxConstraints constraints}) {
-    final height = !constraints.hasBoundedHeight
-        ? totalSteps * 1.45 * stepSize
-        : null;
+    final height =
+        !constraints.hasBoundedHeight ? totalSteps * 1.45 * stepSize : null;
     return BoxConstraints.tightFor(height: height);
   }
 
@@ -251,9 +250,9 @@ class VerticalStepProgress extends StepProgressWidget {
     final labelMaxHeight =
         // labelMaxHeight +
         labelPadding.top +
-        labelPadding.bottom +
-        labelMargin.top +
-        labelMargin.bottom;
+            labelPadding.bottom +
+            labelMargin.top +
+            labelMargin.bottom;
 
     // Calculate the maximum size for the step node.
     return (hasNodeLabels &&
@@ -323,8 +322,8 @@ class VerticalStepProgress extends StepProgressWidget {
         if (wholeCenter == lineCenter) {
           child = buildLineLabelWidget();
         } else if (wholeCenter < lineCenter) {
-          final gap = (2 * linePosition.dx + lineSize.width - wholeSize.width)
-              .abs();
+          final gap =
+              (2 * linePosition.dx + lineSize.width - wholeSize.width).abs();
           child = Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -333,8 +332,8 @@ class VerticalStepProgress extends StepProgressWidget {
             ],
           );
         } else {
-          final gap = (wholeSize.width - (2 * linePosition.dx + lineSize.width))
-              .abs();
+          final gap =
+              (wholeSize.width - (2 * linePosition.dx + lineSize.width)).abs();
           child = Row(
             mainAxisSize: MainAxisSize.min,
             children: [

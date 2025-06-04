@@ -64,22 +64,22 @@ abstract class StepProgressWidget extends StatelessWidget {
     this.nodeLabelBuilder,
     this.lineLabelBuilder,
     super.key,
-  }) : assert(
-         nodeTitles == null || nodeTitles.length <= totalSteps,
-         'nodeTitles lenght must be equals to or less than total steps',
-       ),
-       assert(
-         nodeSubTitles == null || nodeSubTitles.length <= totalSteps,
-         'nodeSubTitles lenght must be equals to or less than total steps',
-       ),
-       assert(
-         lineTitles == null || lineTitles.length < totalSteps,
-         'lineTitles lenght must be less than total steps',
-       ),
-       assert(
-         lineSubTitles == null || lineSubTitles.length < totalSteps,
-         'lineSubTitles lenght must be less than total steps',
-       );
+  })  : assert(
+          nodeTitles == null || nodeTitles.length <= totalSteps,
+          'nodeTitles lenght must be equals to or less than total steps',
+        ),
+        assert(
+          nodeSubTitles == null || nodeSubTitles.length <= totalSteps,
+          'nodeSubTitles lenght must be equals to or less than total steps',
+        ),
+        assert(
+          lineTitles == null || lineTitles.length < totalSteps,
+          'lineTitles lenght must be less than total steps',
+        ),
+        assert(
+          lineSubTitles == null || lineSubTitles.length < totalSteps,
+          'lineSubTitles lenght must be less than total steps',
+        );
 
   /// The total number of steps in the progress indicator.
   final int totalSteps;
@@ -265,8 +265,7 @@ abstract class StepProgressWidget extends StatelessWidget {
   }) {
     final theme = StepProgressTheme.of(context)!.data;
     final stepLineStyle = theme.stepLineStyle;
-    final nodeLabelAlignment =
-        theme.nodeLabelAlignment ??
+    final nodeLabelAlignment = theme.nodeLabelAlignment ??
         (axis == Axis.horizontal
             ? StepLabelAlignment.top
             : StepLabelAlignment.right);
