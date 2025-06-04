@@ -1,3 +1,8 @@
+# 2.5.1
+- **License Update**: Amended the `LICENSE` file to reflect the correct legal entity name.
+- **Dart SDK Compatibility**: Broadened the Dart SDK constraint to `>=3.0.0 <4.0.0`, ensuring compatibility across a wider spectrum of projects.
+
+
 ## 2.5.0
 
 - **Refactor**: Replaced the `highlightCompletedSteps` property in `StepProgressThemeData` with a new `highlightOptions` enum for improved flexibility and customization.
