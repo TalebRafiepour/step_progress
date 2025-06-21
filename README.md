@@ -42,10 +42,11 @@
 
 ## Showcases
 
-### Example 1: Vertical Step Progress
+### Example 1: Vertical Step Progress Indicator
 ![StepProgress-vertical](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-1-step-progress-vertical.gif)
 
-#### Implementation
+<details>
+  <summary>Show Implementation</summary>
 
 ```dart
 StepProgress(
@@ -64,11 +65,13 @@ StepProgress(
   },
 ),
 ```
+</details>
 
-### Example 2: Horizontal Step Progress without Labels
+### Example 2: Horizontal Step Progress Without Labels
 ![StepProgress-without-labels](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-2-step-progress-without-labels.gif)
 
-#### Implementation
+<details>
+  <summary>Show Implementation</summary>
 
 ```dart
 StepProgress(
@@ -82,11 +85,13 @@ StepProgress(
   },
 ),
 ```
+</details>
 
-### Example 3: Horizontal Step Progress without Nodes
+### Example 3: Horizontal Step Progress (Line Only Mode)
 ![StepProgress-without-nodes](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-3-step-line-mode.gif)
 
-#### Implementation
+<details>
+  <summary>Show Implementation</summary>
 
 ```dart
 StepProgress(
@@ -111,11 +116,13 @@ StepProgress(
   ),
 ),
 ```
+</details>
 
-### Example 4: Horizontal Step Progress Line Mode - Customized
+### Example 4: Customized Horizontal Step Progress (Line Only Mode)
 ![StepProgress-line-mode](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-4-step-line-mode.gif)
 
-#### Implementation
+<details>
+  <summary>Show Implementation</summary>
 
 ```dart
 Row(
@@ -145,11 +152,13 @@ Row(
   ],
 ),
 ```
+</details>
 
-### Example 5: Horizontal Step Progress Custom Node Icon
+### Example 5: Horizontal Step Progress with Custom Node Icons
 ![StepProgress-custom-node-icon](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-5-step-progress-custom-icon.gif)
 
-#### Implementation
+<details>
+  <summary>Show Implementation</summary>
 
 ```dart
 StepProgress(
@@ -185,11 +194,13 @@ StepProgress(
   ),
 ),
 ```
+</details>
 
-### Example 6: Horizontal Step Progress with Positioned Label
+### Example 6: Horizontal Step Progress with Positioned Labels
 ![StepProgress-positioned-labels](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-6-step-progress-position-labels.gif)
 
-#### Implementation
+<details>
+  <summary>Show Implementation</summary>
 
 ```dart
 StepProgress(
@@ -203,11 +214,13 @@ StepProgress(
   ),
 ),
 ```
+</details>
 
-### Example 7: Horizontal Step Progress Node Only
+### Example 7: Horizontal Step Progress (Node Only Mode)
 ![StepProgress-node-only](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-7-step-progress-without-lines.gif)
 
-#### Implementation
+<details>
+  <summary>Show Implementation</summary>
 
 ```dart
 StepProgress(
@@ -222,11 +235,13 @@ StepProgress(
   ),
 ),
 ```
+</details>
 
-### Example 8: Vertical Step Progress with lineSpacing
+### Example 8: Vertical Step Progress with Custom Line Spacing
 ![StepProgress-vertical-lineSpacing](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-8-stepprogress-vertical-line-spacing.gif)
 
-#### Implementation
+<details>
+  <summary>Show Implementation</summary>
 
 ```dart
 StepProgress(
@@ -253,11 +268,13 @@ StepProgress(
   ),
 ),
 ```
+</details>
 
-### Example 9: Horizontal Step Progress with Square shape
+### Example 9: Horizontal Step Progress with Square Node Shape
 ![StepProgress-horizontal-square-shape](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-9-stepprogress-square-shape.gif)
 
-#### Implementation
+<details>
+  <summary>Show Implementation</summary>
 
 ```dart
 StepProgress(
@@ -292,11 +309,13 @@ StepProgress(
   ),
 ),
 ```
+</details>
 
-### Example 10: Horizontal Step Progress with Triangle shape
+### Example 10: Horizontal Step Progress with Triangle Node Shape
 ![StepProgress-horizontal-triangle-shape](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-10-stepprogress-triangle-shape.gif)
 
-#### Implementation
+<details>
+  <summary>Show Implementation</summary>
 
 ```dart
 StepProgress(
@@ -319,11 +338,13 @@ StepProgress(
   ),
   ),
 ```
+</details>
 
-### Example 11: Horizontal Step Progress with Diamond shape
+### Example 11: Horizontal Step Progress with Diamond Node Shape
 ![StepProgress-horizontal-diamond-shape](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-11-stepprogress-diamond-shape.gif)
 
-#### Implementation
+<details>
+  <summary>Show Implementation</summary>
 
 ```dart
 StepProgress(
@@ -357,11 +378,13 @@ StepProgress(
   ),
 ),
 ```
+</details>
 
-### Example 12: Vertical Step Progress with Hexagon shape
+### Example 12: Vertical Step Progress with Hexagon Node Shape
 ![StepProgress-vertical-hexagon-shape](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-12-step-progress-vertical-hexagon-shape.gif)
 
-#### Implementation
+<details>
+  <summary>Show Implementation</summary>
 
 ```dart
 StepProgress(
@@ -396,11 +419,13 @@ StepProgress(
   ),
 ),
 ```
+</details>
 
-### Example 13: Vertical Step Progress with Star shape
+### Example 13: Vertical Step Progress with Star Node Shape
 ![StepProgress-vertical-star-shape](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-13-stepprogress-vertical-star-shape.gif)
 
-#### Implementation
+<details>
+  <summary>Show Implementation</summary>
 
 ```dart
 StepProgress(
@@ -438,10 +463,13 @@ StepProgress(
   ),
 ),
 ```
+</details>
+
 ### Example 14: Horizontal Step Progress with Line Labels
 ![StepProgress-horizontal-with-line-labels](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-14-stepprogress-line-labels.png)
 
-#### Implementation
+<details>
+  <summary>Show Implementation</summary>
 
 ```dart
 StepProgress(
@@ -480,10 +508,13 @@ theme: const StepProgressThemeData(
 ),
 ),
 ```
-### Example 15: Customized Vertical Step Progress with Line Labels and Node Labels.
+</details>
+
+### Example 15: Customized Vertical Step Progress with Line and Node Labels
 ![StepProgress-vertical-customized-with-line-labels](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-15-stepprogress-custom-with-line-labels.png)
 
-#### Implementation
+<details>
+  <summary>Show Implementation</summary>
 
 ```dart
 StepProgress(
@@ -558,10 +589,13 @@ StepProgress(
   ),
 )
 ```
-### Example 16: Horizontal Step Progress with Breadcrumb Lines.
+</details>
+
+### Example 16: Horizontal Step Progress with Breadcrumb Lines
 ![StepProgress-horizontal-with-breadcrumb-lines](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-16-stepprogress-breadcrumb-lines.png)
 
-#### Implementation
+<details>
+  <summary>Show Implementation</summary>
 
 ```dart
 StepProgress(
@@ -583,10 +617,13 @@ StepProgress(
   ),
 )
 ```
-### Example 17: Horizontal Step Progress with Dotted Lines.
+</details>
+
+### Example 17: Horizontal Step Progress with Dotted Lines
 ![StepProgress-horizontal-with-dotted-lines](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-17-stepprogress-dotted-line.png)
 
-#### Implementation
+<details>
+  <summary>Show Implementation</summary>
 
 ```dart
 StepProgress(
@@ -604,10 +641,13 @@ StepProgress(
   ),
 )
 ```
-### Example 18: Horizontal Step Progress with RippleEffect nodes.
+</details>
+
+### Example 18: Horizontal Step Progress with Ripple Effect on Nodes
 ![StepProgress-horizontal-with-rippleeffect-nodes](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-18-stepprogress-rippleeffect-nodes.png)
 
-#### Implementation
+<details>
+  <summary>Show Implementation</summary>
 
 ```dart
 StepProgress(
@@ -619,10 +659,13 @@ StepProgress(
   ),
 )
 ```
-### Example 19: Horizontal Step Progress with Highlighted current Step node.
+</details>
+
+### Example 19: Horizontal Step Progress with Highlighted Current Step Node
 ![StepProgress-horizontal-with-highlighted-current-step-node](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-19-stepprogress-highlightcurrentstepnode.png)
 
-#### Implementation
+<details>
+  <summary>Show Implementation</summary>
 
 ```dart
 StepProgress(
@@ -632,6 +675,7 @@ StepProgress(
   highlightOptions: StepProgressHighlightOptions.highlightCurrentNode,
 )
 ```
+</details>
 
 ## Installation
 
