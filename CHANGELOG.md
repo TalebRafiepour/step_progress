@@ -1,4 +1,4 @@
-# 2.5.2
+# 2.5.3
 - **Icon Color Customization**: Introduced the `activeIconColor` property in `StepNodeStyle`, enabling straightforward customization of icon colors for active step nodes.
 - **Testing Enhancements**: Expanded and updated widget tests to increase coverage for various states in the `StepLine` and `StepGenerator` widgets.
 - **Documentation Improvements**: Enhanced the `README.md` with new examples and improved formatting for better readability.
