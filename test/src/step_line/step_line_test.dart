@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_redundant_argument_values
 
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:step_progress/src/step_line/breadcrumb_clipper.dart';
@@ -309,6 +310,100 @@ void main() {
         final clipPath = tester.widget<ClipPath>(clipPathFinder.first);
         final clipper = clipPath.clipper! as BreadcrumbClipper;
         expect(clipper.isReversed, equals(true));
+      },
+    );
+
+    testWidgets(
+      'StepLine with dotted border style renders DottedBorder widget',
+      (tester) async {
+        const testKey = Key('step_line_dotted');
+        const dottedBorderStyle = OuterBorderStyle(
+          isDotted: true,
+          borderWidth: 2,
+          dashPattern: [4, 2],
+          defaultBorderColor: Colors.grey,
+          activeBorderColor: Colors.blue,
+        );
+        const style = StepLineStyle(
+          lineThickness: 8,
+          borderStyle: dottedBorderStyle,
+        );
+
+        await tester.pumpWidget(
+          const TestThemeWrapper(
+            child: Row(
+              children: [
+                StepLine(
+                  key: testKey,
+                  stepLineStyle: style,
+                  highlighted: true,
+                ),
+              ],
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        // DottedBorder should be present
+        expect(
+          find.descendant(
+            of: find.byKey(testKey),
+            matching: find.byType(DottedBorder),
+          ),
+          findsOneWidget,
+        );
+      },
+    );
+
+    testWidgets(
+      'StepLine with dotted border and breadcrumb style uses customPath',
+      (tester) async {
+        const testKey = Key('step_line_dotted_breadcrumb');
+        const dottedBorderStyle = OuterBorderStyle(
+          isDotted: true,
+          borderWidth: 2,
+          dashPattern: [4, 2],
+          defaultBorderColor: Colors.grey,
+          activeBorderColor: Colors.blue,
+        );
+        const chevronAngle = 25.0;
+        const style = StepLineStyle(
+          lineThickness: 8,
+          borderStyle: dottedBorderStyle,
+          isBreadcrumb: true,
+          chevronAngle: chevronAngle,
+        );
+
+        await tester.pumpWidget(
+          const TestThemeWrapper(
+            child: Row(
+              children: [
+                StepLine(
+                  key: testKey,
+                  stepLineStyle: style,
+                  highlighted: true,
+                ),
+              ],
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        // DottedBorder should be present
+        final dottedBorderFinder = find.descendant(
+          of: find.byKey(testKey),
+          matching: find.byType(DottedBorder),
+        );
+        expect(dottedBorderFinder, findsOneWidget);
+
+        // ClipPath should also be present inside DottedBorder
+        final clipPathFinder = find.descendant(
+          of: find.byKey(testKey),
+          matching: find.byType(ClipPath),
+        );
+        expect(clipPathFinder, findsOneWidget);
       },
     );
   });

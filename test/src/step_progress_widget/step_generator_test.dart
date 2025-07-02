@@ -7,6 +7,8 @@ import 'package:step_progress/src/step_node/step_node_ripple.dart';
 import 'package:step_progress/src/step_progress_widgets/step_generator.dart';
 import 'package:step_progress/step_progress.dart';
 
+import '../helper/test_theme_wrapper.dart';
+
 StepProgressThemeData get dummyThemeData => const StepProgressThemeData(
       enableRippleEffect: true,
       shape: StepNodeShape.circle,
@@ -309,6 +311,135 @@ void main() {
 
       // Although size is zero, the widget is built without error.
       expect(find.byType(StepGenerator), findsOneWidget);
+    });
+
+    testWidgets('Renders correctly with StepLabelAlignment.left',
+        (tester) async {
+      final customThemeData = dummyThemeData.copyWith(
+        nodeLabelAlignment: StepLabelAlignment.left,
+      );
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: StepProgressTheme(
+            data: customThemeData,
+            child: const Scaffold(
+              body: StepGenerator(
+                width: 40,
+                height: 40,
+                stepIndex: 0,
+                highlighted: true,
+                anyLabelExist: true,
+                title: 'Left Label',
+              ),
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('Left Label'), findsOneWidget);
+    });
+
+    testWidgets('Renders correctly with StepLabelAlignment.bottom',
+        (tester) async {
+      final customThemeData = dummyThemeData.copyWith(
+        nodeLabelAlignment: StepLabelAlignment.bottom,
+      );
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: StepProgressTheme(
+            data: customThemeData,
+            child: const Scaffold(
+              body: StepGenerator(
+                width: 40,
+                height: 40,
+                stepIndex: 0,
+                highlighted: true,
+                anyLabelExist: true,
+                title: 'Bottom Label',
+              ),
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('Bottom Label'), findsOneWidget);
+    });
+
+    testWidgets('Renders correctly with StepLabelAlignment.bottomTop',
+        (tester) async {
+      final customThemeData = dummyThemeData.copyWith(
+        nodeLabelAlignment: StepLabelAlignment.bottomTop,
+      );
+
+      await tester.pumpWidget(
+        TestThemeWrapper(
+          themeData: customThemeData,
+          child: const StepGenerator(
+            width: 40,
+            height: 40,
+            stepIndex: 1, // odd index
+            highlighted: true,
+            anyLabelExist: true,
+            title: 'BottomTop Label',
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      expect(find.text('BottomTop Label'), findsOneWidget);
+    });
+
+    testWidgets('Renders correctly with StepLabelAlignment.rightLeft',
+        (tester) async {
+      final customThemeData = dummyThemeData.copyWith(
+        nodeLabelAlignment: StepLabelAlignment.rightLeft,
+      );
+
+      await tester.pumpWidget(
+        TestThemeWrapper(
+          themeData: customThemeData,
+          child: const StepGenerator(
+            width: 40,
+            height: 40,
+            stepIndex: 1, // odd index
+            highlighted: true,
+            anyLabelExist: true,
+            title: 'RightLeft Label',
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      expect(find.text('RightLeft Label'), findsOneWidget);
+    });
+
+    testWidgets('Renders correctly with StepLabelAlignment.leftRight',
+        (tester) async {
+      final customThemeData = dummyThemeData.copyWith(
+        nodeLabelAlignment: StepLabelAlignment.leftRight,
+      );
+
+      await tester.pumpWidget(
+        TestThemeWrapper(
+          themeData: customThemeData,
+          child: const StepGenerator(
+            width: 40,
+            height: 40,
+            stepIndex: 2, // even index
+            highlighted: true,
+            anyLabelExist: true,
+            title: 'LeftRight Label',
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      expect(find.text('LeftRight Label'), findsOneWidget);
     });
   });
 }

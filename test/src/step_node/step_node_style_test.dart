@@ -32,6 +32,9 @@ void main() {
       // Default icon color
       expect(style.iconColor, isNull);
 
+      // Active icon color
+      expect(style.activeIconColor, isNull);
+
       // Ripple effect is enabled by default
       expect(style.enableRippleEffect, isTrue);
     });
@@ -42,6 +45,7 @@ void main() {
         activeForegroundColor: Colors.green,
         animationDuration: Duration(seconds: 1),
         iconColor: Colors.blue,
+        activeIconColor: Colors.red,
         shape: StepNodeShape.circle,
         activeDecoration: BoxDecoration(color: Colors.orange),
         decoration: BoxDecoration(color: Colors.yellow),
@@ -60,6 +64,7 @@ void main() {
         equals(style.activeDecoration?.color),
       );
       expect(copy.iconColor, equals(style.iconColor));
+      expect(copy.activeIconColor, equals(style.activeIconColor));
       expect(copy.shape, equals(style.shape));
       expect(copy.decoration.color, equals(style.decoration.color));
 
@@ -76,6 +81,7 @@ void main() {
         activeForegroundColor: Colors.green,
         animationDuration: Duration(seconds: 1),
         iconColor: Colors.blue,
+        activeIconColor: Colors.redAccent,
         shape: StepNodeShape.circle,
         decoration: BoxDecoration(color: Colors.yellow),
         icon: Icon(Icons.star),
@@ -87,6 +93,7 @@ void main() {
       const newActiveForeground = Colors.orange;
       const newDuration = Duration(milliseconds: 500);
       const newIconColor = Colors.black;
+      const newActiveIconColor = Colors.white;
       // Assuming that StepNodeShape has another value like "square"
       const newShape = StepNodeShape.square;
       const newDecoration = BoxDecoration(color: Colors.grey);
@@ -99,6 +106,7 @@ void main() {
         activeForegroundColor: newActiveForeground,
         animationDuration: newDuration,
         iconColor: newIconColor,
+        activeIconColor: newActiveIconColor,
         shape: newShape,
         decoration: newDecoration,
         activeDecoration: newActiveDecoration,
@@ -111,6 +119,7 @@ void main() {
       expect(copy.activeForegroundColor, equals(newActiveForeground));
       expect(copy.animationDuration, equals(newDuration));
       expect(copy.iconColor, equals(newIconColor));
+      expect(copy.activeIconColor, equals(newActiveIconColor));
       expect(copy.shape, equals(newShape));
       expect(copy.decoration.color, equals(Colors.grey));
       expect(copy.activeDecoration?.color, equals(Colors.brown));
@@ -128,6 +137,7 @@ void main() {
         activeForegroundColor: Colors.green,
         animationDuration: Duration(seconds: 1),
         iconColor: Colors.blue,
+        activeIconColor: Colors.redAccent,
         shape: StepNodeShape.circle,
         decoration: BoxDecoration(color: Colors.yellow),
         activeDecoration: BoxDecoration(color: Colors.orange),
@@ -143,6 +153,7 @@ void main() {
         activeForegroundColor: null,
         animationDuration: null,
         iconColor: null,
+        activeIconColor: null,
         shape: null,
         decoration: null,
         activeDecoration: null,
@@ -155,6 +166,7 @@ void main() {
       expect(copy.activeForegroundColor, equals(Colors.green));
       expect(copy.animationDuration, equals(const Duration(seconds: 1)));
       expect(copy.iconColor, equals(Colors.blue));
+      expect(copy.activeIconColor, equals(Colors.redAccent));
       expect(copy.shape, equals(StepNodeShape.circle));
       expect(copy.decoration.color, equals(Colors.yellow));
       expect(copy.activeDecoration?.color, equals(Colors.orange));
