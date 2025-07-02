@@ -134,22 +134,30 @@ class StepLine extends StatelessWidget {
 
       if (borderStyle?.isDotted ?? false) {
         lineWidget = DottedBorder(
-          strokeWidth: borderStyle!.borderWidth,
-          color: highlighted
-              ? borderStyle.activeBorderColor
-              : borderStyle.defaultBorderColor,
-          radius: borderRadius,
-          padding: EdgeInsets.all(borderStyle.borderWidth / 2),
-          strokeCap: StrokeCap.round,
-          borderType: BorderType.RRect,
-          dashPattern: borderStyle.dashPattern,
-          customPath: isBreadcrumb
-              ? (size) => BreadcrumbClipper(
+          options: isBreadcrumb
+              ? CustomPathDottedBorderOptions(
+                  strokeWidth: borderStyle!.borderWidth,
+                  dashPattern: borderStyle.dashPattern,
+                  color: highlighted
+                      ? borderStyle.activeBorderColor
+                      : borderStyle.defaultBorderColor,
+                  padding: EdgeInsets.all(borderStyle.borderWidth / 2),
+                  strokeCap: StrokeCap.round,
+                  customPath: (size) => BreadcrumbClipper(
                     angle: style.chevronAngle,
                     axis: axis,
                     isReversed: isReversed,
-                  ).getClip(size)
-              : null,
+                  ).getClip(size),
+                )
+              : RectDottedBorderOptions(
+                  strokeWidth: borderStyle!.borderWidth,
+                  dashPattern: borderStyle.dashPattern,
+                  color: highlighted
+                      ? borderStyle.activeBorderColor
+                      : borderStyle.defaultBorderColor,
+                  padding: EdgeInsets.all(borderStyle.borderWidth / 2),
+                  strokeCap: StrokeCap.round,
+                ),
           child: lineWidget,
         );
       }
