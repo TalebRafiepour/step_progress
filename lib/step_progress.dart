@@ -1,4 +1,4 @@
-library step_progress;
+library;
 
 export 'src/outer_border_style.dart';
 export 'src/step_label/step_label_style.dart';

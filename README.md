@@ -677,6 +677,44 @@ StepProgress(
 ```
 </details>
 
+### Example 20: Horizontal Step Progress Customized Icons
+![StepProgress-horizontal-customized-icons](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-20-stepprogress-customized-icons.gif)
+
+<details>
+  <summary>Show Implementation</summary>
+
+```dart
+final stepProgressController = StepProgressController(totalSteps: 5);
+const nodeIcons = [
+  Icon(Icons.home),
+  Icon(Icons.star),
+  Icon(Icons.settings),
+  Icon(Icons.person),
+  Icon(Icons.check)
+];
+```
+
+```dart
+StepProgress(
+  totalSteps: 5,
+  stepSize: 75,
+  padding: const EdgeInsets.all(10),
+  controller: stepProgressController,
+  visibilityOptions: StepProgressVisibilityOptions.nodeOnly,
+  nodeIconBuilder: (index, completedStepIndex) => nodeIcons[index],
+  theme: const StepProgressThemeData(
+    stepAnimationDuration: Duration.zero,
+    stepNodeStyle: StepNodeStyle(
+      iconColor: Color(0xfffdfdfd),
+      activeIconColor: Color(0xff72479e),
+    ),
+    activeForegroundColor: Color(0xFF181818),
+    defaultForegroundColor: Color(0xff4c4c4c),
+  ),
+)
+```
+</details>
+
 ## Installation
 
 To use StepProgress, add it to your `pubspec.yaml` file:
@@ -742,7 +780,8 @@ StepProgress(
 |`activeForegroundColor` | `Color?`           | The color for the foreground of the step node when it is active. If not set, it will be read from the theme. | `null` |
 |`borderStyle`           | `OutterBorderStyle`| border style of nodes.                                                                                       | `null` |
 |`animationDuration`     | `Duration?`        | The duration of the animation for the step node. If not set, it will be read from the theme.                 | `null` |
-|`iconColor`             | `Color`            | The color of the icon.                             | `const Color.fromARGB(253, 6, 138, 129)` (teal color)                                    |
+|`iconColor`             | `Color`            | The color of the icon.                                                                                       | `null` |
+|`activeIconColor`       | `Color`            | The color of the icon when the step node is active.                                                          | `null` |
 |`shape`                 | `StepNodeShape`    | The shape of the step node.                                                                                  | `null` |
 |`decoration`            | `BoxDecoration`    | The decoration of the step node.                   | `const BoxDecoration(color: Color.fromARGB(50, 255, 255, 255))` (semi-transparent white) |
 |`activeDecoration`      | `BoxDecoration`    | The decoration of the step node when it is active.                                                           | `null` |

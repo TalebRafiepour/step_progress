@@ -30,7 +30,7 @@ void main() {
       expect(style.activeIcon, isA<Icon>());
 
       // Default icon color
-      expect(style.iconColor, equals(const Color.fromARGB(253, 6, 138, 129)));
+      expect(style.iconColor, isNull);
 
       // Ripple effect is enabled by default
       expect(style.enableRippleEffect, isTrue);

@@ -15,6 +15,7 @@ class StepNodeCore extends StatelessWidget {
     this.icon = const Icon(Icons.check, size: 18, color: Colors.white),
     this.animationDuration = const Duration(milliseconds: 150),
     this.isVisible = true,
+    this.iconColor,
     this.width,
     this.height,
     super.key,
@@ -23,6 +24,9 @@ class StepNodeCore extends StatelessWidget {
   /// The widget to display as the icon for this step node.  If null,
   /// a default icon is used.
   final Widget? icon;
+
+  /// The color to use for the icon, if specified.
+  final Color? iconColor;
 
   /// The decoration to apply to the step node.
   final BoxDecoration? decoration;
@@ -58,7 +62,12 @@ class StepNodeCore extends StatelessWidget {
                 height: height,
                 stepNodeShape: stepNodeShape,
                 decoration: decoration,
-                child: icon,
+                child: iconColor != null
+                    ? IconTheme(
+                        data: IconThemeData(color: iconColor),
+                        child: icon ?? const SizedBox.shrink(),
+                      )
+                    : icon ?? const SizedBox.shrink(),
               ),
       ),
     );

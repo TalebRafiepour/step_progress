@@ -20,8 +20,9 @@ import 'package:step_progress/step_progress.dart';
 /// * [icon]: The icon to display inside the step node.
 /// * [activeIcon]: The icon to display inside the step node when it is active.
 /// Defaults to a check icon.
-/// * [iconColor]: The color of the icon inside the step node. Defaults to a
-/// teal color.
+/// * [iconColor]: The color of the icon inside the step node.
+/// * [activeIconColor]: The color of the icon when the step node is active.
+/// Defaults to a highlighted teal color.
 /// * [enableRippleEffect]: Whether to enable the ripple effect on the step
 /// node. Defaults to true.
 /// * [borderStyle]: The style of the outer border for the step node.
@@ -37,7 +38,8 @@ class StepNodeStyle {
     this.activeDecoration,
     this.icon,
     this.activeIcon = const Icon(Icons.check, size: 18, color: Colors.white),
-    this.iconColor = const Color.fromARGB(253, 6, 138, 129),
+    this.iconColor,
+    this.activeIconColor,
     this.enableRippleEffect = true,
     this.borderStyle,
   });
@@ -55,7 +57,10 @@ class StepNodeStyle {
   final Duration? animationDuration;
 
   /// The color of the icon.
-  final Color iconColor;
+  final Color? iconColor;
+
+  /// The icon color when the step is active.
+  final Color? activeIconColor;
 
   /// The shape of the step node.
   final StepNodeShape? shape;
@@ -86,6 +91,7 @@ class StepNodeStyle {
   /// - [defaultForegroundColor]: The default color for the foreground.
   /// - [activeForegroundColor]: The color for the foreground when active.
   /// - [iconColor]: The color of the icon.
+  /// - [activeIconColor]: The color of the icon when active.
   /// - [shape]: The shape of the step node.
   /// - [decoration]: The decoration for the step node.
   /// - [activeDecoration]: The decoration for the step node when active.
@@ -98,6 +104,7 @@ class StepNodeStyle {
     Color? defaultForegroundColor,
     Color? activeForegroundColor,
     Color? iconColor,
+    Color? activeIconColor,
     StepNodeShape? shape,
     BoxDecoration? decoration,
     BoxDecoration? activeDecoration,
@@ -113,6 +120,7 @@ class StepNodeStyle {
       activeForegroundColor:
           activeForegroundColor ?? this.activeForegroundColor,
       iconColor: iconColor ?? this.iconColor,
+      activeIconColor: activeIconColor ?? this.activeIconColor,
       shape: shape ?? this.shape,
       decoration: decoration ?? this.decoration,
       activeDecoration: activeDecoration ?? this.activeDecoration,
