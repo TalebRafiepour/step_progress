@@ -8,7 +8,6 @@ import 'package:example/example_fourteen.dart';
 import 'package:example/example_nine.dart';
 import 'package:example/example_nineteen.dart';
 import 'package:example/example_one.dart';
-import 'package:example/example_reproduce_issues.dart';
 import 'package:example/example_seven.dart';
 import 'package:example/example_seventeen.dart';
 import 'package:example/example_six.dart';
@@ -20,6 +19,8 @@ import 'package:example/example_twelve.dart';
 import 'package:example/example_twenty.dart';
 import 'package:example/example_twenty_one.dart';
 import 'package:example/example_two.dart';
+import 'package:example/reproduce_issues.dart';
+import 'package:example/reproduce_large_labels.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -64,7 +65,7 @@ class HomePage extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Text('Example One (Vertical)'),
+                child: const Text('1-Vertical'),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -75,7 +76,7 @@ class HomePage extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Text('Example Two (Horizontal - without labels)'),
+                child: const Text('2-HorizontalWithoutLabels'),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -86,7 +87,7 @@ class HomePage extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Text('Example Three (LineOnly-Custom)'),
+                child: const Text('3-LineOnlyCustom'),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -97,7 +98,7 @@ class HomePage extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Text('Example Four (LineOnly Custom)'),
+                child: const Text('4-LineOnlyCustom'),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -108,7 +109,7 @@ class HomePage extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Text('Example Five (Border)'),
+                child: const Text('5-Border'),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -119,7 +120,7 @@ class HomePage extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Text('Example Six (Positioned Labels)'),
+                child: const Text('6-PositionedLabels'),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -130,7 +131,7 @@ class HomePage extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Text('Example Seven (NodeOnly)'),
+                child: const Text('7-NodeOnly'),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -141,7 +142,7 @@ class HomePage extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Text('Example Eight (LineSpacing)'),
+                child: const Text('8-LineSpacing'),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -152,7 +153,7 @@ class HomePage extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Text('Example Nine (SquareShape)'),
+                child: const Text('9-SquareShape'),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -163,7 +164,7 @@ class HomePage extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Text('Example Ten (TriangleShape)'),
+                child: const Text('10-TriangleShape'),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -174,7 +175,7 @@ class HomePage extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Text('Example Elevn (DiamondShape)'),
+                child: const Text('11-DiamondShape'),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -185,7 +186,7 @@ class HomePage extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Text('Example Twelve (HexagonShape)'),
+                child: const Text('12-HexagonShape'),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -196,7 +197,7 @@ class HomePage extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Text('Example Thirteen (StarShape)'),
+                child: const Text('13-StarShape'),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -207,7 +208,7 @@ class HomePage extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Text('Example Fourteen (LargeLabel)'),
+                child: const Text('14-LineLabels'),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -218,7 +219,7 @@ class HomePage extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Text('Example Fifteen (LineLabel)'),
+                child: const Text('15-CustomVerticalTimeLine'),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -229,7 +230,7 @@ class HomePage extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Text('Example Sixteen (CustomVerticalTimeLine)'),
+                child: const Text('16-BreadCrumbLine'),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -240,7 +241,7 @@ class HomePage extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Text('Example Seventeen (BreadCrumbLine)'),
+                child: const Text('17-DottedLine'),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -251,7 +252,7 @@ class HomePage extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Text('Example Eighteen (DottedLine)'),
+                child: const Text('18-RippleEffectNode'),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -262,7 +263,7 @@ class HomePage extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Text('Example Nineteen (RippleEffect node)'),
+                child: const Text('19-HighlitCurrentStepNode'),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -273,7 +274,9 @@ class HomePage extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Text('Example Twenty (HighlitCurrentStepNode)'),
+                child: const Text(
+                  '20-CustomStepperWithoutLines',
+                ),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -285,7 +288,7 @@ class HomePage extends StatelessWidget {
                   );
                 },
                 child: const Text(
-                  'Example Twenty One (CustomStepperWithoutLines)',
+                  '21-InstagramStoryLikeStepper',
                 ),
               ),
               ElevatedButton(
@@ -293,7 +296,18 @@ class HomePage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => const ExampleReproduceIssues(),
+                      builder: (_) => const ReproduceLargeLabels(),
+                    ),
+                  );
+                },
+                child: const Text('ReproduceLargeLabels'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const ReproduceIssues(),
                     ),
                   );
                 },

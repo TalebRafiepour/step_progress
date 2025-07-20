@@ -9,23 +9,19 @@ class ExampleSeventeen extends StatelessWidget {
     final stepProgressController = StepProgressController(totalSteps: 5);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('StepProgress -  BreadCrumb Line'),
+        title: const Text('StepProgress -  Dotted Line'),
       ),
       body: StepProgress(
         totalSteps: 5,
         padding: const EdgeInsets.all(10),
         controller: stepProgressController,
-        lineSubTitles: const [
-          'Step 2',
-          'Step 3',
-          'Step 4',
-          'Step 5',
-        ],
         theme: const StepProgressThemeData(
-          stepLineSpacing: 28,
           stepLineStyle: StepLineStyle(
-            lineThickness: 10,
-            isBreadcrumb: true,
+            borderRadius: Radius.circular(8),
+            borderStyle: OuterBorderStyle(
+              isDotted: true,
+              borderWidth: 3,
+            ),
           ),
         ),
       ),
