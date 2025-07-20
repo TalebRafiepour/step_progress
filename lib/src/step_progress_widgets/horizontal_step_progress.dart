@@ -50,6 +50,7 @@ class HorizontalStepProgress extends StepProgressWidget {
     required super.stepSize,
     required super.visibilityOptions,
     required super.needsRebuildWidget,
+    super.onStepLineAnimationCompleted,
     super.highlightOptions,
     super.reversed,
     super.nodeTitles,
@@ -130,6 +131,11 @@ class HorizontalStepProgress extends StepProgressWidget {
         return StepLine(
           isReversed: reversed,
           highlighted: isHighlightedStepLine(index),
+          onStepLineAnimationCompleted: () =>
+              onStepLineAnimationCompleted?.call(
+            index: index,
+            isReverted: !isHighlightedStepLine(index),
+          ),
           onTap: () => onStepLineTapped?.call(index),
         );
       });

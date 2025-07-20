@@ -28,12 +28,16 @@ import 'package:step_progress/step_progress.dart';
 /// The [onTap] parameter is a callback function that is executed when the step
 /// line is tapped. It is optional and defaults to `null`.
 ///
+/// The [onStepLineAnimationCompleted] parameter is a callback that is
+/// triggered when the step line's animation completes. It is optional
+/// and defaults to `null`.
+///
 /// Example usage:
 ///
 /// ```dart
 /// StepLine(
 ///   axis: Axis.vertical,
-///   isActive: true,
+///   highlighted: true,
 ///   isReversed: true,
 ///   stepLineStyle: StepLineStyle(
 ///     color: Colors.blue,
@@ -41,6 +45,9 @@ import 'package:step_progress/step_progress.dart';
 ///   ),
 ///   onTap: () {
 ///     print('Step line tapped');
+///   },
+///   onStepLineAnimationCompleted: () {
+///     print('Line animation completed');
 ///   },
 /// )
 /// ```
@@ -50,6 +57,7 @@ class StepLine extends StatelessWidget {
     this.stepLineStyle,
     this.highlighted = false,
     this.isReversed = false,
+    this.onStepLineAnimationCompleted,
     this.onTap,
     super.key,
   });
@@ -68,6 +76,9 @@ class StepLine extends StatelessWidget {
 
   /// Indicates whether the step line is displayed in reverse order.
   final bool isReversed;
+
+  /// Callback triggered when the line animation completed.
+  final VoidCallback? onStepLineAnimationCompleted;
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +117,9 @@ class StepLine extends StatelessWidget {
         width: lineSize.width,
         height: lineSize.height,
         decoration: containerDecoration,
-        alignment: AlignmentDirectional.centerStart,
+        alignment: _isHorizontal
+            ? AlignmentDirectional.centerStart
+            : AlignmentDirectional.topStart,
         child: AnimatedContainer(
           width: _isHorizontal
               ? (highlighted ? lineSize.width : 0)
@@ -118,7 +131,7 @@ class StepLine extends StatelessWidget {
             color: style.activeColor ?? theme.activeForegroundColor,
             borderRadius: BorderRadius.all(borderRadius),
           ),
-          curve: Curves.fastLinearToSlowEaseIn,
+          onEnd: onStepLineAnimationCompleted,
           duration: style.animationDuration ?? theme.stepAnimationDuration,
         ),
       );

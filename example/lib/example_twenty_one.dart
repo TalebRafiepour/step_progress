@@ -17,12 +17,14 @@ class ExampleTwentyOne extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         controller: stepProgressController,
         visibilityOptions: StepProgressVisibilityOptions.lineOnly,
+        autoStartProgress: true,
         theme: const StepProgressThemeData(
           activeForegroundColor: Color.fromARGB(255, 255, 255, 255),
           defaultForegroundColor: Color.fromARGB(255, 171, 168, 168),
           stepLineSpacing: 3,
           stepLineStyle: StepLineStyle(
             lineThickness: 5,
+            animationDuration: Duration(seconds: 6),
             borderRadius: Radius.circular(5),
           ),
         ),

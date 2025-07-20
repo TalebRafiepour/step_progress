@@ -89,6 +89,7 @@ class VerticalStepProgress extends StepProgressWidget {
     required super.stepSize,
     required super.visibilityOptions,
     required super.needsRebuildWidget,
+    super.onStepLineAnimationCompleted,
     super.highlightOptions,
     super.reversed,
     super.nodeTitles,
@@ -167,6 +168,11 @@ class VerticalStepProgress extends StepProgressWidget {
           axis: Axis.vertical,
           isReversed: reversed,
           highlighted: isHighlightedStepLine(index),
+          onStepLineAnimationCompleted: () =>
+              onStepLineAnimationCompleted?.call(
+            index: index,
+            isReverted: !isHighlightedStepLine(index),
+          ),
           onTap: () => onStepLineTapped?.call(index),
         );
       });

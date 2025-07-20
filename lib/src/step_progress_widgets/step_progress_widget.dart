@@ -8,6 +8,17 @@ import 'package:step_progress/src/step_progress_highlight_options.dart';
 import 'package:step_progress/src/step_progress_theme.dart';
 import 'package:step_progress/src/step_progress_visibility_options.dart';
 
+/// Signature for a callback that is invoked when the step line animation is
+/// completed.
+///
+/// [index] is the index of the step whose animation has completed.
+/// [isReverted] indicates whether the animation was reverted (true) or
+/// completed normally (false).
+typedef OnStepLineAnimationCompleted = void Function({
+  int index,
+  bool isReverted,
+});
+
 /// An abstract class representing a step progress widget.
 ///
 /// This widget displays a progress indicator with multiple steps, allowing for
@@ -25,24 +36,26 @@ import 'package:step_progress/src/step_progress_visibility_options.dart';
 /// - [lineTitles]: An optional list of titles for each line segment.
 /// - [lineSubTitles]: An optional list of subtitles for each line segment.
 /// - [axis]: The axis in which the step progress is laid out
-/// (horizontal or vertical).
+///   (horizontal or vertical).
 /// - [visibilityOptions]: Options to control the visibility of elements.
 /// - [nodeSubTitles]: An optional list of subtitles for each step.
 /// - [onStepNodeTapped]: An optional callback function triggered when a step
-/// node is tapped.
+///   node is tapped.
 /// - [onStepLineTapped]: An optional callback function triggered when a step
-/// line is tapped.
+///   line is tapped.
+/// - [onStepLineAnimationCompleted]: An optional callback function triggered 
+///   when a step line is highlighted.
 /// - [nodeIconBuilder]: An optional builder for the icon of a step node.
 /// - [nodeLabelBuilder]: A builder for creating custom label widgets for
-/// step nodes.
+///   step nodes.
 /// - [lineLabelBuilder]: A builder for creating custom label widgets for step
-///  lines.
+///   lines.
 /// - [reversed]: Indicates whether the step progress is displayed in reverse
-/// order. It defaults to false.
+///   order. It defaults to false.
 /// - [needsRebuildWidget]: Callback to request a rebuild of the parent widget.
-/// This is triggered when dynamic size calculations are needed.
+///   This is triggered when dynamic size calculations are needed.
 /// - [highlightOptions]: Options to customize the highlight behavior of the
-/// step progress widget.
+///   step progress widget.
 abstract class StepProgressWidget extends StatelessWidget {
   const StepProgressWidget({
     required this.totalSteps,
@@ -53,6 +66,7 @@ abstract class StepProgressWidget extends StatelessWidget {
     required this.needsRebuildWidget,
     this.highlightOptions =
         StepProgressHighlightOptions.highlightCompletedNodesAndLines,
+    this.onStepLineAnimationCompleted,
     this.reversed = false,
     this.nodeTitles,
     this.nodeSubTitles,
@@ -132,6 +146,8 @@ abstract class StepProgressWidget extends StatelessWidget {
 
   /// Options to customize the highlight behavior of the step progress widget.
   final StepProgressHighlightOptions highlightOptions;
+
+  final OnStepLineAnimationCompleted? onStepLineAnimationCompleted;
 
   /// Determines if a step line at the given index should be highlighted
   /// based on the current step and highlight options.
