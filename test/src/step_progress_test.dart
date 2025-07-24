@@ -731,6 +731,39 @@ void main() {
         await tester.pumpAndSettle();
         expect(changedStep, equals(2));
       });
+
+      testWidgets(
+        'Should decrement step when autoStartProgress is true and isForward is'
+        ' false',
+        (tester) async {
+          int? changedStep;
+          // Start at step 2, previous step is 3, so isForward will be false''
+          // (2 < 3)
+          final controller =
+              StepProgressController(initialStep: 2, totalSteps: 4)
+                ..prevStep = 3; // Simulate previous step higher than current
+
+          await tester.pumpWidget(
+            MaterialApp(
+              home: Scaffold(
+                body: StepProgress(
+                  totalSteps: 4,
+                  controller: controller,
+                  autoStartProgress: true,
+                  onStepChanged: (step) {
+                    changedStep = step;
+                  },
+                ),
+              ),
+            ),
+          );
+
+          await tester.pumpAndSettle();
+
+          // Should decrement step atuomaticly (1, 0)
+          expect(changedStep, equals(0));
+        },
+      );
     },
   );
 }
