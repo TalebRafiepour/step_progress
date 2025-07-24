@@ -30,7 +30,10 @@ import 'package:step_progress/step_progress.dart';
 /// active step. It defaults to `false`.
 ///
 /// The [isAutoStepChange] parameter determines if the step progression advances
-///  automatically. It defaults to `false`.
+/// automatically. It defaults to `false`.
+///
+/// The [controller] parameter is an optional [StepProgressController] that can
+/// be used to manage and update the step progress state. It defaults to `null`.
 ///
 /// The [onTap] parameter is a callback function that is executed when the step
 /// line is tapped. It is optional and defaults to `null`.
@@ -48,6 +51,7 @@ import 'package:step_progress/step_progress.dart';
 ///   isReversed: true,
 ///   isCurrentStep: true,
 ///   isAutoStepChange: false,
+///   controller: myStepProgressController,
 ///   stepLineStyle: StepLineStyle(
 ///     color: Colors.blue,
 ///     thickness: 2.0,
@@ -69,6 +73,7 @@ class StepLine extends StatelessWidget {
     this.highlighted = false,
     this.isReversed = false,
     this.onStepLineAnimationCompleted,
+    this.controller,
     this.onTap,
     super.key,
   });
@@ -96,6 +101,9 @@ class StepLine extends StatelessWidget {
 
   /// Determines if step changes occur automatically.
   final bool isAutoStepChange;
+
+  /// Optional controller to manage and update the step progress state.
+  final StepProgressController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -145,6 +153,7 @@ class StepLine extends StatelessWidget {
                 : AlignmentDirectional.topStart),
         child: isCurrentStep && isAutoStepChange
             ? StepValueLine(
+                controller: controller,
                 duration:
                     style.animationDuration ?? theme.stepAnimationDuration,
                 activeColor: activeColor,

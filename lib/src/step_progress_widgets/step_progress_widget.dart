@@ -4,6 +4,7 @@ import 'package:step_progress/src/step_label/step_label_style.dart';
 import 'package:step_progress/src/step_label_alignment.dart';
 import 'package:step_progress/src/step_line/step_line_style.dart';
 import 'package:step_progress/src/step_progress.dart';
+import 'package:step_progress/src/step_progress_controller.dart';
 import 'package:step_progress/src/step_progress_highlight_options.dart';
 import 'package:step_progress/src/step_progress_theme.dart';
 import 'package:step_progress/src/step_progress_visibility_options.dart';
@@ -53,6 +54,8 @@ typedef OnStepLineAnimationCompleted = void Function({
 ///   This is triggered when dynamic size calculations are needed.
 /// - [highlightOptions]: Options to customize the highlight behavior of the
 ///   step progress widget.
+/// - [controller]: Optional controller to manage and update the step progress
+/// state.
 abstract class StepProgressWidget extends StatelessWidget {
   const StepProgressWidget({
     required this.totalSteps,
@@ -63,6 +66,7 @@ abstract class StepProgressWidget extends StatelessWidget {
     required this.needsRebuildWidget,
     this.highlightOptions =
         StepProgressHighlightOptions.highlightCompletedNodesAndLines,
+    this.controller,
     this.onStepLineAnimationCompleted,
     this.isAutoStepChange = false,
     this.reversed = false,
@@ -148,7 +152,11 @@ abstract class StepProgressWidget extends StatelessWidget {
   /// Options to customize the highlight behavior of the step progress widget.
   final StepProgressHighlightOptions highlightOptions;
 
+  /// Callback triggered when the step line animation completes.
   final OnStepLineAnimationCompleted? onStepLineAnimationCompleted;
+
+  /// Optional controller to manage and update the step progress state.
+  final StepProgressController? controller;
 
   /// Determines if a step line at the given index should be highlighted
   /// based on the current step and highlight options.

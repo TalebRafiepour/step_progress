@@ -6,8 +6,7 @@ class ExampleTwentyOne extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final stepProgressController =
-        StepProgressController(totalSteps: 5, initialStep: -1);
+    final stepProgressController = StepProgressController(totalSteps: 5);
     return Scaffold(
       backgroundColor: Colors.black45,
       appBar: AppBar(
@@ -19,6 +18,10 @@ class ExampleTwentyOne extends StatelessWidget {
         controller: stepProgressController,
         visibilityOptions: StepProgressVisibilityOptions.lineOnly,
         autoStartProgress: true,
+        onStepChanged: (currentIndex) {
+          // Notice that the currentIndex starts from 1 in the LineOnly mode
+          debugPrint('Current step changed to: $currentIndex');
+        },
         theme: const StepProgressThemeData(
           activeForegroundColor: Color.fromARGB(255, 255, 255, 255),
           defaultForegroundColor: Color.fromARGB(255, 171, 168, 168),
@@ -41,7 +44,17 @@ class ExampleTwentyOne extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                // play or pause the step progress
+                if (stepProgressController.isAnimating()) {
+                  stepProgressController.pauseAnimation();
+                }
+              },
+              child: const Icon(Icons.pause, size: 20),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (!stepProgressController.isAnimating()) {
+                  stepProgressController.playAnimation();
+                }
               },
               child: const Icon(Icons.play_arrow, size: 20),
             ),

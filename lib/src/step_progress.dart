@@ -256,12 +256,11 @@ class _StepProgressState extends State<StepProgress>
       _changeStep(widget.controller!.currentStep);
     });
     if (widget.autoStartProgress) {
-      Future.delayed(
-        Duration.zero,
-        () => _onStepAnimationCompleted(
-          index: _currentStep >= 0 ? _currentStep : 0,
-        ),
-      );
+      // Because the first step has no line, we start from 1
+      if (_currentStep <= 0) {
+        _currentStep = 1;
+        widget.onStepChanged?.call(_currentStep);
+      }
     }
     super.initState();
   }
@@ -325,11 +324,10 @@ class _StepProgressState extends State<StepProgress>
         newStep >= widget.totalSteps) {
       return;
     }
+    _previousStep = _currentStep;
+    _currentStep = newStep;
     if (mounted) {
-      setState(() {
-        _previousStep = _currentStep;
-        _currentStep = newStep;
-      });
+      setState(() {});
     }
     if (_currentStep != widget.controller?.currentStep) {
       widget.controller?.setCurrentStep(_currentStep);
@@ -377,6 +375,7 @@ class _StepProgressState extends State<StepProgress>
         padding: widget.padding,
         child: widget.axis == Axis.horizontal
             ? HorizontalStepProgress(
+                controller: widget.controller,
                 totalSteps: widget.totalSteps,
                 currentStep: _currentStep,
                 isAutoStepChange: widget.autoStartProgress,
@@ -397,6 +396,7 @@ class _StepProgressState extends State<StepProgress>
                 nodeLabelBuilder: widget.nodeLabelBuilder,
               )
             : VerticalStepProgress(
+                controller: widget.controller,
                 totalSteps: widget.totalSteps,
                 currentStep: _currentStep,
                 isAutoStepChange: widget.autoStartProgress,

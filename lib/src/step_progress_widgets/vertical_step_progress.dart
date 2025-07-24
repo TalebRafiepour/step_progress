@@ -94,6 +94,7 @@ class VerticalStepProgress extends StepProgressWidget {
     required super.visibilityOptions,
     required super.needsRebuildWidget,
     super.onStepLineAnimationCompleted,
+    super.controller,
     super.highlightOptions,
     super.isAutoStepChange,
     super.reversed,
@@ -170,6 +171,7 @@ class VerticalStepProgress extends StepProgressWidget {
     Widget buildWidget() {
       List<Widget> children = List.generate(totalSteps - 1, (index) {
         return StepLine(
+          controller: controller,
           axis: Axis.vertical,
           isReversed: reversed,
           isCurrentStep: currentStep == index + 1,
@@ -177,7 +179,7 @@ class VerticalStepProgress extends StepProgressWidget {
           highlighted: isHighlightedStepLine(index),
           onStepLineAnimationCompleted: () =>
               onStepLineAnimationCompleted?.call(
-            index: index,
+            index: index + 1,
           ),
           onTap: () => onStepLineTapped?.call(index),
         );

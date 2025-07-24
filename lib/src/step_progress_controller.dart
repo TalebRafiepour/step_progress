@@ -25,7 +25,14 @@ class StepProgressController extends ChangeNotifier {
   /// Returns current step
   int get currentStep => _currentStep;
 
+  /// Stores the previous step index based on the current step.
   late int prevStep = currentStep - 1;
+
+  VoidCallback playAnimation = () {};
+
+  VoidCallback pauseAnimation = () {};
+
+  bool Function() isAnimating = () => false;
 
   /// validate newStep and set it to current step
   void setCurrentStep(int newStep) {

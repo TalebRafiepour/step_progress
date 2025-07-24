@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:step_progress/src/step_progress_controller.dart';
 
 /// A widget that displays a step progress line with customizable appearance.
 /// Supports animation, orientation, and completion callbacks.
@@ -12,6 +13,7 @@ class StepValueLine extends StatefulWidget {
     required this.isHorizontal,
     required this.duration,
     this.onAnimationCompleted,
+    this.controller,
     super.key,
   });
 
@@ -36,6 +38,9 @@ class StepValueLine extends StatefulWidget {
   /// The duration of the animation.
   final Duration duration;
 
+  /// Optional controller to manage and update the step progress state.
+  final StepProgressController? controller;
+
   @override
   State<StepValueLine> createState() => _StepValueLineState();
 }
@@ -53,6 +58,9 @@ class _StepValueLineState extends State<StepValueLine>
     if (widget.onAnimationCompleted != null) {
       animationController.addStatusListener(statusListener);
     }
+    widget.controller?.playAnimation = playAnimation;
+    widget.controller?.pauseAnimation = pauseAnimation;
+    widget.controller?.isAnimating = () => animationController.isAnimating;
     super.initState();
   }
 
@@ -69,6 +77,20 @@ class _StepValueLineState extends State<StepValueLine>
     }
     animationController.dispose();
     super.dispose();
+  }
+
+  /// Starts the animation if it is not already running.
+  void playAnimation() {
+    if (!animationController.isAnimating) {
+      animationController.forward();
+    }
+  }
+
+  /// Pauses the animation if it is currently running.
+  void pauseAnimation() {
+    if (animationController.isAnimating) {
+      animationController.stop();
+    }
   }
 
   @override
