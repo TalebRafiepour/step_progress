@@ -259,7 +259,6 @@ class _StepProgressState extends State<StepProgress>
       // Because the first step has no line, we start from 1
       if (_currentStep <= 0) {
         _currentStep = 1;
-        widget.onStepChanged?.call(_currentStep);
       }
     }
     super.initState();
