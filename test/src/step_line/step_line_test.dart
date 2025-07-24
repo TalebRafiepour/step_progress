@@ -39,18 +39,18 @@ void main() {
         // Wait for animations to finish.
         await tester.pumpAndSettle();
 
-        // The AnimatedContainer inside StepLine is used for the active color
+        // The container inside StepLine is used for the active color
         // fill.
-        final animatedContainerFinder = find.descendant(
+        final containerFinder = find.descendant(
           of: find.byKey(testKey),
-          matching: find.byType(AnimatedContainer),
+          matching: find.byType(Container),
         );
-        expect(animatedContainerFinder, findsOneWidget);
+        expect(containerFinder, findsNWidgets(2));
 
         // For horizontal active, the animated container width should equal
         // the parent's width (200)
         // and its height should equal the defined lineThickness.
-        final animatedSize = tester.getSize(animatedContainerFinder);
+        final animatedSize = tester.getSize(containerFinder.last);
         expect(animatedSize.width, equals(200));
         expect(animatedSize.height, equals(lineThickness));
       },
@@ -77,14 +77,14 @@ void main() {
 
         await tester.pumpAndSettle();
 
-        final animatedContainerFinder = find.descendant(
+        final containerFinder = find.descendant(
           of: find.byKey(testKey),
-          matching: find.byType(AnimatedContainer),
+          matching: find.byType(Container),
         );
-        expect(animatedContainerFinder, findsOneWidget);
+        expect(containerFinder, findsNWidgets(2));
 
-        final animatedSize = tester.getSize(animatedContainerFinder);
-        // For horizontal inactive, the animated container width should be 0
+        final animatedSize = tester.getSize(containerFinder.last);
+        // For horizontal inactive, the active container width should be 0
         // while the height remains equal to lineThickness.
         expect(animatedSize.width, equals(0));
         expect(animatedSize.height, equals(lineThickness));
@@ -117,13 +117,13 @@ void main() {
 
         await tester.pumpAndSettle();
 
-        final animatedContainerFinder = find.descendant(
+        final containerFinder = find.descendant(
           of: find.byKey(testKey),
-          matching: find.byType(AnimatedContainer),
+          matching: find.byType(Container),
         );
-        expect(animatedContainerFinder, findsOneWidget);
+        expect(containerFinder, findsNWidgets(2));
 
-        final animatedSize = tester.getSize(animatedContainerFinder);
+        final animatedSize = tester.getSize(containerFinder.last);
         // For vertical active, the width is set to the lineThickness
         // and height should match parent's height (200).
         expect(animatedSize.width, equals(lineThickness));
@@ -156,13 +156,13 @@ void main() {
 
         await tester.pumpAndSettle();
 
-        final animatedContainerFinder = find.descendant(
+        final containerFinder = find.descendant(
           of: find.byKey(testKey),
-          matching: find.byType(AnimatedContainer),
+          matching: find.byType(Container),
         );
-        expect(animatedContainerFinder, findsOneWidget);
+        expect(containerFinder, findsNWidgets(2));
 
-        final animatedSize = tester.getSize(animatedContainerFinder);
+        final animatedSize = tester.getSize(containerFinder.last);
         // For vertical inactive, the animated container height should be 0
         // while the width remains equal to lineThickness.
         expect(animatedSize.width, equals(lineThickness));
