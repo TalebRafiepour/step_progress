@@ -1,3 +1,8 @@
+# 2.6.0
+- **Auto Start Progress**: Added the `autoStartProgress` property to the `StepProgress` constructor, enabling automatic progression through steps until completion.
+- **Testing**: Introduced and updated widget tests to ensure the new feature functions as intended.
+- **Documentation**: Expanded documentation to clarify the new functionality and assist contributors.
+
 # 2.5.3
 - **Icon Color Customization**: Introduced the `activeIconColor` property in `StepNodeStyle`, enabling straightforward customization of icon colors for active step nodes.
 - **Testing Enhancements**: Expanded and updated widget tests to increase coverage for various states in the `StepLine` and `StepGenerator` widgets.
