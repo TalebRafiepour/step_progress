@@ -7,33 +7,30 @@ class ExampleTwentyOne extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final stepProgressController = StepProgressController(totalSteps: 5);
-    const nodeIcons = [
-      Icon(Icons.home),
-      Icon(Icons.star),
-      Icon(Icons.settings),
-      Icon(Icons.person),
-      Icon(Icons.check)
-    ];
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Colors.black45,
       appBar: AppBar(
-        title: const Text('StepProgress - Custom Stepper Without Lines'),
+        title: const Text('StepProgress - Instagram Story Like Stepper'),
       ),
       body: StepProgress(
         totalSteps: 5,
-        stepSize: 75,
         padding: const EdgeInsets.all(10),
         controller: stepProgressController,
-        visibilityOptions: StepProgressVisibilityOptions.nodeOnly,
-        nodeIconBuilder: (index, completedStepIndex) => nodeIcons[index],
+        visibilityOptions: StepProgressVisibilityOptions.lineOnly,
+        autoStartProgress: true,
+        onStepChanged: (currentIndex) {
+          // Notice that the currentIndex starts from 1 in the LineOnly mode
+          debugPrint('Current step changed to: $currentIndex');
+        },
         theme: const StepProgressThemeData(
-          stepAnimationDuration: Duration.zero,
-          stepNodeStyle: StepNodeStyle(
-            iconColor: Color(0xfffdfdfd),
-            activeIconColor: Color(0xff72479e),
+          activeForegroundColor: Color.fromARGB(255, 255, 255, 255),
+          defaultForegroundColor: Color.fromARGB(255, 171, 168, 168),
+          stepLineSpacing: 3,
+          stepLineStyle: StepLineStyle(
+            lineThickness: 5,
+            animationDuration: Duration(seconds: 3),
+            borderRadius: Radius.circular(5),
           ),
-          activeForegroundColor: Color(0xFF181818),
-          defaultForegroundColor: Color(0xff4c4c4c),
         ),
       ),
       bottomNavigationBar: SafeArea(
@@ -43,11 +40,27 @@ class ExampleTwentyOne extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: stepProgressController.previousStep,
-              child: const Text('Prev'),
+              child: const Icon(Icons.arrow_back, size: 20),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (stepProgressController.isAnimating()) {
+                  stepProgressController.pauseAnimation();
+                }
+              },
+              child: const Icon(Icons.pause, size: 20),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (!stepProgressController.isAnimating()) {
+                  stepProgressController.playAnimation();
+                }
+              },
+              child: const Icon(Icons.play_arrow, size: 20),
             ),
             ElevatedButton(
               onPressed: stepProgressController.nextStep,
-              child: const Text('Next'),
+              child: const Icon(Icons.arrow_forward, size: 20),
             ),
           ],
         ),

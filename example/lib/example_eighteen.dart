@@ -16,13 +16,7 @@ class ExampleEighteen extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         controller: stepProgressController,
         theme: const StepProgressThemeData(
-          stepLineStyle: StepLineStyle(
-            borderRadius: Radius.circular(8),
-            borderStyle: OuterBorderStyle(
-              isDotted: true,
-              borderWidth: 3,
-            ),
-          ),
+          enableRippleEffect: true,
         ),
       ),
       bottomNavigationBar: SafeArea(

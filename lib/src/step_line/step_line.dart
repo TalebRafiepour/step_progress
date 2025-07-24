@@ -1,6 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:step_progress/src/step_line/breadcrumb_clipper.dart';
+import 'package:step_progress/src/step_line/step_value_line.dart';
 import 'package:step_progress/step_progress.dart';
 
 /// A widget that represents a step line in a step progress indicator.
@@ -25,16 +26,32 @@ import 'package:step_progress/step_progress.dart';
 /// The [isReversed] parameter indicates whether the step line is displayed in
 /// reverse order. It defaults to `false`.
 ///
+/// The [isCurrentStep] parameter indicates whether this step is the current
+/// active step. It defaults to `false`.
+///
+/// The [isAutoStepChange] parameter determines if the step progression advances
+/// automatically. It defaults to `false`.
+///
+/// The [controller] parameter is an optional [StepProgressController] that can
+/// be used to manage and update the step progress state. It defaults to `null`.
+///
 /// The [onTap] parameter is a callback function that is executed when the step
 /// line is tapped. It is optional and defaults to `null`.
+///
+/// The [onStepLineAnimationCompleted] parameter is a callback that is
+/// triggered when the step line's animation completes. It is optional
+/// and defaults to `null`.
 ///
 /// Example usage:
 ///
 /// ```dart
 /// StepLine(
 ///   axis: Axis.vertical,
-///   isActive: true,
+///   highlighted: true,
 ///   isReversed: true,
+///   isCurrentStep: true,
+///   isAutoStepChange: false,
+///   controller: myStepProgressController,
 ///   stepLineStyle: StepLineStyle(
 ///     color: Colors.blue,
 ///     thickness: 2.0,
@@ -42,14 +59,21 @@ import 'package:step_progress/step_progress.dart';
 ///   onTap: () {
 ///     print('Step line tapped');
 ///   },
+///   onStepLineAnimationCompleted: () {
+///     print('Line animation completed');
+///   },
 /// )
 /// ```
 class StepLine extends StatelessWidget {
   const StepLine({
+    this.isCurrentStep = false,
+    this.isAutoStepChange = false,
     this.axis = Axis.horizontal,
     this.stepLineStyle,
     this.highlighted = false,
     this.isReversed = false,
+    this.onStepLineAnimationCompleted,
+    this.controller,
     this.onTap,
     super.key,
   });
@@ -69,6 +93,18 @@ class StepLine extends StatelessWidget {
   /// Indicates whether the step line is displayed in reverse order.
   final bool isReversed;
 
+  /// Callback triggered when the line animation completed.
+  final VoidCallback? onStepLineAnimationCompleted;
+
+  /// Indicates whether this step is the current active step.
+  final bool isCurrentStep;
+
+  /// Determines if step changes occur automatically.
+  final bool isAutoStepChange;
+
+  /// Optional controller to manage and update the step progress state.
+  final StepProgressController? controller;
+
   @override
   Widget build(BuildContext context) {
     final theme = StepProgressTheme.of(context)!.data;
@@ -76,6 +112,8 @@ class StepLine extends StatelessWidget {
     final isBreadcrumb = style.isBreadcrumb;
     final borderStyle = style.borderStyle ?? theme.borderStyle;
     final borderRadius = style.borderRadius;
+    //
+    final activeColor = style.activeColor ?? theme.activeForegroundColor;
 
     final lineSpacing = EdgeInsets.symmetric(
       horizontal: _isHorizontal ? theme.stepLineSpacing : 0,
@@ -106,21 +144,37 @@ class StepLine extends StatelessWidget {
         width: lineSize.width,
         height: lineSize.height,
         decoration: containerDecoration,
-        alignment: AlignmentDirectional.centerStart,
-        child: AnimatedContainer(
-          width: _isHorizontal
-              ? (highlighted ? lineSize.width : 0)
-              : lineSize.width,
-          height: !_isHorizontal
-              ? (highlighted ? lineSize.height : 0)
-              : lineSize.height,
-          decoration: BoxDecoration(
-            color: style.activeColor ?? theme.activeForegroundColor,
-            borderRadius: BorderRadius.all(borderRadius),
-          ),
-          curve: Curves.fastLinearToSlowEaseIn,
-          duration: style.animationDuration ?? theme.stepAnimationDuration,
-        ),
+        alignment: _isHorizontal
+            ? (isReversed
+                ? AlignmentDirectional.centerEnd
+                : AlignmentDirectional.centerStart)
+            : (isReversed
+                ? AlignmentDirectional.bottomEnd
+                : AlignmentDirectional.topStart),
+        child: isCurrentStep && isAutoStepChange
+            ? StepValueLine(
+                controller: controller,
+                duration:
+                    style.animationDuration ?? theme.stepAnimationDuration,
+                activeColor: activeColor,
+                borderRadius: borderRadius,
+                lineSize: lineSize,
+                highlighted: highlighted,
+                isHorizontal: _isHorizontal,
+                onAnimationCompleted: onStepLineAnimationCompleted,
+              )
+            : Container(
+                width: _isHorizontal
+                    ? (highlighted ? lineSize.width : 0)
+                    : lineSize.width,
+                height: !_isHorizontal
+                    ? (highlighted ? lineSize.height : 0)
+                    : lineSize.height,
+                decoration: BoxDecoration(
+                  color: activeColor,
+                  borderRadius: BorderRadius.all(borderRadius),
+                ),
+              ),
       );
 
       if (isBreadcrumb) {

@@ -110,6 +110,9 @@ typedef OnStepNodeTapped = void Function(int index);
 ///
 /// The [reversed] parameter indicates whether the step progress is displayed
 /// in reverse order. It defaults to false.
+///
+/// The [autoStartProgress] parameter determines whether the progress should
+/// automatically start when the widget is initialized. It defaults to false.
 class StepProgress extends StatefulWidget {
   const StepProgress({
     required this.totalSteps,
@@ -124,6 +127,7 @@ class StepProgress extends StatefulWidget {
     this.padding = EdgeInsets.zero,
     this.axis = Axis.horizontal,
     this.reversed = false,
+    this.autoStartProgress = false,
     this.visibilityOptions = StepProgressVisibilityOptions.both,
     this.highlightOptions =
         StepProgressHighlightOptions.highlightCompletedNodesAndLines,
@@ -228,6 +232,9 @@ class StepProgress extends StatefulWidget {
   /// Indicates whether the step progress is displayed in reverse order.
   final bool reversed;
 
+  /// Whether the progress should start automatically when the widget is built.
+  final bool autoStartProgress;
+
   @override
   _StepProgressState createState() {
     assert(
@@ -241,12 +248,19 @@ class StepProgress extends StatefulWidget {
 class _StepProgressState extends State<StepProgress>
     with SingleTickerProviderStateMixin {
   late int _currentStep = _getCurrentStep;
+  late int _previousStep = _getPreviousStep;
 
   @override
   void initState() {
     widget.controller?.addListener(() {
       _changeStep(widget.controller!.currentStep);
     });
+    if (widget.autoStartProgress) {
+      // Because the first step has no line, we start from 1
+      if (_currentStep <= 0) {
+        _currentStep = 1;
+      }
+    }
     super.initState();
   }
 
@@ -258,8 +272,6 @@ class _StepProgressState extends State<StepProgress>
     /// is empty.
     DataCache().clearCache();
 
-    /// Disposes of the controller if it is not null.
-    widget.controller?.dispose();
     super.dispose();
   }
 
@@ -289,6 +301,12 @@ class _StepProgressState extends State<StepProgress>
         : widget.currentStep;
   }
 
+  int get _getPreviousStep {
+    return widget.controller != null
+        ? widget.controller!.prevStep
+        : widget.currentStep - 1;
+  }
+
   /// Changes the current step to the specified [newStep].
   ///
   /// If [newStep] is the same as the current step, less than -1, or greater
@@ -305,10 +323,13 @@ class _StepProgressState extends State<StepProgress>
         newStep >= widget.totalSteps) {
       return;
     }
+    _previousStep = _currentStep;
+    _currentStep = newStep;
     if (mounted) {
-      setState(() {
-        _currentStep = newStep;
-      });
+      setState(() {});
+    }
+    if (_currentStep != widget.controller?.currentStep) {
+      widget.controller?.setCurrentStep(_currentStep);
     }
     widget.onStepChanged?.call(_currentStep);
   }
@@ -320,6 +341,22 @@ class _StepProgressState extends State<StepProgress>
   void _needsRebuildWidget() {
     if (mounted) {
       setState(() {});
+    }
+  }
+
+  /// Handles automatic step changes based on the current index and direction.
+  void _onStepAnimationCompleted({
+    int index = 0,
+  }) {
+    if (!widget.autoStartProgress) {
+      return;
+    } else {
+      final isForward = _currentStep > _previousStep;
+      if (isForward) {
+        _changeStep(index + 1);
+      } else {
+        _changeStep(index - 1);
+      }
     }
   }
 
@@ -337,10 +374,13 @@ class _StepProgressState extends State<StepProgress>
         padding: widget.padding,
         child: widget.axis == Axis.horizontal
             ? HorizontalStepProgress(
+                controller: widget.controller,
                 totalSteps: widget.totalSteps,
                 currentStep: _currentStep,
+                isAutoStepChange: widget.autoStartProgress,
                 reversed: widget.reversed,
                 highlightOptions: widget.highlightOptions,
+                onStepLineAnimationCompleted: _onStepAnimationCompleted,
                 needsRebuildWidget: _needsRebuildWidget,
                 nodeTitles: widget.nodeTitles,
                 nodeSubTitles: widget.nodeSubTitles,
@@ -355,10 +395,13 @@ class _StepProgressState extends State<StepProgress>
                 nodeLabelBuilder: widget.nodeLabelBuilder,
               )
             : VerticalStepProgress(
+                controller: widget.controller,
                 totalSteps: widget.totalSteps,
                 currentStep: _currentStep,
+                isAutoStepChange: widget.autoStartProgress,
                 reversed: widget.reversed,
                 highlightOptions: widget.highlightOptions,
+                onStepLineAnimationCompleted: _onStepAnimationCompleted,
                 needsRebuildWidget: _needsRebuildWidget,
                 nodeTitles: widget.nodeTitles,
                 nodeSubTitles: widget.nodeSubTitles,

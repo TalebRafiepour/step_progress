@@ -9,114 +9,47 @@ class ExampleFourteen extends StatelessWidget {
     final stepProgressController = StepProgressController(totalSteps: 4);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('StepProgress -  large labels'),
+        title: const Text('StepProgress -  LineLabel'),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          spacing: 18,
-          children: [
-            StepProgress(
-              totalSteps: 4,
-              stepSize: 28,
-              controller: stepProgressController,
-              nodeTitles: const [
-                'Step 1',
-                'Step 2',
-                'Step 3',
-                'Step 4 and a long title',
-              ],
-              theme: const StepProgressThemeData(
-                nodeLabelAlignment: StepLabelAlignment.top,
-              ),
-            ),
-            StepProgress(
-              totalSteps: 4,
-              stepSize: 28,
-              controller: stepProgressController,
-              nodeTitles: const [
-                'Step 1',
-                'Step 2',
-                'Step 3',
-                'Step 4 and a long title',
-              ],
-              theme: const StepProgressThemeData(
-                nodeLabelAlignment: StepLabelAlignment.bottom,
-              ),
-            ),
-            StepProgress(
-              totalSteps: 4,
-              stepSize: 28,
-              controller: stepProgressController,
-              nodeTitles: const [
-                'Step 1 and a long title here',
-                'Step 2',
-                'Step 3',
-                'Step 4 and a long title',
-              ],
-              theme: const StepProgressThemeData(
-                nodeLabelAlignment: StepLabelAlignment.topBottom,
-              ),
-            ),
-            Row(
-              spacing: 18,
-              children: [
-                StepProgress(
-                  totalSteps: 4,
-                  stepSize: 28,
-                  height: 390,
-                  axis: Axis.vertical,
-                  controller: stepProgressController,
-                  nodeTitles: const [
-                    'Step 1',
-                    'Step 2',
-                    'Step 3',
-                    'Step 4 and a long title',
-                  ],
-                  theme: const StepProgressThemeData(
-                    nodeLabelAlignment: StepLabelAlignment.left,
-                  ),
-                ),
-                StepProgress(
-                  totalSteps: 4,
-                  stepSize: 28,
-                  height: 390,
-                  axis: Axis.vertical,
-                  controller: stepProgressController,
-                  nodeTitles: const [
-                    'Step 1',
-                    'Step 2',
-                    'Step 3',
-                    'Step 4 and a long title',
-                  ],
-                  theme: const StepProgressThemeData(
-                    nodeLabelAlignment: StepLabelAlignment.right,
-                  ),
-                ),
-                StepProgress(
-                  totalSteps: 4,
-                  stepSize: 28,
-                  height: 390,
-                  axis: Axis.vertical,
-                  controller: stepProgressController,
-                  nodeTitles: const [
-                    'Step 1',
-                    'Step 2',
-                    'Step 3',
-                    'Step 4 and a long title',
-                  ],
-                  theme: const StepProgressThemeData(
-                    nodeLabelAlignment: StepLabelAlignment.leftRight,
-                  ),
-                ),
-              ],
-            ),
-          ],
+      body: StepProgress(
+        totalSteps: 4,
+        padding: const EdgeInsets.all(10),
+        lineTitles: const [
+          'line title 1',
+          'line title 2',
+          'line title 3',
+        ],
+        controller: stepProgressController,
+        nodeIconBuilder: (index, completedStepIndex) {
+          if (index <= completedStepIndex) {
+            return const Icon(
+              Icons.check,
+              color: Colors.white,
+            );
+          } else {
+            return const Icon(
+              Icons.more_horiz,
+              color: Colors.white,
+            );
+          }
+        },
+        theme: const StepProgressThemeData(
+          lineLabelAlignment: Alignment.bottomCenter,
+          lineLabelStyle: StepLabelStyle(
+            defualtColor: Colors.grey,
+            activeColor: Colors.green,
+          ),
+          stepLineSpacing: 20,
+          stepLineStyle: StepLineStyle(
+            lineThickness: 3,
+            borderRadius: Radius.circular(4),
+          ),
         ),
       ),
       bottomNavigationBar: SafeArea(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          spacing: 38,
+          spacing: 40,
           children: [
             ElevatedButton(
               onPressed: stepProgressController.previousStep,

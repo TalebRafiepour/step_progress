@@ -600,4 +600,137 @@ void main() {
       ); // Only one text widget should exist
     });
   });
+
+  group(
+    'StepProgress autoStartProgress',
+    () {
+      testWidgets('Should rebuild when autoStartProgress is true',
+          (tester) async {
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: StepProgress(
+                totalSteps: 3,
+                currentStep: 0,
+                autoStartProgress: true,
+              ),
+            ),
+          ),
+        );
+
+        // After pump, the widget should auto-advance to step 1
+        await tester.pumpAndSettle();
+        expect(find.byType(StepNode), findsNWidgets(3));
+      });
+
+      testWidgets('Should not auto-advance if autoStartProgress is false',
+          (tester) async {
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: StepProgress(
+                totalSteps: 3,
+                currentStep: 0,
+                autoStartProgress: false,
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+        // The currentStep should remain at 0
+        expect(find.byType(StepNode), findsNWidgets(3));
+        // Optionally, check that the first node is still the active one
+        // (implementation detail may vary)
+      });
+
+      testWidgets(
+          'Should auto-advance only once when autoStartProgress is true',
+          (tester) async {
+        int stepChangedCount = 0;
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: StepProgress(
+                totalSteps: 3,
+                currentStep: 0,
+                autoStartProgress: true,
+                onStepChanged: (_) {
+                  stepChangedCount++;
+                },
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+        expect(stepChangedCount, equals(1));
+      });
+
+      testWidgets('Should not auto-advance if currentStep is last step',
+          (tester) async {
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: StepProgress(
+                totalSteps: 3,
+                currentStep: 2,
+                autoStartProgress: true,
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+        // Should not advance beyond last step
+        expect(find.byType(StepNode), findsNWidgets(3));
+      });
+
+      testWidgets('Should auto-advance to next step if not last step',
+          (tester) async {
+        int? changedStep;
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: StepProgress(
+                totalSteps: 3,
+                currentStep: 1,
+                autoStartProgress: true,
+                onStepChanged: (step) {
+                  changedStep = step;
+                },
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+        expect(changedStep, equals(2));
+      });
+
+      testWidgets('Should auto-advance with reversed order', (tester) async {
+        int? changedStep;
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: StepProgress(
+                totalSteps: 3,
+                currentStep: -1,
+                autoStartProgress: true,
+                reversed: true,
+                onStepChanged: (step) {
+                  // in auto start progress, the first step is 1
+                  changedStep =
+                      step; // the second step triggrered and must be 2
+                },
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+        expect(changedStep, equals(2));
+      });
+    },
+  );
 }

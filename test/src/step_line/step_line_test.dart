@@ -5,12 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:step_progress/src/step_line/breadcrumb_clipper.dart';
 import 'package:step_progress/src/step_line/step_line.dart';
+import 'package:step_progress/src/step_line/step_value_line.dart';
 import 'package:step_progress/step_progress.dart';
 
 import '../helper/test_theme_wrapper.dart';
 
 void main() {
-  group('StepLine Widget Tests', () {
+  group('StepLine Widget Fundamental Tests', () {
     const lineThickness = 5.0;
     const dummyStepLineStyle = StepLineStyle(lineThickness: lineThickness);
     testWidgets(
@@ -39,18 +40,18 @@ void main() {
         // Wait for animations to finish.
         await tester.pumpAndSettle();
 
-        // The AnimatedContainer inside StepLine is used for the active color
+        // The container inside StepLine is used for the active color
         // fill.
-        final animatedContainerFinder = find.descendant(
+        final containerFinder = find.descendant(
           of: find.byKey(testKey),
-          matching: find.byType(AnimatedContainer),
+          matching: find.byType(Container),
         );
-        expect(animatedContainerFinder, findsOneWidget);
+        expect(containerFinder, findsNWidgets(2));
 
         // For horizontal active, the animated container width should equal
         // the parent's width (200)
         // and its height should equal the defined lineThickness.
-        final animatedSize = tester.getSize(animatedContainerFinder);
+        final animatedSize = tester.getSize(containerFinder.last);
         expect(animatedSize.width, equals(200));
         expect(animatedSize.height, equals(lineThickness));
       },
@@ -77,14 +78,14 @@ void main() {
 
         await tester.pumpAndSettle();
 
-        final animatedContainerFinder = find.descendant(
+        final containerFinder = find.descendant(
           of: find.byKey(testKey),
-          matching: find.byType(AnimatedContainer),
+          matching: find.byType(Container),
         );
-        expect(animatedContainerFinder, findsOneWidget);
+        expect(containerFinder, findsNWidgets(2));
 
-        final animatedSize = tester.getSize(animatedContainerFinder);
-        // For horizontal inactive, the animated container width should be 0
+        final animatedSize = tester.getSize(containerFinder.last);
+        // For horizontal inactive, the active container width should be 0
         // while the height remains equal to lineThickness.
         expect(animatedSize.width, equals(0));
         expect(animatedSize.height, equals(lineThickness));
@@ -117,13 +118,13 @@ void main() {
 
         await tester.pumpAndSettle();
 
-        final animatedContainerFinder = find.descendant(
+        final containerFinder = find.descendant(
           of: find.byKey(testKey),
-          matching: find.byType(AnimatedContainer),
+          matching: find.byType(Container),
         );
-        expect(animatedContainerFinder, findsOneWidget);
+        expect(containerFinder, findsNWidgets(2));
 
-        final animatedSize = tester.getSize(animatedContainerFinder);
+        final animatedSize = tester.getSize(containerFinder.last);
         // For vertical active, the width is set to the lineThickness
         // and height should match parent's height (200).
         expect(animatedSize.width, equals(lineThickness));
@@ -156,13 +157,13 @@ void main() {
 
         await tester.pumpAndSettle();
 
-        final animatedContainerFinder = find.descendant(
+        final containerFinder = find.descendant(
           of: find.byKey(testKey),
-          matching: find.byType(AnimatedContainer),
+          matching: find.byType(Container),
         );
-        expect(animatedContainerFinder, findsOneWidget);
+        expect(containerFinder, findsNWidgets(2));
 
-        final animatedSize = tester.getSize(animatedContainerFinder);
+        final animatedSize = tester.getSize(containerFinder.last);
         // For vertical inactive, the animated container height should be 0
         // while the width remains equal to lineThickness.
         expect(animatedSize.width, equals(lineThickness));
@@ -404,6 +405,427 @@ void main() {
           matching: find.byType(ClipPath),
         );
         expect(clipPathFinder, findsOneWidget);
+      },
+    );
+  });
+
+  group('StepLine Widget AutoStartProgress Tests', () {
+    testWidgets(
+      'StepLine with isAutoStepChange and isCurrentStep triggers animation and '
+      'calls onStepLineAnimationCompleted',
+      (tester) async {
+        bool animationCompleted = false;
+        const testKey = Key('step_line_auto_current');
+        const style = StepLineStyle(lineThickness: 10);
+
+        await tester.pumpWidget(
+          TestThemeWrapper(
+            child: SizedBox(
+              width: 100,
+              height: 20,
+              child: Row(
+                children: [
+                  StepLine(
+                    key: testKey,
+                    stepLineStyle: style,
+                    highlighted: true,
+                    isAutoStepChange: true,
+                    isCurrentStep: true,
+                    onStepLineAnimationCompleted: () {
+                      animationCompleted = true;
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+
+        // Wait for animation to complete
+        await tester.pumpAndSettle();
+
+        expect(animationCompleted, isTrue);
+
+        // Should contain StepValueLine widget
+        expect(
+          find.descendant(
+            of: find.byKey(testKey),
+            matching: find.byType(StepValueLine),
+          ),
+          findsOneWidget,
+        );
+      },
+    );
+
+    testWidgets(
+      'StepLine with isAutoStepChange but not current step does not show'
+      ' StepValueLine',
+      (tester) async {
+        const testKey = Key('step_line_auto_not_current');
+        const style = StepLineStyle(lineThickness: 10);
+
+        await tester.pumpWidget(
+          const TestThemeWrapper(
+            child: SizedBox(
+              width: 100,
+              height: 20,
+              child: Row(
+                children: [
+                  StepLine(
+                    key: testKey,
+                    stepLineStyle: style,
+                    highlighted: true,
+                    isAutoStepChange: true,
+                    isCurrentStep: false,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        // Should not contain StepValueLine widget
+        expect(
+          find.descendant(
+            of: find.byKey(testKey),
+            matching: find.byType(StepValueLine),
+          ),
+          findsNothing,
+        );
+      },
+    );
+
+    testWidgets(
+      'StepLine with isCurrentStep but isAutoStepChange false does not show'
+      ' StepValueLine',
+      (tester) async {
+        const testKey = Key('step_line_current_no_auto');
+        const style = StepLineStyle(lineThickness: 10);
+
+        await tester.pumpWidget(
+          const TestThemeWrapper(
+            child: SizedBox(
+              width: 100,
+              height: 20,
+              child: Row(
+                children: [
+                  StepLine(
+                    key: testKey,
+                    stepLineStyle: style,
+                    highlighted: true,
+                    isAutoStepChange: false,
+                    isCurrentStep: true,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        // Should not contain StepValueLine widget
+        expect(
+          find.descendant(
+            of: find.byKey(testKey),
+            matching: find.byType(StepValueLine),
+          ),
+          findsNothing,
+        );
+      },
+    );
+
+    testWidgets(
+      'StepLine with isAutoStepChange and isCurrentStep vertical axis triggers'
+      ' animation',
+      (tester) async {
+        bool animationCompleted = false;
+        const testKey = Key('step_line_auto_current_vertical');
+        const style = StepLineStyle(lineThickness: 8);
+
+        await tester.pumpWidget(
+          TestThemeWrapper(
+            child: SizedBox(
+              width: 20,
+              height: 100,
+              child: Column(
+                children: [
+                  StepLine(
+                    key: testKey,
+                    stepLineStyle: style,
+                    axis: Axis.vertical,
+                    highlighted: true,
+                    isAutoStepChange: true,
+                    isCurrentStep: true,
+                    onStepLineAnimationCompleted: () {
+                      animationCompleted = true;
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        expect(animationCompleted, isTrue);
+
+        // Should contain StepValueLine widget
+        expect(
+          find.descendant(
+            of: find.byKey(testKey),
+            matching: find.byType(StepValueLine),
+          ),
+          findsOneWidget,
+        );
+      },
+    );
+
+    testWidgets(
+      'StepLine with isAutoStepChange, isCurrentStep, and reversed '
+      'horizontal axis',
+      (tester) async {
+        bool animationCompleted = false;
+        const testKey = Key('step_line_auto_current_reversed');
+        const style = StepLineStyle(lineThickness: 6);
+
+        await tester.pumpWidget(
+          TestThemeWrapper(
+            child: SizedBox(
+              width: 120,
+              height: 20,
+              child: Row(
+                children: [
+                  StepLine(
+                    key: testKey,
+                    stepLineStyle: style,
+                    highlighted: true,
+                    isAutoStepChange: true,
+                    isCurrentStep: true,
+                    isReversed: true,
+                    onStepLineAnimationCompleted: () {
+                      animationCompleted = true;
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        expect(animationCompleted, isTrue);
+
+        // Should contain StepValueLine widget
+        expect(
+          find.descendant(
+            of: find.byKey(testKey),
+            matching: find.byType(StepValueLine),
+          ),
+          findsOneWidget,
+        );
+      },
+    );
+
+    testWidgets(
+      'StepLine with isAutoStepChange, isCurrentStep, and breadcrumb style',
+      (tester) async {
+        bool animationCompleted = false;
+        const testKey = Key('step_line_auto_current_breadcrumb');
+        const style = StepLineStyle(
+          lineThickness: 8,
+          isBreadcrumb: true,
+          chevronAngle: 20,
+        );
+
+        await tester.pumpWidget(
+          TestThemeWrapper(
+            child: SizedBox(
+              width: 100,
+              height: 20,
+              child: Row(
+                children: [
+                  StepLine(
+                    key: testKey,
+                    stepLineStyle: style,
+                    highlighted: true,
+                    isAutoStepChange: true,
+                    isCurrentStep: true,
+                    onStepLineAnimationCompleted: () {
+                      animationCompleted = true;
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        expect(animationCompleted, isTrue);
+
+        // Should contain StepValueLine widget
+        expect(
+          find.descendant(
+            of: find.byKey(testKey),
+            matching: find.byType(StepValueLine),
+          ),
+          findsOneWidget,
+        );
+
+        // Should contain ClipPath widget for breadcrumb
+        expect(
+          find.descendant(
+            of: find.byKey(testKey),
+            matching: find.byType(ClipPath),
+          ),
+          findsOneWidget,
+        );
+      },
+    );
+
+    testWidgets(
+      'StepLine with isAutoStepChange, isCurrentStep, and dotted border style',
+      (tester) async {
+        bool animationCompleted = false;
+        const testKey = Key('step_line_auto_current_dotted');
+        const dottedBorderStyle = OuterBorderStyle(
+          isDotted: true,
+          borderWidth: 2,
+          dashPattern: [4, 2],
+          defaultBorderColor: Colors.grey,
+          activeBorderColor: Colors.blue,
+        );
+        const style = StepLineStyle(
+          lineThickness: 8,
+          borderStyle: dottedBorderStyle,
+        );
+
+        await tester.pumpWidget(
+          TestThemeWrapper(
+            child: SizedBox(
+              width: 100,
+              height: 20,
+              child: Row(
+                children: [
+                  StepLine(
+                    key: testKey,
+                    stepLineStyle: style,
+                    highlighted: true,
+                    isAutoStepChange: true,
+                    isCurrentStep: true,
+                    onStepLineAnimationCompleted: () {
+                      animationCompleted = true;
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        expect(animationCompleted, isTrue);
+
+        // Should contain StepValueLine widget
+        expect(
+          find.descendant(
+            of: find.byKey(testKey),
+            matching: find.byType(StepValueLine),
+          ),
+          findsOneWidget,
+        );
+
+        // Should contain DottedBorder widget
+        expect(
+          find.descendant(
+            of: find.byKey(testKey),
+            matching: find.byType(DottedBorder),
+          ),
+          findsOneWidget,
+        );
+      },
+    );
+
+    testWidgets(
+      'StepLine with isAutoStepChange, isCurrentStep, dotted border and '
+      'breadcrumb style',
+      (tester) async {
+        bool animationCompleted = false;
+        const testKey = Key('step_line_auto_current_dotted_breadcrumb');
+        const dottedBorderStyle = OuterBorderStyle(
+          isDotted: true,
+          borderWidth: 2,
+          dashPattern: [4, 2],
+          defaultBorderColor: Colors.grey,
+          activeBorderColor: Colors.blue,
+        );
+        const style = StepLineStyle(
+          lineThickness: 8,
+          borderStyle: dottedBorderStyle,
+          isBreadcrumb: true,
+          chevronAngle: 25,
+        );
+
+        await tester.pumpWidget(
+          TestThemeWrapper(
+            child: SizedBox(
+              width: 100,
+              height: 20,
+              child: Row(
+                children: [
+                  StepLine(
+                    key: testKey,
+                    stepLineStyle: style,
+                    highlighted: true,
+                    isAutoStepChange: true,
+                    isCurrentStep: true,
+                    onStepLineAnimationCompleted: () {
+                      animationCompleted = true;
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        expect(animationCompleted, isTrue);
+
+        // Should contain StepValueLine widget
+        expect(
+          find.descendant(
+            of: find.byKey(testKey),
+            matching: find.byType(StepValueLine),
+          ),
+          findsOneWidget,
+        );
+
+        // Should contain DottedBorder widget
+        expect(
+          find.descendant(
+            of: find.byKey(testKey),
+            matching: find.byType(DottedBorder),
+          ),
+          findsOneWidget,
+        );
+
+        // Should contain ClipPath widget for breadcrumb
+        expect(
+          find.descendant(
+            of: find.byKey(testKey),
+            matching: find.byType(ClipPath),
+          ),
+          findsOneWidget,
+        );
       },
     );
   });

@@ -9,15 +9,13 @@ class ExampleNineteen extends StatelessWidget {
     final stepProgressController = StepProgressController(totalSteps: 5);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('StepProgress -  Dotted Line'),
+        title: const Text('StepProgress -  HighlitCurrentStepNode'),
       ),
       body: StepProgress(
         totalSteps: 5,
         padding: const EdgeInsets.all(10),
         controller: stepProgressController,
-        theme: const StepProgressThemeData(
-          enableRippleEffect: true,
-        ),
+        highlightOptions: StepProgressHighlightOptions.highlightCurrentNode,
       ),
       bottomNavigationBar: SafeArea(
         child: Row(

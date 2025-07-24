@@ -25,6 +25,15 @@ class StepProgressController extends ChangeNotifier {
   /// Returns current step
   int get currentStep => _currentStep;
 
+  /// Stores the previous step index based on the current step.
+  late int prevStep = currentStep - 1;
+
+  VoidCallback playAnimation = () {};
+
+  VoidCallback pauseAnimation = () {};
+
+  bool Function() isAnimating = () => false;
+
   /// validate newStep and set it to current step
   void setCurrentStep(int newStep) {
     assert(
@@ -32,6 +41,7 @@ class StepProgressController extends ChangeNotifier {
       'new step must be equal or greater than -1 and lower than $totalSteps',
     );
     if (_currentStep != newStep) {
+      prevStep = _currentStep;
       _currentStep = newStep;
       notifyListeners();
     }
@@ -43,6 +53,7 @@ class StepProgressController extends ChangeNotifier {
   /// incremented step is still less than the total number of steps.
   void nextStep() {
     if (_currentStep + 1 < totalSteps) {
+      prevStep = _currentStep;
       _currentStep++;
       notifyListeners();
     }
@@ -52,6 +63,7 @@ class StepProgressController extends ChangeNotifier {
   /// Decrements the `currentStep` by 1 and notifies listeners.
   void previousStep() {
     if (_currentStep >= 0) {
+      prevStep = _currentStep;
       _currentStep--;
       notifyListeners();
     }

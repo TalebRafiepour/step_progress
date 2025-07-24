@@ -457,5 +457,121 @@ void main() {
         }
       },
     );
+    testWidgets(
+        'VerticalStepProgress calls onStepLineAnimationCompleted for '
+        'correct index', (tester) async {
+      int? completedLineIndex;
+      final widget = TestThemeWrapper(
+        child: Scaffold(
+          body: VerticalStepProgress(
+            totalSteps: 4,
+            currentStep: 2,
+            stepSize: 30,
+            visibilityOptions: StepProgressVisibilityOptions.both,
+            nodeTitles: List.generate(4, (i) => 'Step ${i + 1}'),
+            nodeSubTitles: List.generate(4, (i) => 'Desc ${i + 1}'),
+            onStepNodeTapped: (_) {},
+            onStepLineTapped: (_) {},
+            nodeIconBuilder: (step, completedStepIndex) {
+              return Icon(Icons.circle, key: Key('node_$step'));
+            },
+            onStepLineAnimationCompleted: ({index = 0}) {
+              completedLineIndex = index;
+            },
+            needsRebuildWidget: () {},
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(widget);
+
+      // Find all StepLine widgets
+      final stepLines = find.byType(StepLine);
+      final stepLineWidgets = tester.widgetList<StepLine>(stepLines).toList();
+
+      // Simulate animation completion by calling the callback manually
+      // (since StepLine is a custom widget, we assume it calls the callback
+      // when built) We'll trigger the callback for index 1 and verify
+      (stepLineWidgets[1].onStepLineAnimationCompleted ?? () {})();
+
+      expect(completedLineIndex, 2); // index passed to callback is index+1
+
+      // Also test for another index
+      (stepLineWidgets[0].onStepLineAnimationCompleted ?? () {})();
+      expect(completedLineIndex, 1);
+    });
+
+    testWidgets(
+        'VerticalStepProgress does not call onStepLineAnimationCompleted if not'
+        ' provided', (tester) async {
+      final widget = TestThemeWrapper(
+        child: Scaffold(
+          body: VerticalStepProgress(
+            totalSteps: 3,
+            currentStep: 1,
+            stepSize: 30,
+            visibilityOptions: StepProgressVisibilityOptions.both,
+            nodeTitles: List.generate(3, (i) => 'Step ${i + 1}'),
+            nodeSubTitles: List.generate(3, (i) => 'Desc ${i + 1}'),
+            onStepNodeTapped: (_) {},
+            onStepLineTapped: (_) {},
+            nodeIconBuilder: (step, completedStepIndex) {
+              return Icon(Icons.circle, key: Key('node_$step'));
+            },
+            needsRebuildWidget: () {},
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(widget);
+
+      // Find all StepLine widgets
+      final stepLines = find.byType(StepLine);
+      final stepLineWidgets = tester.widgetList<StepLine>(stepLines).toList();
+
+      // Should not throw if callback is not provided
+      expect(() {
+        (stepLineWidgets[0].onStepLineAnimationCompleted ?? () {})();
+      }, returnsNormally);
+    });
+
+    testWidgets(
+        'VerticalStepProgress onStepLineAnimationCompleted is called for'
+        ' each line', (tester) async {
+      final calledIndices = <int>[];
+      final widget = TestThemeWrapper(
+        child: Scaffold(
+          body: VerticalStepProgress(
+            totalSteps: 5,
+            currentStep: 4,
+            stepSize: 30,
+            visibilityOptions: StepProgressVisibilityOptions.both,
+            nodeTitles: List.generate(5, (i) => 'Step ${i + 1}'),
+            nodeSubTitles: List.generate(5, (i) => 'Desc ${i + 1}'),
+            onStepNodeTapped: (_) {},
+            onStepLineTapped: (_) {},
+            nodeIconBuilder: (step, completedStepIndex) {
+              return Icon(Icons.circle, key: Key('node_$step'));
+            },
+            onStepLineAnimationCompleted: ({index = 0}) {
+              calledIndices.add(index);
+            },
+            needsRebuildWidget: () {},
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(widget);
+
+      final stepLines = find.byType(StepLine);
+      final stepLineWidgets = tester.widgetList<StepLine>(stepLines).toList();
+
+      // Simulate animation completion for all lines
+      for (var i = 0; i < stepLineWidgets.length; i++) {
+        (stepLineWidgets[i].onStepLineAnimationCompleted ?? () {})();
+      }
+
+      expect(calledIndices, equals([1, 2, 3, 4]));
+    });
   });
 }

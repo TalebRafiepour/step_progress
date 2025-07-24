@@ -503,5 +503,123 @@ void main() {
         }
       },
     );
+    testWidgets(
+      'onStepLineAnimationCompleted callback is triggered for each StepLine',
+      (tester) async {
+        const int totalSteps = 4;
+        const int currentStep = 2;
+        const double stepSize = 50;
+        const visibilityOptions = StepProgressVisibilityOptions.both;
+        final List<int> completedIndices = [];
+
+        await tester.pumpWidget(
+          TestThemeWrapper(
+            child: Scaffold(
+              body: HorizontalStepProgress(
+                totalSteps: totalSteps,
+                currentStep: currentStep,
+                stepSize: stepSize,
+                visibilityOptions: visibilityOptions,
+                onStepLineAnimationCompleted: ({index = 0}) {
+                  completedIndices.add(index);
+                },
+                needsRebuildWidget: () {},
+              ),
+            ),
+          ),
+        );
+
+        // Simulate triggering the animation completed callback for 
+        // each StepLine.
+        final stepLineFinder = find.byType(StepLine);
+        final stepLineWidgets =
+            tester.widgetList<StepLine>(stepLineFinder).toList();
+
+        for (var i = 0; i < stepLineWidgets.length; i++) {
+          // Directly call the callback as StepLine does not animate in tests.
+          stepLineWidgets[i].onStepLineAnimationCompleted?.call();
+        }
+
+        // The callback should be called for each line with correct index.
+        expect(completedIndices.length, equals(totalSteps - 1));
+        expect(completedIndices, containsAll([1, 2, 3]));
+      },
+    );
+
+    testWidgets(
+      'onStepLineAnimationCompleted is not called if not provided',
+      (tester) async {
+        const int totalSteps = 3;
+        const int currentStep = 1;
+        const double stepSize = 40;
+        const visibilityOptions = StepProgressVisibilityOptions.both;
+
+        await tester.pumpWidget(
+          TestThemeWrapper(
+            child: Scaffold(
+              body: HorizontalStepProgress(
+                totalSteps: totalSteps,
+                currentStep: currentStep,
+                stepSize: stepSize,
+                visibilityOptions: visibilityOptions,
+                needsRebuildWidget: () {},
+              ),
+            ),
+          ),
+        );
+
+        final stepLineFinder = find.byType(StepLine);
+        final stepLineWidgets =
+            tester.widgetList<StepLine>(stepLineFinder).toList();
+
+        for (var i = 0; i < stepLineWidgets.length; i++) {
+          // Should not throw if callback is null.
+          expect(() => stepLineWidgets[i].onStepLineAnimationCompleted?.call(),
+              returnsNormally);
+        }
+      },
+    );
+
+    testWidgets(
+      'onStepLineAnimationCompleted receives correct index for reversed'
+      ' HorizontalStepProgress',
+      (tester) async {
+        const int totalSteps = 4;
+        const int currentStep = 2;
+        const double stepSize = 50;
+        const visibilityOptions = StepProgressVisibilityOptions.both;
+        final List<int> completedIndices = [];
+
+        await tester.pumpWidget(
+          TestThemeWrapper(
+            child: Scaffold(
+              body: HorizontalStepProgress(
+                totalSteps: totalSteps,
+                currentStep: currentStep,
+                stepSize: stepSize,
+                visibilityOptions: visibilityOptions,
+                reversed: true,
+                onStepLineAnimationCompleted: ({index = 0}) {
+                  completedIndices.add(index);
+                },
+                needsRebuildWidget: () {},
+              ),
+            ),
+          ),
+        );
+
+        final stepLineFinder = find.byType(StepLine);
+        final stepLineWidgets =
+            tester.widgetList<StepLine>(stepLineFinder).toList();
+
+        for (var i = 0; i < stepLineWidgets.length; i++) {
+          stepLineWidgets[i].onStepLineAnimationCompleted?.call();
+        }
+
+        // Indices should still be [1, 2, 3] even when reversed.
+        expect(completedIndices.length, equals(totalSteps - 1));
+        expect(completedIndices, containsAll([1, 2, 3]));
+      },
+    );
   });
 }

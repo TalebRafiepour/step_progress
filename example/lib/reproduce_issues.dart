@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:step_progress/step_progress.dart';
 
-class ExampleReproduceIssues extends StatelessWidget {
-  const ExampleReproduceIssues({super.key});
+class ReproduceIssues extends StatelessWidget {
+  const ReproduceIssues({super.key});
 
   @override
   Widget build(BuildContext context) {
