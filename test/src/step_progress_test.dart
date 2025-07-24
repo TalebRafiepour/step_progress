@@ -720,7 +720,8 @@ void main() {
                 reversed: true,
                 onStepChanged: (step) {
                   // in auto start progress, the first step is 1
-                  changedStep = step;// the second step triggrered and must be 2
+                  changedStep =
+                      step; // the second step triggrered and must be 2
                 },
               ),
             ),
