@@ -248,6 +248,7 @@ class StepProgress extends StatefulWidget {
 class _StepProgressState extends State<StepProgress>
     with SingleTickerProviderStateMixin {
   late int _currentStep = _getCurrentStep;
+  late int _previousStep = _getPreviousStep;
 
   @override
   void initState() {
@@ -257,7 +258,9 @@ class _StepProgressState extends State<StepProgress>
     if (widget.autoStartProgress) {
       Future.delayed(
         Duration.zero,
-        () => _handleAutoChangeSteps(index: _currentStep),
+        () => _onStepAnimationCompleted(
+          index: _currentStep >= 0 ? _currentStep : 0,
+        ),
       );
     }
     super.initState();
@@ -300,6 +303,12 @@ class _StepProgressState extends State<StepProgress>
         : widget.currentStep;
   }
 
+  int get _getPreviousStep {
+    return widget.controller != null
+        ? widget.controller!.prevStep
+        : widget.currentStep - 1;
+  }
+
   /// Changes the current step to the specified [newStep].
   ///
   /// If [newStep] is the same as the current step, less than -1, or greater
@@ -318,8 +327,12 @@ class _StepProgressState extends State<StepProgress>
     }
     if (mounted) {
       setState(() {
+        _previousStep = _currentStep;
         _currentStep = newStep;
       });
+    }
+    if (_currentStep != widget.controller?.currentStep) {
+      widget.controller?.setCurrentStep(_currentStep);
     }
     widget.onStepChanged?.call(_currentStep);
   }
@@ -335,18 +348,18 @@ class _StepProgressState extends State<StepProgress>
   }
 
   /// Handles automatic step changes based on the current index and direction.
-  /// Advances to the next step if auto progress is enabled and not reverted.
-  void _handleAutoChangeSteps({
+  void _onStepAnimationCompleted({
     int index = 0,
-    bool isReverted = false,
   }) {
-    if (!widget.autoStartProgress || isReverted) {
+    if (!widget.autoStartProgress) {
       return;
-    }
-    if (widget.controller != null) {
-      widget.controller!.nextStep();
     } else {
-      _changeStep(index + 1);
+      final isForward = _currentStep > _previousStep;
+      if (isForward) {
+        _changeStep(index + 1);
+      } else {
+        _changeStep(index - 1);
+      }
     }
   }
 
@@ -366,9 +379,10 @@ class _StepProgressState extends State<StepProgress>
             ? HorizontalStepProgress(
                 totalSteps: widget.totalSteps,
                 currentStep: _currentStep,
+                isAutoStepChange: widget.autoStartProgress,
                 reversed: widget.reversed,
                 highlightOptions: widget.highlightOptions,
-                onStepLineAnimationCompleted: _handleAutoChangeSteps,
+                onStepLineAnimationCompleted: _onStepAnimationCompleted,
                 needsRebuildWidget: _needsRebuildWidget,
                 nodeTitles: widget.nodeTitles,
                 nodeSubTitles: widget.nodeSubTitles,
@@ -385,9 +399,10 @@ class _StepProgressState extends State<StepProgress>
             : VerticalStepProgress(
                 totalSteps: widget.totalSteps,
                 currentStep: _currentStep,
+                isAutoStepChange: widget.autoStartProgress,
                 reversed: widget.reversed,
                 highlightOptions: widget.highlightOptions,
-                onStepLineAnimationCompleted: _handleAutoChangeSteps,
+                onStepLineAnimationCompleted: _onStepAnimationCompleted,
                 needsRebuildWidget: _needsRebuildWidget,
                 nodeTitles: widget.nodeTitles,
                 nodeSubTitles: widget.nodeSubTitles,

@@ -12,11 +12,8 @@ import 'package:step_progress/src/step_progress_visibility_options.dart';
 /// completed.
 ///
 /// [index] is the index of the step whose animation has completed.
-/// [isReverted] indicates whether the animation was reverted (true) or
-/// completed normally (false).
 typedef OnStepLineAnimationCompleted = void Function({
   int index,
-  bool isReverted,
 });
 
 /// An abstract class representing a step progress widget.
@@ -43,7 +40,7 @@ typedef OnStepLineAnimationCompleted = void Function({
 ///   node is tapped.
 /// - [onStepLineTapped]: An optional callback function triggered when a step
 ///   line is tapped.
-/// - [onStepLineAnimationCompleted]: An optional callback function triggered 
+/// - [onStepLineAnimationCompleted]: An optional callback function triggered
 ///   when a step line is highlighted.
 /// - [nodeIconBuilder]: An optional builder for the icon of a step node.
 /// - [nodeLabelBuilder]: A builder for creating custom label widgets for
@@ -67,6 +64,7 @@ abstract class StepProgressWidget extends StatelessWidget {
     this.highlightOptions =
         StepProgressHighlightOptions.highlightCompletedNodesAndLines,
     this.onStepLineAnimationCompleted,
+    this.isAutoStepChange = false,
     this.reversed = false,
     this.nodeTitles,
     this.nodeSubTitles,
@@ -100,6 +98,9 @@ abstract class StepProgressWidget extends StatelessWidget {
 
   /// The current step that is active or completed.
   final int currentStep;
+
+  /// Determines if the step changes automatically without user interaction.
+  final bool isAutoStepChange;
 
   /// The size of each step in the progress indicator.
   final double stepSize;

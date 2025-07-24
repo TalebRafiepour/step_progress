@@ -38,6 +38,9 @@ import 'package:step_progress/src/step_progress_widgets/step_progress_widget.dar
 /// The [needsRebuildWidget] parameter is a [VoidCallback] function that can be
 /// used to trigger a rebuild of the widget when necessary.
 ///
+/// The [isAutoStepChange] parameter is a [bool] that determines whether the
+/// step change should occur automatically (e.g., with animation) or manually.
+///
 /// Optional parameters include [nodeTitles], [nodeSubTitles], [lineTitles],
 /// and [lineSubTitles], which allow you to provide titles and subtitles for
 /// step nodes and lines. The [onStepNodeTapped] callback can be used to handle
@@ -57,6 +60,7 @@ import 'package:step_progress/src/step_progress_widgets/step_progress_widget.dar
 ///   stepSize: 30.0,
 ///   visibilityOptions: StepProgressVisibilityOptions.both,
 ///   reversed: false,
+///   isAutoStepChange: true,
 ///   lineTitles: ['Line1', 'Line2', 'Line3', 'Line4' ],
 ///   lineSubTitles: ['sub1', 'sub2', 'sub3', 'sub4', ]
 ///   nodeTitles: ['Step 1', 'Step 2', 'Step 3', 'Step 4', 'Step 5'],
@@ -91,6 +95,7 @@ class VerticalStepProgress extends StepProgressWidget {
     required super.needsRebuildWidget,
     super.onStepLineAnimationCompleted,
     super.highlightOptions,
+    super.isAutoStepChange,
     super.reversed,
     super.nodeTitles,
     super.nodeSubTitles,
@@ -167,11 +172,12 @@ class VerticalStepProgress extends StepProgressWidget {
         return StepLine(
           axis: Axis.vertical,
           isReversed: reversed,
+          isCurrentStep: currentStep == index + 1,
+          isAutoStepChange: isAutoStepChange,
           highlighted: isHighlightedStepLine(index),
           onStepLineAnimationCompleted: () =>
               onStepLineAnimationCompleted?.call(
             index: index,
-            isReverted: !isHighlightedStepLine(index),
           ),
           onTap: () => onStepLineTapped?.call(index),
         );

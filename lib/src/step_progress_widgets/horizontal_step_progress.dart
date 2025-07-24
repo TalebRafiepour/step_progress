@@ -42,6 +42,8 @@ import 'package:step_progress/step_progress.dart';
 /// step nodes.
 /// - [lineLabelBuilder]: A builder for creating custom label widgets for step
 /// lines.
+/// - [isAutoStepChange]: A boolean that determines if the step change should
+/// occur automatically.
 /// - [key]: An optional key for the widget.
 class HorizontalStepProgress extends StepProgressWidget {
   const HorizontalStepProgress({
@@ -52,6 +54,7 @@ class HorizontalStepProgress extends StepProgressWidget {
     required super.needsRebuildWidget,
     super.onStepLineAnimationCompleted,
     super.highlightOptions,
+    super.isAutoStepChange,
     super.reversed,
     super.nodeTitles,
     super.nodeSubTitles,
@@ -130,11 +133,12 @@ class HorizontalStepProgress extends StepProgressWidget {
       List<Widget> children = List.generate(totalSteps - 1, (index) {
         return StepLine(
           isReversed: reversed,
+          isCurrentStep: currentStep == index + 1,
+          isAutoStepChange: isAutoStepChange,
           highlighted: isHighlightedStepLine(index),
           onStepLineAnimationCompleted: () =>
               onStepLineAnimationCompleted?.call(
             index: index,
-            isReverted: !isHighlightedStepLine(index),
           ),
           onTap: () => onStepLineTapped?.call(index),
         );

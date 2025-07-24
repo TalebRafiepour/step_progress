@@ -6,7 +6,8 @@ class ExampleTwentyOne extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final stepProgressController = StepProgressController(totalSteps: 5);
+    final stepProgressController =
+        StepProgressController(totalSteps: 5, initialStep: -1);
     return Scaffold(
       backgroundColor: Colors.black45,
       appBar: AppBar(

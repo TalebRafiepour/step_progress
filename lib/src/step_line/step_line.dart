@@ -1,6 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:step_progress/src/step_line/breadcrumb_clipper.dart';
+import 'package:step_progress/src/step_line/step_value_line.dart';
 import 'package:step_progress/step_progress.dart';
 
 /// A widget that represents a step line in a step progress indicator.
@@ -25,6 +26,12 @@ import 'package:step_progress/step_progress.dart';
 /// The [isReversed] parameter indicates whether the step line is displayed in
 /// reverse order. It defaults to `false`.
 ///
+/// The [isCurrentStep] parameter indicates whether this step is the current
+/// active step. It defaults to `false`.
+///
+/// The [isAutoStepChange] parameter determines if the step progression advances
+///  automatically. It defaults to `false`.
+///
 /// The [onTap] parameter is a callback function that is executed when the step
 /// line is tapped. It is optional and defaults to `null`.
 ///
@@ -39,6 +46,8 @@ import 'package:step_progress/step_progress.dart';
 ///   axis: Axis.vertical,
 ///   highlighted: true,
 ///   isReversed: true,
+///   isCurrentStep: true,
+///   isAutoStepChange: false,
 ///   stepLineStyle: StepLineStyle(
 ///     color: Colors.blue,
 ///     thickness: 2.0,
@@ -53,6 +62,8 @@ import 'package:step_progress/step_progress.dart';
 /// ```
 class StepLine extends StatelessWidget {
   const StepLine({
+    this.isCurrentStep = false,
+    this.isAutoStepChange = false,
     this.axis = Axis.horizontal,
     this.stepLineStyle,
     this.highlighted = false,
@@ -80,6 +91,12 @@ class StepLine extends StatelessWidget {
   /// Callback triggered when the line animation completed.
   final VoidCallback? onStepLineAnimationCompleted;
 
+  /// Indicates whether this step is the current active step.
+  final bool isCurrentStep;
+
+  /// Determines if step changes occur automatically.
+  final bool isAutoStepChange;
+
   @override
   Widget build(BuildContext context) {
     final theme = StepProgressTheme.of(context)!.data;
@@ -87,6 +104,8 @@ class StepLine extends StatelessWidget {
     final isBreadcrumb = style.isBreadcrumb;
     final borderStyle = style.borderStyle ?? theme.borderStyle;
     final borderRadius = style.borderRadius;
+    //
+    final activeColor = style.activeColor ?? theme.activeForegroundColor;
 
     final lineSpacing = EdgeInsets.symmetric(
       horizontal: _isHorizontal ? theme.stepLineSpacing : 0,
@@ -118,22 +137,35 @@ class StepLine extends StatelessWidget {
         height: lineSize.height,
         decoration: containerDecoration,
         alignment: _isHorizontal
-            ? AlignmentDirectional.centerStart
-            : AlignmentDirectional.topStart,
-        child: AnimatedContainer(
-          width: _isHorizontal
-              ? (highlighted ? lineSize.width : 0)
-              : lineSize.width,
-          height: !_isHorizontal
-              ? (highlighted ? lineSize.height : 0)
-              : lineSize.height,
-          decoration: BoxDecoration(
-            color: style.activeColor ?? theme.activeForegroundColor,
-            borderRadius: BorderRadius.all(borderRadius),
-          ),
-          onEnd: onStepLineAnimationCompleted,
-          duration: style.animationDuration ?? theme.stepAnimationDuration,
-        ),
+            ? (isReversed
+                ? AlignmentDirectional.centerEnd
+                : AlignmentDirectional.centerStart)
+            : (isReversed
+                ? AlignmentDirectional.bottomEnd
+                : AlignmentDirectional.topStart),
+        child: isCurrentStep && isAutoStepChange
+            ? StepValueLine(
+                duration:
+                    style.animationDuration ?? theme.stepAnimationDuration,
+                activeColor: activeColor,
+                borderRadius: borderRadius,
+                lineSize: lineSize,
+                highlighted: highlighted,
+                isHorizontal: _isHorizontal,
+                onAnimationCompleted: onStepLineAnimationCompleted,
+              )
+            : Container(
+                width: _isHorizontal
+                    ? (highlighted ? lineSize.width : 0)
+                    : lineSize.width,
+                height: !_isHorizontal
+                    ? (highlighted ? lineSize.height : 0)
+                    : lineSize.height,
+                decoration: BoxDecoration(
+                  color: activeColor,
+                  borderRadius: BorderRadius.all(borderRadius),
+                ),
+              ),
       );
 
       if (isBreadcrumb) {
