@@ -715,6 +715,37 @@ StepProgress(
 ```
 </details>
 
+### Example 21: Instagram Story Stepper
+![StepProgress-horizontal-instagram-story-stepper](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-21-stepprogress-instagaram-story-stepper.gif)
+
+<details>
+  <summary>Show Implementation</summary>
+
+```dart
+StepProgress(
+  totalSteps: 5,
+  padding: const EdgeInsets.all(10),
+  controller: stepProgressController,
+  visibilityOptions: StepProgressVisibilityOptions.lineOnly,
+  autoStartProgress: true,
+  onStepChanged: (currentIndex) {
+    // Notice that the currentIndex starts from 1 in the LineOnly mode
+    debugPrint('Current step changed to: $currentIndex');
+  },
+  theme: const StepProgressThemeData(
+    activeForegroundColor: Color.fromARGB(255, 255, 255, 255),
+    defaultForegroundColor: Color.fromARGB(255, 171, 168, 168),
+    stepLineSpacing: 3,
+    stepLineStyle: StepLineStyle(
+      lineThickness: 5,
+      animationDuration: Duration(seconds: 3),
+      borderRadius: Radius.circular(5),
+    ),
+  ),
+),
+```
+</details>
+
 ## Installation
 
 To use StepProgress, add it to your `pubspec.yaml` file:

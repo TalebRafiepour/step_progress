@@ -28,7 +28,7 @@ class ExampleTwentyOne extends StatelessWidget {
           stepLineSpacing: 3,
           stepLineStyle: StepLineStyle(
             lineThickness: 5,
-            animationDuration: Duration(seconds: 6),
+            animationDuration: Duration(seconds: 3),
             borderRadius: Radius.circular(5),
           ),
         ),
