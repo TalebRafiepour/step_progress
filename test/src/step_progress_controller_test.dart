@@ -42,4 +42,78 @@ void main() {
       expect(notified, true);
     });
   });
+
+  group('StepProgressController play and pause functions', () {
+    test('playAnimation is called', () {
+      final controller = StepProgressController(totalSteps: 3);
+      bool played = false;
+      controller.playAnimation = () {
+        played = true;
+      };
+      controller.playAnimation();
+      expect(played, true);
+    });
+
+    test('pauseAnimation is called', () {
+      final controller = StepProgressController(totalSteps: 3);
+      bool paused = false;
+      controller.pauseAnimation = () {
+        paused = true;
+      };
+      controller.pauseAnimation();
+      expect(paused, true);
+    });
+
+    test('isAnimating returns true when set to true', () {
+      final controller = StepProgressController(totalSteps: 3)
+        ..isAnimating = () => true;
+      expect(controller.isAnimating(), true);
+    });
+
+    test('isAnimating returns false when set to false', () {
+      final controller = StepProgressController(totalSteps: 3)
+        ..isAnimating = () => false;
+      expect(controller.isAnimating(), false);
+    });
+
+    test('playAnimation and pauseAnimation can be swapped', () {
+      final controller = StepProgressController(totalSteps: 3);
+      bool played = false;
+      bool paused = false;
+      controller
+        ..playAnimation = () {
+          played = true;
+        }
+        ..pauseAnimation = () {
+          paused = true;
+        };
+      controller.playAnimation();
+      controller.pauseAnimation();
+      expect(played, true);
+      expect(paused, true);
+    });
+
+    test('isAnimating can be dynamically changed', () {
+      final controller = StepProgressController(totalSteps: 3)
+        ..isAnimating = () => false;
+      expect(controller.isAnimating(), false);
+      controller.isAnimating = () => true;
+      expect(controller.isAnimating(), true);
+    });
+
+    test('playAnimation default does nothing', () {
+      final controller = StepProgressController(totalSteps: 3);
+      expect(() => controller.playAnimation(), returnsNormally);
+    });
+
+    test('pauseAnimation default does nothing', () {
+      final controller = StepProgressController(totalSteps: 3);
+      expect(() => controller.pauseAnimation(), returnsNormally);
+    });
+
+    test('isAnimating default returns false', () {
+      final controller = StepProgressController(totalSteps: 3);
+      expect(controller.isAnimating(), false);
+    });
+  });
 }
