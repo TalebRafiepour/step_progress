@@ -171,7 +171,7 @@ class HorizontalStepProgress extends StepProgressWidget {
       return const SizedBox.shrink();
     }
     final theme = StepProgressTheme.of(context)!.data;
-    final maxStepWidth = maxStepSize(theme.nodeLabelStyle);
+    final maxStepWidth = maxStepSize(theme.nodeLabelStyle, context);
     //
     List<Widget> children = List.generate(totalSteps - 1, (index) {
       return Expanded(
@@ -220,19 +220,33 @@ class HorizontalStepProgress extends StepProgressWidget {
   }
 
   @override
-  double maxStepSize(StepLabelStyle labelStyle) {
-    final labelPadding = labelStyle.padding;
-    final labelMargin = labelStyle.margin;
-    final labelMaxWidth = labelStyle.maxWidth +
-        labelPadding.left +
-        labelPadding.right +
-        labelMargin.left +
-        labelMargin.right;
+  double maxStepSize(StepLabelStyle labelStyle, BuildContext context) {
+    final padding = labelStyle.padding;
+    final margin = labelStyle.margin;
+    final maxWidth = labelStyle.maxWidth +
+        padding.left +
+        padding.right +
+        margin.left +
+        margin.right;
 
-    // Calculate the maximum size for the step node.
-    return (hasNodeLabels && labelMaxWidth.isFinite && labelMaxWidth > stepSize)
-        ? labelMaxWidth
-        : stepSize;
+    if (!hasNodeLabels) return stepSize;
+
+    if (maxWidth.isFinite) {
+      return maxWidth > stepSize ? maxWidth : stepSize;
+    }
+
+    double labelWidth(String? text) {
+      final style = labelStyle.titleStyle ??
+          Theme.of(context).textTheme.labelMedium ??
+          const TextStyle();
+      return calculateTextSize(text: text ?? '', style: style).width;
+    }
+
+    final firstWidth = labelWidth(nodeTitles?.first);
+    final lastWidth = labelWidth(nodeTitles?.last);
+
+    final widest = firstWidth > lastWidth ? firstWidth : lastWidth;
+    return widest + padding.horizontal + margin.horizontal;
   }
 
   @override

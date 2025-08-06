@@ -6,7 +6,7 @@ class ReproduceIssues extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final stepProgressController = StepProgressController(totalSteps: 4);
+    final stepProgressController = StepProgressController(totalSteps: 3);
     return Scaffold(
       appBar: AppBar(
         title: const Text('StepProgress -  reproduce issue'),
@@ -15,18 +15,20 @@ class ReproduceIssues extends StatelessWidget {
         spacing: 48,
         children: [
           StepProgress(
-            totalSteps: 4,
-            stepSize: 28,
+            totalSteps: 3,
+            stepSize: 10,
             controller: stepProgressController,
             padding: const EdgeInsets.all(18),
             nodeTitles: const [
               'Step 1',
-              'Step 2',
-              'Step 3',
-              'Step 4 and a long title',
+              'Step 2 here is a big',
+              'Step 4',
             ],
             theme: const StepProgressThemeData(
               nodeLabelAlignment: StepLabelAlignment.top,
+              nodeLabelStyle: StepLabelStyle(
+                maxWidth: double.infinity,
+              ),
               stepLineStyle: StepLineStyle(
                 lineThickness: 3,
               ),

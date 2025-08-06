@@ -212,7 +212,7 @@ class VerticalStepProgress extends StepProgressWidget {
       return const SizedBox.shrink();
     }
     final theme = StepProgressTheme.of(context)!.data;
-    final maxStepHeight = maxStepSize(theme.nodeLabelStyle);
+    final maxStepHeight = maxStepSize(theme.nodeLabelStyle,context);
     //
     List<Widget> children = List.generate(totalSteps - 1, (index) {
       return Expanded(
@@ -258,7 +258,7 @@ class VerticalStepProgress extends StepProgressWidget {
   }
 
   @override
-  double maxStepSize(StepLabelStyle labelStyle) {
+  double maxStepSize(StepLabelStyle labelStyle,BuildContext context) {
     final labelPadding = labelStyle.padding;
     final labelMargin = labelStyle.margin;
     final labelMaxHeight =

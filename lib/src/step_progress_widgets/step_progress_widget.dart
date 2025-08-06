@@ -253,16 +253,21 @@ abstract class StepProgressWidget extends StatelessWidget {
   /// This method is required to be implemented.
   BoxConstraints getBoxConstraint({required BoxConstraints constraints});
 
-  /// Calculates the maximum step size based on the provided label style.
+  /// Returns the maximum width required for a step label using the given 
+  /// [labelStyle].
   ///
-  /// This method determines the maximum size of a step, which can be useful
-  /// for layout purposes when displaying steps with labels.
+  /// This is useful for determining layout constraints when rendering step 
+  /// labels, ensuring that all steps have enough space for their labels.
   ///
-  /// - Parameters:
-  ///   - labelStyle: The style to be applied to the step labels.
+  /// The calculation uses the provided [BuildContext] to access theme and media
+  /// information if needed.
   ///
-  /// - Returns: The maximum size of a step as a double.
-  double maxStepSize(StepLabelStyle labelStyle);
+  /// - [labelStyle]: The style applied to the step labels, which affects their 
+  /// size.
+  /// - [context]: The build context used for text measurement.
+  ///
+  /// Returns the maximum width as a [double].
+  double maxStepSize(StepLabelStyle labelStyle, BuildContext context);
 
   /// Builds the nodes and lines for the step progress widget.
   ///
@@ -309,7 +314,7 @@ abstract class StepProgressWidget extends StatelessWidget {
                   buildStepLines(
                     boxNotifier: lineBoxNotifier,
                     style: stepLineStyle,
-                    maxStepSize: maxStepSize(theme.nodeLabelStyle),
+                    maxStepSize: maxStepSize(theme.nodeLabelStyle,context),
                   ),
                 if (visibilityOptions != StepProgressVisibilityOptions.lineOnly)
                   buildStepNodes(labelAlignment: nodeLabelAlignment),
@@ -328,5 +333,42 @@ abstract class StepProgressWidget extends StatelessWidget {
         }
       },
     );
+  }
+
+  /// Calculates the size required to render a given text string with the
+  /// specified [TextStyle].
+  ///
+  /// This method uses a [TextPainter] to measure the width and height of the
+  /// text, considering optional constraints such as [maxWidth], [maxLines],
+  /// [textDirection], and [textAlign].
+  ///
+  /// - [text]: The string to be measured.
+  /// - [style]: The [TextStyle] to apply to the text.
+  /// - [maxWidth]: The maximum allowed width for the text. Defaults to
+  /// [double.infinity].
+  /// - [maxLines]: The maximum number of lines for the text. If null, the text
+  /// can span unlimited lines.
+  /// - [textDirection]: The directionality of the text. Defaults to
+  /// [TextDirection.ltr].
+  /// - [textAlign]: The alignment of the text. Defaults to [TextAlign.left].
+  ///
+  /// Returns a [Size] object representing the width and height required to
+  /// render the text.
+  Size calculateTextSize({
+    required String text,
+    required TextStyle style,
+    double maxWidth = double.infinity,
+    int? maxLines,
+    TextDirection textDirection = TextDirection.ltr,
+    TextAlign textAlign = TextAlign.left,
+  }) {
+    final TextPainter textPainter = TextPainter(
+      text: TextSpan(text: text, style: style),
+      maxLines: maxLines,
+      textAlign: textAlign,
+      textDirection: textDirection,
+    )..layout(maxWidth: maxWidth);
+
+    return textPainter.size;
   }
 }
