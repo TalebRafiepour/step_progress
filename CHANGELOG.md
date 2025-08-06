@@ -1,3 +1,7 @@
+# 2.6.1
+
+- **Bug Fix**: Resolved an issue where the line would extend incorrectly when the title was large. [#25](https://github.com/TalebRafiepour/step_progress/issues/25)
+
 # 2.6.0
 - **Auto Start Progress**: Added the `autoStartProgress` property to the `StepProgress` constructor, enabling automatic progression through steps until completion.
 - **Testing**: Introduced and updated widget tests to ensure the new feature functions as intended.
