@@ -248,7 +248,6 @@ class StepProgress extends StatefulWidget {
 class _StepProgressState extends State<StepProgress>
     with SingleTickerProviderStateMixin {
   late int _currentStep = _getCurrentStep;
-  late int _previousStep = _getPreviousStep;
 
   @override
   void initState() {
@@ -301,12 +300,6 @@ class _StepProgressState extends State<StepProgress>
         : widget.currentStep;
   }
 
-  int get _getPreviousStep {
-    return widget.controller != null
-        ? widget.controller!.prevStep
-        : widget.currentStep - 1;
-  }
-
   /// Changes the current step to the specified [newStep].
   ///
   /// If [newStep] is the same as the current step, less than -1, or greater
@@ -323,7 +316,6 @@ class _StepProgressState extends State<StepProgress>
         newStep >= widget.totalSteps) {
       return;
     }
-    _previousStep = _currentStep;
     _currentStep = newStep;
     if (mounted) {
       setState(() {});
@@ -351,12 +343,7 @@ class _StepProgressState extends State<StepProgress>
     if (!widget.autoStartProgress) {
       return;
     } else {
-      final isForward = _currentStep > _previousStep;
-      if (isForward) {
-        _changeStep(index + 1);
-      } else {
-        _changeStep(index - 1);
-      }
+      _changeStep(index + 1);
     }
   }
 

@@ -733,8 +733,8 @@ void main() {
       });
 
       testWidgets(
-        'Should decrement step when autoStartProgress is true and isForward is'
-        ' false',
+        'Should increament step whether autoStartProgress is true and '
+        'previouse step is bigger than current step',
         (tester) async {
           int? changedStep;
           // Start at step 2, previous step is 3, so isForward will be false''
@@ -760,8 +760,8 @@ void main() {
 
           await tester.pumpAndSettle();
 
-          // Should decrement step atuomaticly (1, 0)
-          expect(changedStep, equals(0));
+          // Should increament current step atuomaticly (0,1,^2, -> 3)
+          expect(changedStep, equals(3));
         },
       );
     },
