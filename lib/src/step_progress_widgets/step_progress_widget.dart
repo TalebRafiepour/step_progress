@@ -253,16 +253,16 @@ abstract class StepProgressWidget extends StatelessWidget {
   /// This method is required to be implemented.
   BoxConstraints getBoxConstraint({required BoxConstraints constraints});
 
-  /// Returns the maximum width required for a step label using the given 
+  /// Returns the maximum width required for a step label using the given
   /// [labelStyle].
   ///
-  /// This is useful for determining layout constraints when rendering step 
+  /// This is useful for determining layout constraints when rendering step
   /// labels, ensuring that all steps have enough space for their labels.
   ///
   /// The calculation uses the provided [BuildContext] to access theme and media
   /// information if needed.
   ///
-  /// - [labelStyle]: The style applied to the step labels, which affects their 
+  /// - [labelStyle]: The style applied to the step labels, which affects their
   /// size.
   /// - [context]: The build context used for text measurement.
   ///
@@ -314,7 +314,7 @@ abstract class StepProgressWidget extends StatelessWidget {
                   buildStepLines(
                     boxNotifier: lineBoxNotifier,
                     style: stepLineStyle,
-                    maxStepSize: maxStepSize(theme.nodeLabelStyle,context),
+                    maxStepSize: maxStepSize(theme.nodeLabelStyle, context),
                   ),
                 if (visibilityOptions != StepProgressVisibilityOptions.lineOnly)
                   buildStepNodes(labelAlignment: nodeLabelAlignment),

@@ -529,7 +529,7 @@ void main() {
           ),
         );
 
-        // Simulate triggering the animation completed callback for 
+        // Simulate triggering the animation completed callback for
         // each StepLine.
         final stepLineFinder = find.byType(StepLine);
         final stepLineWidgets =
