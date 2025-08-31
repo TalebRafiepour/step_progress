@@ -1,3 +1,9 @@
+# 2.6.2
+
+- **Bug Fix**: Resolved an issue where `autoProgress` did not advance correctly when the previous step exceeded the current step.
+- **Code Quality**: Applied Dart formatter to maintain consistent code style and readability.
+
+
 # 2.6.1
 
 - **Bug Fix**: Resolved an issue where the line would extend incorrectly when the title was large. [#25](https://github.com/TalebRafiepour/step_progress/issues/25)

@@ -1,6 +1,6 @@
 name: step_progress
 description: A lightweight package for displaying customizable step progress indicators in a user interface.
-version: 2.6.1
+version: 2.6.2
 homepage: https://github.com/TalebRafiepour/step-progress
 issue_tracker: https://github.com/TalebRafiepour/step-progress/issues
 
