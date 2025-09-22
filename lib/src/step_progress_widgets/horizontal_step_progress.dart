@@ -44,6 +44,8 @@ import 'package:step_progress/step_progress.dart';
 /// lines.
 /// - [isAutoStepChange]: A boolean that determines if the step change should
 /// occur automatically.
+/// - [startWithLine]: Determines if the line should be displayed before the
+/// step indicator. It defaults to false.
 /// - [key]: An optional key for the widget.
 class HorizontalStepProgress extends StepProgressWidget {
   const HorizontalStepProgress({
@@ -52,6 +54,7 @@ class HorizontalStepProgress extends StepProgressWidget {
     required super.stepSize,
     required super.visibilityOptions,
     required super.needsRebuildWidget,
+    super.startWithLine,
     super.onStepLineAnimationCompleted,
     super.controller,
     super.highlightOptions,
@@ -89,14 +92,14 @@ class HorizontalStepProgress extends StepProgressWidget {
       }
     }
 
-    List<Widget> children = List.generate(totalSteps, (index) {
+    List<Widget> children = List.generate(totalNodeNumbers, (index) {
       final title = nodeTitles?.elementAtOrNull(index);
       final subTitle = nodeSubTitles?.elementAtOrNull(index);
 
       return StepGenerator(
         width: stepSize,
         height: stepSize,
-        stepIndex: index,
+        stepIndex: getNodeIndexInParentWidget(index),
         anyLabelExist: nodeTitles != null || nodeSubTitles != null,
         title: title,
         subTitle: subTitle,
@@ -112,7 +115,9 @@ class HorizontalStepProgress extends StepProgressWidget {
     }
 
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: startWithLine
+          ? MainAxisAlignment.spaceEvenly
+          : MainAxisAlignment.spaceBetween,
       crossAxisAlignment: crossAxisAlignment(),
       children: children,
     );
@@ -131,16 +136,16 @@ class HorizontalStepProgress extends StepProgressWidget {
     ValueNotifier<RenderBox?>? boxNotifier,
   }) {
     Widget buildWidget() {
-      List<Widget> children = List.generate(totalSteps - 1, (index) {
+      List<Widget> children = List.generate(totalLineNumbers, (index) {
         return StepLine(
           controller: controller,
           isReversed: reversed,
-          isCurrentStep: currentStep == index + 1,
+          isCurrentStep: currentStep == getLineIndexInParentWidget(index),
           isAutoStepChange: isAutoStepChange,
           highlighted: isHighlightedStepLine(index),
           onStepLineAnimationCompleted: () =>
               onStepLineAnimationCompleted?.call(
-            index: index + 1,
+            index: getLineIndexInParentWidget(index),
           ),
           onTap: () => onStepLineTapped?.call(index),
         );
@@ -157,7 +162,7 @@ class HorizontalStepProgress extends StepProgressWidget {
         vertical: style.lineThickness >= stepSize
             ? 0
             : stepSize / 2 - style.lineThickness / 2,
-        horizontal: maxStepSize / 2,
+        horizontal: startWithLine ? 0 : maxStepSize / 2,
       ),
       child: boxNotifier == null
           ? buildWidget()

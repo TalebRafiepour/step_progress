@@ -48,6 +48,8 @@ import 'package:step_progress/src/step_progress_widgets/step_progress_widget.dar
 /// to handle tap events on the step lines.
 ///
 /// The [nodeIconBuilder] allow you to customize the icons for each step.
+/// The[startWithLine] determines if the line should be displayed before the
+/// step indicator. It defaults to false.
 ///
 /// The [nodeLabelBuilder] and [lineLabelBuilder] parameters allow you to
 /// customize the labels for each step node and step line respectively.
@@ -93,6 +95,7 @@ class VerticalStepProgress extends StepProgressWidget {
     required super.stepSize,
     required super.visibilityOptions,
     required super.needsRebuildWidget,
+    super.startWithLine,
     super.onStepLineAnimationCompleted,
     super.controller,
     super.highlightOptions,
@@ -121,7 +124,7 @@ class VerticalStepProgress extends StepProgressWidget {
   /// Returns a [Widget] that represents the step nodes.
   @override
   Widget buildStepNodes({required StepLabelAlignment labelAlignment}) {
-    List<Widget> children = List.generate(totalSteps, (index) {
+    List<Widget> children = List.generate(totalNodeNumbers, (index) {
       final title = nodeTitles?.elementAtOrNull(index);
       final subTitle = nodeSubTitles?.elementAtOrNull(index);
       //
@@ -131,7 +134,7 @@ class VerticalStepProgress extends StepProgressWidget {
         width: stepSize,
         height: stepSize,
         anyLabelExist: nodeTitles != null || nodeSubTitles != null,
-        stepIndex: index,
+        stepIndex: getNodeIndexInParentWidget(index),
         title: title,
         subTitle: subTitle,
         highlighted: isHighlightedStepNode(index),
@@ -144,7 +147,9 @@ class VerticalStepProgress extends StepProgressWidget {
       children = children.reversed.toList();
     }
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: startWithLine
+          ? MainAxisAlignment.spaceEvenly
+          : MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: children,
     );
@@ -169,17 +174,17 @@ class VerticalStepProgress extends StepProgressWidget {
     ValueNotifier<RenderBox?>? boxNotifier,
   }) {
     Widget buildWidget() {
-      List<Widget> children = List.generate(totalSteps - 1, (index) {
+      List<Widget> children = List.generate(totalLineNumbers, (index) {
         return StepLine(
           controller: controller,
           axis: Axis.vertical,
           isReversed: reversed,
-          isCurrentStep: currentStep == index + 1,
+          isCurrentStep: currentStep == getLineIndexInParentWidget(index),
           isAutoStepChange: isAutoStepChange,
           highlighted: isHighlightedStepLine(index),
           onStepLineAnimationCompleted: () =>
               onStepLineAnimationCompleted?.call(
-            index: index + 1,
+            index: getLineIndexInParentWidget(index),
           ),
           onTap: () => onStepLineTapped?.call(index),
         );
@@ -195,7 +200,7 @@ class VerticalStepProgress extends StepProgressWidget {
 
     return Padding(
       padding: EdgeInsets.symmetric(
-        vertical: maxStepSize / 2,
+        vertical: startWithLine ? 0 : maxStepSize / 2,
         horizontal: style.lineThickness >= stepSize
             ? 0
             : stepSize / 2 - style.lineThickness / 2,

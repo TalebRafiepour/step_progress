@@ -50,6 +50,8 @@ typedef OnStepLineAnimationCompleted = void Function({
 ///   lines.
 /// - [reversed]: Indicates whether the step progress is displayed in reverse
 ///   order. It defaults to false.
+/// - [startWithLine]: Determines if the line should be displayed before the
+/// step indicator. It defaults to false.
 /// - [needsRebuildWidget]: Callback to request a rebuild of the parent widget.
 ///   This is triggered when dynamic size calculations are needed.
 /// - [highlightOptions]: Options to customize the highlight behavior of the
@@ -68,6 +70,7 @@ abstract class StepProgressWidget extends StatelessWidget {
         StepProgressHighlightOptions.highlightCompletedNodesAndLines,
     this.controller,
     this.onStepLineAnimationCompleted,
+    this.startWithLine = false,
     this.isAutoStepChange = false,
     this.reversed = false,
     this.nodeTitles,
@@ -105,6 +108,9 @@ abstract class StepProgressWidget extends StatelessWidget {
 
   /// Determines if the step changes automatically without user interaction.
   final bool isAutoStepChange;
+
+  /// Determines if the line should be displayed before the step indicator.
+  final bool startWithLine;
 
   /// The size of each step in the progress indicator.
   final double stepSize;
@@ -165,12 +171,12 @@ abstract class StepProgressWidget extends StatelessWidget {
             StepProgressHighlightOptions.highlightCompletedLines ||
         highlightOptions ==
             StepProgressHighlightOptions.highlightCompletedNodesAndLines) {
-      return index < currentStep;
+      return startWithLine ? index <= currentStep : index < currentStep;
     } else if (highlightOptions ==
             StepProgressHighlightOptions.highlightCurrentLine ||
         highlightOptions ==
             StepProgressHighlightOptions.highlightCurrentNodeAndLine) {
-      return index == currentStep - 1;
+      return startWithLine ? index == currentStep : index == currentStep - 1;
     } else {
       return false;
     }
@@ -183,12 +189,12 @@ abstract class StepProgressWidget extends StatelessWidget {
             StepProgressHighlightOptions.highlightCompletedNodes ||
         highlightOptions ==
             StepProgressHighlightOptions.highlightCompletedNodesAndLines) {
-      return index <= currentStep;
+      return startWithLine ? index < currentStep : index <= currentStep;
     } else if (highlightOptions ==
             StepProgressHighlightOptions.highlightCurrentNode ||
         highlightOptions ==
             StepProgressHighlightOptions.highlightCurrentNodeAndLine) {
-      return index == currentStep;
+      return startWithLine ? index == currentStep - 1 : index == currentStep;
     } else {
       return false;
     }
@@ -268,6 +274,45 @@ abstract class StepProgressWidget extends StatelessWidget {
   ///
   /// Returns the maximum width as a [double].
   double maxStepSize(StepLabelStyle labelStyle, BuildContext context);
+
+  /// Returns the total number of line segments to display in the step
+  /// progress widget.
+  ///
+  /// If [startWithLine] is `true`, the total number of lines equals
+  /// [totalSteps].Otherwise, it is one less than [totalSteps], as lines
+  /// connect steps.
+  int get totalLineNumbers => startWithLine ? totalSteps : totalSteps - 1;
+
+  /// Returns the total number of nodes to display in the step progress widget.
+  ///
+  /// If [startWithLine] is `true`, the total number of nodes is one less
+  /// than [totalSteps], otherwise it is equal to [totalSteps].
+  int get totalNodeNumbers => startWithLine ? totalSteps - 1 : totalSteps;
+
+  /// Returns the line index within the parent widget based on the [index] and
+  /// the [startWithLine] flag.
+  ///
+  /// If [startWithLine] is `true`, the returned index is the same as the
+  /// input [index].
+  /// If [startWithLine] is `false`, the returned index is incremented by 1.
+  ///
+  /// This is useful for determining the correct line position when rendering
+  /// step progress indicators.
+  int getLineIndexInParentWidget(int index) =>
+      startWithLine ? index : index + 1;
+
+  /// Returns the node index in the parent widget based on the
+  /// [startWithLine] flag.
+  ///
+  /// If [startWithLine] is `true`, the index is incremented by 1; otherwise,
+  /// the original [index] is returned.
+  ///
+  /// [index]: The current node index.
+  ///
+  /// Returns the adjusted node index depending on whether the progress starts
+  /// with a line.
+  int getNodeIndexInParentWidget(int index) =>
+      startWithLine ? index + 1 : index;
 
   /// Builds the nodes and lines for the step progress widget.
   ///

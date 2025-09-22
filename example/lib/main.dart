@@ -18,6 +18,7 @@ import 'package:example/example_three.dart';
 import 'package:example/example_twelve.dart';
 import 'package:example/example_twenty.dart';
 import 'package:example/example_twenty_one.dart';
+import 'package:example/example_twenty_two.dart';
 import 'package:example/example_two.dart';
 import 'package:example/reproduce_issues.dart';
 import 'package:example/reproduce_large_labels.dart';
@@ -289,6 +290,19 @@ class HomePage extends StatelessWidget {
                 },
                 child: const Text(
                   '21-InstagramStoryLikeStepper',
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const ExampleTwentyTwo(),
+                    ),
+                  );
+                },
+                child: const Text(
+                  '22-LineFirstMode',
                 ),
               ),
               ElevatedButton(

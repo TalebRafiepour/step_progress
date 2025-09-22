@@ -163,7 +163,9 @@ class StepLine extends StatelessWidget {
                 isHorizontal: _isHorizontal,
                 onAnimationCompleted: onStepLineAnimationCompleted,
               )
-            : Container(
+            : AnimatedContainer(
+                duration:
+                    style.animationDuration ?? theme.stepAnimationDuration,
                 width: _isHorizontal
                     ? (highlighted ? lineSize.width : 0)
                     : lineSize.width,

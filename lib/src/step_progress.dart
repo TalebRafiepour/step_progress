@@ -113,11 +113,14 @@ typedef OnStepNodeTapped = void Function(int index);
 ///
 /// The [autoStartProgress] parameter determines whether the progress should
 /// automatically start when the widget is initialized. It defaults to false.
+///
+/// The [startWithLine] parameter determines if the line should be displayed
+/// before the step indicator. It defaults to false.
 class StepProgress extends StatefulWidget {
   const StepProgress({
     required this.totalSteps,
     this.controller,
-    this.currentStep = 0,
+    this.currentStep = -1,
     super.key,
     this.stepSize = 34,
     this.width,
@@ -128,6 +131,7 @@ class StepProgress extends StatefulWidget {
     this.axis = Axis.horizontal,
     this.reversed = false,
     this.autoStartProgress = false,
+    this.startWithLine = false,
     this.visibilityOptions = StepProgressVisibilityOptions.both,
     this.highlightOptions =
         StepProgressHighlightOptions.highlightCompletedNodesAndLines,
@@ -195,6 +199,9 @@ class StepProgress extends StatefulWidget {
 
   /// Current step in the progress
   final int currentStep;
+
+  /// Determines if the line should be displayed before the step indicator.
+  final bool startWithLine;
 
   /// Theme data for customizing the step progress appearance
   final StepProgressThemeData theme;
@@ -366,6 +373,7 @@ class _StepProgressState extends State<StepProgress>
                 currentStep: _currentStep,
                 isAutoStepChange: widget.autoStartProgress,
                 reversed: widget.reversed,
+                startWithLine: widget.startWithLine,
                 highlightOptions: widget.highlightOptions,
                 onStepLineAnimationCompleted: _onStepAnimationCompleted,
                 needsRebuildWidget: _needsRebuildWidget,
@@ -385,6 +393,7 @@ class _StepProgressState extends State<StepProgress>
                 controller: widget.controller,
                 totalSteps: widget.totalSteps,
                 currentStep: _currentStep,
+                startWithLine: widget.startWithLine,
                 isAutoStepChange: widget.autoStartProgress,
                 reversed: widget.reversed,
                 highlightOptions: widget.highlightOptions,
