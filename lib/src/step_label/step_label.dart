@@ -15,6 +15,8 @@ import 'package:step_progress/src/step_progress_theme.dart';
 /// The [style] property allows you to customize the appearance of the label,
 /// including text styles, colors, and other visual properties.
 ///
+/// The [labelMaxWidth] shows maximum width allowed for the label widget.
+///
 /// Example usage:
 ///
 /// ```dart
@@ -30,6 +32,7 @@ class StepLabel extends StatelessWidget {
   const StepLabel({
     this.style = const StepLabelStyle(),
     this.alignment = Alignment.center,
+    this.labelMaxWidth = double.infinity,
     this.customLabel,
     this.title,
     this.subTitle,
@@ -52,6 +55,9 @@ class StepLabel extends StatelessWidget {
   /// The alignment for whole label
   final Alignment alignment;
 
+  /// The maximum width allowed for the label widget.
+  final double labelMaxWidth;
+
   /// A custom widget to display as the label for the step.
   ///
   /// If a custom label widget is provided, it takes priority over the title and
@@ -66,7 +72,7 @@ class StepLabel extends StatelessWidget {
       padding: style.padding,
       margin: style.margin,
       alignment: alignment,
-      constraints: BoxConstraints(maxWidth: style.maxWidth),
+      constraints: BoxConstraints(maxWidth: labelMaxWidth),
       child: customLabel != null
           ? customLabel!
           : (title == null && subTitle == null)
@@ -85,11 +91,14 @@ class StepLabel extends StatelessWidget {
                               : style.defualtColor ??
                                   theme.defaultForegroundColor,
                         ),
-                        child: Text(
-                          title!,
-                          textAlign: style.textAlign,
-                          overflow: style.overflow,
-                          maxLines: style.titleMaxLines,
+                        child: SizedBox(
+                          width: labelMaxWidth.isFinite ? labelMaxWidth : null,
+                          child: Text(
+                            title!,
+                            textAlign: style.textAlign,
+                            overflow: style.overflow,
+                            maxLines: style.titleMaxLines,
+                          ),
                         ),
                       ),
                     if (subTitle != null)
@@ -103,11 +112,14 @@ class StepLabel extends StatelessWidget {
                               : style.defualtColor ??
                                   theme.defaultForegroundColor,
                         ),
-                        child: Text(
-                          subTitle!,
-                          textAlign: style.textAlign,
-                          overflow: style.overflow,
-                          maxLines: style.subTitleMaxLines,
+                        child: SizedBox(
+                          width: labelMaxWidth.isFinite ? labelMaxWidth : null,
+                          child: Text(
+                            subTitle!,
+                            textAlign: style.textAlign,
+                            overflow: style.overflow,
+                            maxLines: style.subTitleMaxLines,
+                          ),
                         ),
                       ),
                   ],

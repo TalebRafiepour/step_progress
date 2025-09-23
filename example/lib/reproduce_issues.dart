@@ -34,6 +34,27 @@ class ReproduceIssues extends StatelessWidget {
               ),
             ),
           ),
+          StepProgress(
+            totalSteps: 3,
+            height: 300,
+            axis: Axis.vertical,
+            controller: stepProgressController,
+            padding: const EdgeInsets.all(18),
+            nodeTitles: const [
+              'Step 1',
+              'Step 2',
+              'Step 4 here is a big title that should wrap',
+            ],
+            theme: const StepProgressThemeData(
+                nodeLabelAlignment: StepLabelAlignment.right,
+                stepLineStyle: StepLineStyle(
+                  lineThickness: 3,
+                ),
+                nodeLabelStyle: StepLabelStyle(
+                  maxWidth: double.infinity,
+                  textAlign: TextAlign.start,
+                )),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             spacing: 38,

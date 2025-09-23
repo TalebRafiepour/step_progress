@@ -6,19 +6,21 @@ class ExampleTwentyTwo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final stepProgressController = StepProgressController(totalSteps: 3);
+    final stepProgressController = StepProgressController(totalSteps: 6);
     return Scaffold(
       appBar: AppBar(
         title: const Text('StepProgress - Line First Mode'),
       ),
       body: StepProgress(
-        totalSteps: 3,
-        padding: const EdgeInsets.all(10),
-        axis: Axis.vertical,
-        startWithLine: true,
+        totalSteps: 6,
+        stepSize: 20,
+        padding: const EdgeInsets.symmetric(vertical: 24),
+        visibilityOptions: StepProgressVisibilityOptions.lineThenNode,
         theme: const StepProgressThemeData(
-          stepLineSpacing: 10,
-        ),
+            //stepLineSpacing: 20,
+            stepNodeStyle: StepNodeStyle(
+          shape: StepNodeShape.hexagon,
+        )),
         controller: stepProgressController,
       ),
       bottomNavigationBar: SafeArea(

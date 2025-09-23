@@ -44,8 +44,6 @@ import 'package:step_progress/step_progress.dart';
 /// lines.
 /// - [isAutoStepChange]: A boolean that determines if the step change should
 /// occur automatically.
-/// - [startWithLine]: Determines if the line should be displayed before the
-/// step indicator. It defaults to false.
 /// - [key]: An optional key for the widget.
 class HorizontalStepProgress extends StepProgressWidget {
   const HorizontalStepProgress({
@@ -54,7 +52,6 @@ class HorizontalStepProgress extends StepProgressWidget {
     required super.stepSize,
     required super.visibilityOptions,
     required super.needsRebuildWidget,
-    super.startWithLine,
     super.onStepLineAnimationCompleted,
     super.controller,
     super.highlightOptions,
@@ -78,10 +75,19 @@ class HorizontalStepProgress extends StepProgressWidget {
   /// in the horizontal step progress indicator.
   ///
   /// The [labelAlignment] parameter to specify node alignment depends on labels
+  /// alignment.
+  /// The [lineSpacing] parameter defines the spacing between step lines.
+  /// The [maxStepSize] parameter determines the maximum size of a step node.
+  /// The [labelMaxWidth] is the maximum width allowed for the label widget.
   ///
   /// Returns a [Widget] that represents the step nodes.
   @override
-  Widget buildStepNodes({required StepLabelAlignment labelAlignment}) {
+  Widget buildStepNodes({
+    required StepLabelAlignment labelAlignment,
+    required double lineSpacing,
+    required Size maxStepSize,
+    required double labelMaxWidth,
+  }) {
     CrossAxisAlignment crossAxisAlignment() {
       if (labelAlignment == StepLabelAlignment.top) {
         return CrossAxisAlignment.end;
@@ -114,12 +120,17 @@ class HorizontalStepProgress extends StepProgressWidget {
       children = children.reversed.toList();
     }
 
-    return Row(
-      mainAxisAlignment: startWithLine
-          ? MainAxisAlignment.spaceEvenly
-          : MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: crossAxisAlignment(),
-      children: children,
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: isStartWithLine ? maxStepSize.width / 2 : 0,
+      ),
+      child: Row(
+        mainAxisAlignment: isStartWithLine
+            ? MainAxisAlignment.spaceEvenly
+            : MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: crossAxisAlignment(),
+        children: children,
+      ),
     );
   }
 
@@ -132,7 +143,7 @@ class HorizontalStepProgress extends StepProgressWidget {
   @override
   Widget buildStepLines({
     required StepLineStyle style,
-    required double maxStepSize,
+    required Size maxStepSize,
     ValueNotifier<RenderBox?>? boxNotifier,
   }) {
     Widget buildWidget() {
@@ -162,7 +173,7 @@ class HorizontalStepProgress extends StepProgressWidget {
         vertical: style.lineThickness >= stepSize
             ? 0
             : stepSize / 2 - style.lineThickness / 2,
-        horizontal: startWithLine ? 0 : maxStepSize / 2,
+        horizontal: isStartWithLine ? 0 : maxStepSize.width / 2,
       ),
       child: boxNotifier == null
           ? buildWidget()
@@ -176,7 +187,6 @@ class HorizontalStepProgress extends StepProgressWidget {
       return const SizedBox.shrink();
     }
     final theme = StepProgressTheme.of(context)!.data;
-    final maxStepWidth = maxStepSize(theme.nodeLabelStyle, context);
     //
     List<Widget> children = List.generate(totalSteps - 1, (index) {
       return Expanded(
@@ -195,7 +205,11 @@ class HorizontalStepProgress extends StepProgressWidget {
     }
     //
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: maxStepWidth / 2),
+      padding: EdgeInsets.symmetric(
+        horizontal: isStartWithLine
+            ? 0
+            : maxStepWidth(theme.nodeLabelStyle, context) / 2,
+      ),
       child: Row(children: children),
     );
   }
@@ -222,36 +236,6 @@ class HorizontalStepProgress extends StepProgressWidget {
         ? totalSteps * 1.45 * stepSize
         : null;
     return BoxConstraints.tightFor(width: width);
-  }
-
-  @override
-  double maxStepSize(StepLabelStyle labelStyle, BuildContext context) {
-    final padding = labelStyle.padding;
-    final margin = labelStyle.margin;
-    final maxWidth = labelStyle.maxWidth +
-        padding.left +
-        padding.right +
-        margin.left +
-        margin.right;
-
-    if (!hasNodeLabels) return stepSize;
-
-    if (maxWidth.isFinite) {
-      return maxWidth > stepSize ? maxWidth : stepSize;
-    }
-
-    double labelWidth(String? text) {
-      final style = labelStyle.titleStyle ??
-          Theme.of(context).textTheme.labelMedium ??
-          const TextStyle();
-      return calculateTextSize(text: text ?? '', style: style).width;
-    }
-
-    final firstWidth = labelWidth(nodeTitles?.first);
-    final lastWidth = labelWidth(nodeTitles?.last);
-
-    final widest = firstWidth > lastWidth ? firstWidth : lastWidth;
-    return widest + padding.horizontal + margin.horizontal;
   }
 
   @override

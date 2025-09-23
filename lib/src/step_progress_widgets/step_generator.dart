@@ -27,12 +27,14 @@ import 'package:step_progress/step_progress.dart';
 /// `StepNode` by default.
 /// The [stepIndex] parameter specifies the index of the current step in the
 /// step progress.
+/// The [labelMaxWidth] shows maximum width allowed for the label widget.
 ///
 /// Example usage:
 /// ```dart
 /// StepGenerator(
 ///   width: 50.0,
 ///   height: 50.0,
+///   labelMaxWidth: 100.0,
 ///   anyLabelExist: true,
 ///   stepIndex: 1,
 ///   highlighted: true,
@@ -52,6 +54,7 @@ class StepGenerator extends StatelessWidget {
     required this.height,
     required this.stepIndex,
     required this.anyLabelExist,
+    this.labelMaxWidth,
     this.highlighted = false,
     this.axis = Axis.horizontal,
     this.title,
@@ -94,6 +97,9 @@ class StepGenerator extends StatelessWidget {
 
   /// A widget that is built specifically for the step label.
   final Widget? customLabelWidget;
+
+  /// The maximum width allowed for the label widget.
+  final double? labelMaxWidth;
 
   /// Builds a widget that represents a step in a step progress indicator.
   ///
@@ -157,7 +163,9 @@ class StepGenerator extends StatelessWidget {
             padding: style.padding,
             margin: style.margin,
             alignment: Alignment.center,
-            constraints: BoxConstraints(maxWidth: style.maxWidth),
+            constraints: BoxConstraints(
+              maxWidth: labelMaxWidth ?? style.maxWidth,
+            ),
           );
         } else {
           return const SizedBox.shrink();
@@ -165,6 +173,7 @@ class StepGenerator extends StatelessWidget {
       }
       return StepLabel(
         style: themeData.nodeLabelStyle,
+        labelMaxWidth: labelMaxWidth ?? themeData.nodeLabelStyle.maxWidth,
         title: title,
         subTitle: subTitle,
         customLabel: customLabelWidget,

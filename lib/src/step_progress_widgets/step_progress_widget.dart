@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:step_progress/src/helpers/rendering_box_widget.dart';
 import 'package:step_progress/src/step_label/step_label_style.dart';
@@ -50,8 +52,6 @@ typedef OnStepLineAnimationCompleted = void Function({
 ///   lines.
 /// - [reversed]: Indicates whether the step progress is displayed in reverse
 ///   order. It defaults to false.
-/// - [startWithLine]: Determines if the line should be displayed before the
-/// step indicator. It defaults to false.
 /// - [needsRebuildWidget]: Callback to request a rebuild of the parent widget.
 ///   This is triggered when dynamic size calculations are needed.
 /// - [highlightOptions]: Options to customize the highlight behavior of the
@@ -70,7 +70,6 @@ abstract class StepProgressWidget extends StatelessWidget {
         StepProgressHighlightOptions.highlightCompletedNodesAndLines,
     this.controller,
     this.onStepLineAnimationCompleted,
-    this.startWithLine = false,
     this.isAutoStepChange = false,
     this.reversed = false,
     this.nodeTitles,
@@ -108,9 +107,6 @@ abstract class StepProgressWidget extends StatelessWidget {
 
   /// Determines if the step changes automatically without user interaction.
   final bool isAutoStepChange;
-
-  /// Determines if the line should be displayed before the step indicator.
-  final bool startWithLine;
 
   /// The size of each step in the progress indicator.
   final double stepSize;
@@ -164,6 +160,15 @@ abstract class StepProgressWidget extends StatelessWidget {
   /// Optional controller to manage and update the step progress state.
   final StepProgressController? controller;
 
+  /// Returns `true` if the progress widget should start with a line.
+  ///
+  /// This is determined by checking if [visibilityOptions] is set to either
+  /// [StepProgressVisibilityOptions.lineOnly] or
+  /// [StepProgressVisibilityOptions.lineThenNode].
+  bool get isStartWithLine =>
+      visibilityOptions == StepProgressVisibilityOptions.lineOnly ||
+      visibilityOptions == StepProgressVisibilityOptions.lineThenNode;
+
   /// Determines if a step line at the given index should be highlighted
   /// based on the current step and highlight options.
   bool isHighlightedStepLine(int index) {
@@ -171,12 +176,12 @@ abstract class StepProgressWidget extends StatelessWidget {
             StepProgressHighlightOptions.highlightCompletedLines ||
         highlightOptions ==
             StepProgressHighlightOptions.highlightCompletedNodesAndLines) {
-      return startWithLine ? index <= currentStep : index < currentStep;
+      return isStartWithLine ? index <= currentStep : index < currentStep;
     } else if (highlightOptions ==
             StepProgressHighlightOptions.highlightCurrentLine ||
         highlightOptions ==
             StepProgressHighlightOptions.highlightCurrentNodeAndLine) {
-      return startWithLine ? index == currentStep : index == currentStep - 1;
+      return isStartWithLine ? index == currentStep : index == currentStep - 1;
     } else {
       return false;
     }
@@ -189,12 +194,12 @@ abstract class StepProgressWidget extends StatelessWidget {
             StepProgressHighlightOptions.highlightCompletedNodes ||
         highlightOptions ==
             StepProgressHighlightOptions.highlightCompletedNodesAndLines) {
-      return startWithLine ? index < currentStep : index <= currentStep;
+      return isStartWithLine ? index < currentStep : index <= currentStep;
     } else if (highlightOptions ==
             StepProgressHighlightOptions.highlightCurrentNode ||
         highlightOptions ==
             StepProgressHighlightOptions.highlightCurrentNodeAndLine) {
-      return startWithLine ? index == currentStep - 1 : index == currentStep;
+      return isStartWithLine ? index == currentStep - 1 : index == currentStep;
     } else {
       return false;
     }
@@ -218,7 +223,15 @@ abstract class StepProgressWidget extends StatelessWidget {
   /// of the step nodes in the step progress widget.
   ///
   /// The [labelAlignment] parameters indicates the alignment of labels.
-  Widget buildStepNodes({required StepLabelAlignment labelAlignment});
+  /// [lineSpacing] defines the spacing between step lines.
+  /// [maxStepSize] determines the maximum size of a step node.
+  /// [labelMaxWidth] is the maximum width allowed for the label widget.
+  Widget buildStepNodes({
+    required StepLabelAlignment labelAlignment,
+    required double lineSpacing,
+    required Size maxStepSize,
+    required double labelMaxWidth,
+  });
 
   /// Builds the step lines widget with the given style.
   ///
@@ -229,7 +242,7 @@ abstract class StepProgressWidget extends StatelessWidget {
   /// [maxStepSize] is the maximum size of the step nodes.
   Widget buildStepLines({
     required StepLineStyle style,
-    required double maxStepSize,
+    required Size maxStepSize,
     ValueNotifier<RenderBox?>? boxNotifier,
   });
 
@@ -259,52 +272,36 @@ abstract class StepProgressWidget extends StatelessWidget {
   /// This method is required to be implemented.
   BoxConstraints getBoxConstraint({required BoxConstraints constraints});
 
-  /// Returns the maximum width required for a step label using the given
-  /// [labelStyle].
-  ///
-  /// This is useful for determining layout constraints when rendering step
-  /// labels, ensuring that all steps have enough space for their labels.
-  ///
-  /// The calculation uses the provided [BuildContext] to access theme and media
-  /// information if needed.
-  ///
-  /// - [labelStyle]: The style applied to the step labels, which affects their
-  /// size.
-  /// - [context]: The build context used for text measurement.
-  ///
-  /// Returns the maximum width as a [double].
-  double maxStepSize(StepLabelStyle labelStyle, BuildContext context);
-
   /// Returns the total number of line segments to display in the step
   /// progress widget.
   ///
-  /// If [startWithLine] is `true`, the total number of lines equals
+  /// If [isStartWithLine] is `true`, the total number of lines equals
   /// [totalSteps].Otherwise, it is one less than [totalSteps], as lines
   /// connect steps.
-  int get totalLineNumbers => startWithLine ? totalSteps : totalSteps - 1;
+  int get totalLineNumbers => isStartWithLine ? totalSteps : totalSteps - 1;
 
   /// Returns the total number of nodes to display in the step progress widget.
   ///
-  /// If [startWithLine] is `true`, the total number of nodes is one less
+  /// If [isStartWithLine] is `true`, the total number of nodes is one less
   /// than [totalSteps], otherwise it is equal to [totalSteps].
-  int get totalNodeNumbers => startWithLine ? totalSteps - 1 : totalSteps;
+  int get totalNodeNumbers => isStartWithLine ? totalSteps - 1 : totalSteps;
 
   /// Returns the line index within the parent widget based on the [index] and
-  /// the [startWithLine] flag.
+  /// the [isStartWithLine] flag.
   ///
-  /// If [startWithLine] is `true`, the returned index is the same as the
+  /// If [isStartWithLine] is `true`, the returned index is the same as the
   /// input [index].
-  /// If [startWithLine] is `false`, the returned index is incremented by 1.
+  /// If [isStartWithLine] is `false`, the returned index is incremented by 1.
   ///
   /// This is useful for determining the correct line position when rendering
   /// step progress indicators.
   int getLineIndexInParentWidget(int index) =>
-      startWithLine ? index : index + 1;
+      isStartWithLine ? index : index + 1;
 
   /// Returns the node index in the parent widget based on the
-  /// [startWithLine] flag.
+  /// [isStartWithLine] flag.
   ///
-  /// If [startWithLine] is `true`, the index is incremented by 1; otherwise,
+  /// If [isStartWithLine] is `true`, the index is incremented by 1; otherwise,
   /// the original [index] is returned.
   ///
   /// [index]: The current node index.
@@ -312,7 +309,210 @@ abstract class StepProgressWidget extends StatelessWidget {
   /// Returns the adjusted node index depending on whether the progress starts
   /// with a line.
   int getNodeIndexInParentWidget(int index) =>
-      startWithLine ? index + 1 : index;
+      isStartWithLine ? index + 1 : index;
+
+  /// Calculates the maximum height for a step node based on the provided
+  /// [labelStyle].
+  ///
+  /// This method takes into account the padding and margin specified in the
+  ///  [StepLabelStyle]
+  /// to determine the total height required for the label. If node labels are
+  /// present
+  /// ([hasNodeLabels] is true), and the calculated label height is both finite
+  /// and greater
+  /// than the default [stepSize], the method returns the label's maximum
+  /// height. Otherwise, it returns the default [stepSize].
+  ///
+  /// - Parameter labelStyle: The style configuration for the step label,
+  /// including padding and margin.
+  /// - Returns: The maximum height for the step node, considering label
+  /// dimensions and step size.
+  double maxStepHeight(StepLabelStyle labelStyle, BuildContext context) {
+    final labelPadding = labelStyle.padding;
+    final labelMargin = labelStyle.margin;
+
+    double tallestTitleHeight = 0;
+
+    if (nodeTitles != null && nodeTitles!.isNotEmpty) {
+      final style = labelStyle.titleStyle ??
+          Theme.of(context).textTheme.labelMedium ??
+          const TextStyle();
+      for (final title in [nodeTitles!.first, nodeTitles!.last]) {
+        final titleHeight = calculateTextSize(
+          text: title,
+          style: style,
+          maxWidth: maxStepWidth(labelStyle, context),
+        ).height;
+        if (titleHeight > tallestTitleHeight) {
+          tallestTitleHeight = titleHeight;
+        }
+      }
+    }
+
+    double tallestSubTitleHeight = 0;
+    if (nodeSubTitles != null && nodeSubTitles!.isNotEmpty) {
+      final style = labelStyle.subTitleStyle ??
+          Theme.of(context).textTheme.bodySmall ??
+          const TextStyle();
+      for (final subTitle in [nodeSubTitles!.first, nodeSubTitles!.last]) {
+        final subTitleHeight = calculateTextSize(
+          text: subTitle,
+          style: style,
+          maxWidth: maxStepWidth(labelStyle, context),
+        ).height;
+        if (subTitleHeight > tallestSubTitleHeight) {
+          tallestSubTitleHeight = subTitleHeight;
+        }
+      }
+    }
+
+    final labelMaxHeight = tallestTitleHeight +
+        tallestSubTitleHeight +
+        labelPadding.top +
+        labelPadding.bottom +
+        labelMargin.top +
+        labelMargin.bottom;
+
+    // Calculate the maximum size for the step node.
+    return (hasNodeLabels &&
+            labelMaxHeight.isFinite &&
+            labelMaxHeight > stepSize)
+        ? labelMaxHeight
+        : stepSize;
+  }
+
+  /// Calculates the maximum width required for a step widget, taking into
+  /// account the label style's padding, margin, and maximum width constraints.
+  ///
+  /// If node labels are not present, returns the default step size.
+  /// If a maximum width is specified and is finite, returns the greater of the
+  /// maximum width or the step size.
+  /// Otherwise, computes the width based on the rendered text of the first and
+  /// last node titles, including padding and margin.
+  ///
+  /// - [labelStyle]: The style to apply to the step label, including padding,
+  ///   margin, and maximum width.
+  /// - [context]: The build context used to resolve text styles.
+  ///
+  /// Returns the maximum width as a [double].
+  double maxStepWidth(StepLabelStyle labelStyle, BuildContext context) {
+    final padding = labelStyle.padding;
+    final margin = labelStyle.margin;
+    final maxWidth = labelStyle.maxWidth +
+        padding.left +
+        padding.right +
+        margin.left +
+        margin.right;
+
+    if (!hasNodeLabels) return stepSize;
+
+    if (maxWidth.isFinite) {
+      return maxWidth > stepSize ? maxWidth : stepSize;
+    }
+
+    double widestTitleWidth = 0;
+    if (nodeTitles != null && nodeTitles!.isNotEmpty) {
+      final style = labelStyle.titleStyle ??
+          Theme.of(context).textTheme.labelMedium ??
+          const TextStyle();
+      for (final title in [nodeTitles!.first, nodeTitles!.last]) {
+        final titleWidth = calculateTextSize(
+          text: title,
+          style: style,
+          maxWidth: labelStyle.maxWidth,
+        ).width;
+        if (titleWidth > widestTitleWidth) {
+          widestTitleWidth = titleWidth;
+        }
+      }
+    }
+
+    double widestSubTitleWidth = 0;
+    if (nodeSubTitles != null && nodeSubTitles!.isNotEmpty) {
+      final style = labelStyle.subTitleStyle ??
+          Theme.of(context).textTheme.bodySmall ??
+          const TextStyle();
+      for (final subTitle in [nodeSubTitles!.first, nodeSubTitles!.last]) {
+        final subTitleWidth = calculateTextSize(
+          text: subTitle,
+          style: style,
+          maxWidth: labelStyle.maxWidth,
+        ).width;
+        if (subTitleWidth > widestSubTitleWidth) {
+          widestSubTitleWidth = subTitleWidth;
+        }
+      }
+    }
+
+    final widestLabelWidth = max(widestTitleWidth, widestSubTitleWidth);
+
+    final labelMaxWidth = widestLabelWidth +
+        padding.left +
+        padding.right +
+        margin.left +
+        margin.right;
+
+    return labelMaxWidth > stepSize ? labelMaxWidth : stepSize;
+  }
+
+  /// Calculates the maximum width required for the node labels (titles and
+  /// subtitles)
+  /// based on the provided [labelStyle] and the current [BuildContext].
+  ///
+  /// If [hasNodeLabels] is false, returns 0. If maxWidth is finite,
+  /// returns that value directly. Otherwise, it computes the widest text width
+  /// among all node titles and subtitles using their respective text styles,
+  /// and returns the maximum of these widths.
+  ///
+  /// - [labelStyle]: The style configuration for the labels, including maximum
+  ///  width and text styles.
+  /// - [context]: The build context used to obtain theme data for default text
+  ///  styles.
+  ///
+  /// Returns the maximum width required for the labels.
+  double maxLabelWidth(StepLabelStyle labelStyle, BuildContext context) {
+    if (!hasNodeLabels) return 0;
+
+    if (labelStyle.maxWidth.isFinite) {
+      return labelStyle.maxWidth;
+    }
+
+    double widestTitleWidth = 0;
+    if (nodeTitles != null && nodeTitles!.isNotEmpty) {
+      final style = labelStyle.titleStyle ??
+          Theme.of(context).textTheme.labelMedium ??
+          const TextStyle();
+      for (final title in nodeTitles!) {
+        final titleWidth = calculateTextSize(
+          text: title,
+          style: style,
+          maxWidth: labelStyle.maxWidth,
+        ).width;
+        if (titleWidth > widestTitleWidth) {
+          widestTitleWidth = titleWidth;
+        }
+      }
+    }
+
+    double widestSubTitleWidth = 0;
+    if (nodeSubTitles != null && nodeSubTitles!.isNotEmpty) {
+      final style = labelStyle.subTitleStyle ??
+          Theme.of(context).textTheme.bodySmall ??
+          const TextStyle();
+      for (final subTitle in nodeSubTitles!) {
+        final subTitleWidth = calculateTextSize(
+          text: subTitle,
+          style: style,
+          maxWidth: labelStyle.maxWidth,
+        ).width;
+        if (subTitleWidth > widestSubTitleWidth) {
+          widestSubTitleWidth = subTitleWidth;
+        }
+      }
+    }
+
+    return max(widestTitleWidth, widestSubTitleWidth);
+  }
 
   /// Builds the nodes and lines for the step progress widget.
   ///
@@ -345,6 +545,10 @@ abstract class StepProgressWidget extends StatelessWidget {
             ? StepLabelAlignment.top
             : StepLabelAlignment.right);
     //
+    final maximumStepSize = Size(
+      maxStepWidth(theme.nodeLabelStyle, context),
+      maxStepHeight(theme.nodeLabelStyle, context),
+    );
     return LayoutBuilder(
       builder: (_, constraint) {
         Widget buildWidget() {
@@ -359,10 +563,15 @@ abstract class StepProgressWidget extends StatelessWidget {
                   buildStepLines(
                     boxNotifier: lineBoxNotifier,
                     style: stepLineStyle,
-                    maxStepSize: maxStepSize(theme.nodeLabelStyle, context),
+                    maxStepSize: maximumStepSize,
                   ),
                 if (visibilityOptions != StepProgressVisibilityOptions.lineOnly)
-                  buildStepNodes(labelAlignment: nodeLabelAlignment),
+                  buildStepNodes(
+                    labelAlignment: nodeLabelAlignment,
+                    lineSpacing: theme.stepLineSpacing,
+                    maxStepSize: maximumStepSize,
+                    labelMaxWidth: maxLabelWidth(theme.nodeLabelStyle, context),
+                  ),
               ],
             ),
           );

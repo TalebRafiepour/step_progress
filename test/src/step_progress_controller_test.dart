@@ -9,8 +9,14 @@ void main() {
       expect(controller.totalSteps, 5);
     });
 
+    test('default state is correct', () {
+      final controller = StepProgressController(totalSteps: 5);
+      expect(controller.currentStep, -1);
+    });
+
     test('nextStep increments the current step', () {
-      final controller = StepProgressController(totalSteps: 5)..nextStep();
+      final controller = StepProgressController(totalSteps: 5, initialStep: 0)
+        ..nextStep();
       expect(controller.currentStep, 1);
     });
 

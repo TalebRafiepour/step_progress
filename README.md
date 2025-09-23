@@ -729,7 +729,6 @@ StepProgress(
   visibilityOptions: StepProgressVisibilityOptions.lineOnly,
   autoStartProgress: true,
   onStepChanged: (currentIndex) {
-    // Notice that the currentIndex starts from 1 in the LineOnly mode
     debugPrint('Current step changed to: $currentIndex');
   },
   theme: const StepProgressThemeData(
@@ -742,6 +741,28 @@ StepProgress(
       borderRadius: Radius.circular(5),
     ),
   ),
+),
+```
+</details>
+
+### Example 22: LineFirst mode (horizontal)
+![StepProgress-horizontal-line-first-mode](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-22-stepprogress-linefirst-mode.gif)
+
+<details>
+  <summary>Show Implementation</summary>
+
+```dart
+StepProgress(
+  totalSteps: 6,
+  stepSize: 20,
+  padding: const EdgeInsets.symmetric(vertical: 24),
+  visibilityOptions: StepProgressVisibilityOptions.lineThenNode,
+  theme: const StepProgressThemeData(
+      //stepLineSpacing: 20,
+      stepNodeStyle: StepNodeStyle(
+        shape: StepNodeShape.hexagon,
+      )),
+  controller: stepProgressController,
 ),
 ```
 </details>

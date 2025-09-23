@@ -1,9 +1,15 @@
-/// An enumeration that defines the visibility options for the step progress
+/// Defines the visibility options for displaying steps in a step progress
 /// indicator.
 ///
-/// The available options are:
-///
-/// - `nodeOnly`: Only the nodes are visible.
-/// - `lineOnly`: Only the lines connecting the nodes are visible.
-/// - `both`: Both the nodes and the connecting lines are visible.
-enum StepProgressVisibilityOptions { nodeOnly, lineOnly, both }
+/// - [nodeOnly]: Only the node (step indicator) is visible.
+/// - [lineOnly]: Only the connecting line between steps is visible.
+/// - [nodeThenLine]: The node is shown first, followed by the connecting
+/// line.
+/// - [lineThenNode]: The connecting line is shown first, followed by the
+/// node.
+enum StepProgressVisibilityOptions {
+  nodeOnly,
+  lineOnly,
+  nodeThenLine,
+  lineThenNode,
+}

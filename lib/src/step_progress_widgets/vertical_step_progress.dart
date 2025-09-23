@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:step_progress/src/helpers/data_cache.dart';
 import 'package:step_progress/src/helpers/rendering_box_widget.dart';
 import 'package:step_progress/src/step_label/step_label.dart';
-import 'package:step_progress/src/step_label/step_label_style.dart';
 import 'package:step_progress/src/step_label_alignment.dart';
 import 'package:step_progress/src/step_line/step_line.dart';
 import 'package:step_progress/src/step_line/step_line_style.dart';
@@ -48,8 +47,6 @@ import 'package:step_progress/src/step_progress_widgets/step_progress_widget.dar
 /// to handle tap events on the step lines.
 ///
 /// The [nodeIconBuilder] allow you to customize the icons for each step.
-/// The[startWithLine] determines if the line should be displayed before the
-/// step indicator. It defaults to false.
 ///
 /// The [nodeLabelBuilder] and [lineLabelBuilder] parameters allow you to
 /// customize the labels for each step node and step line respectively.
@@ -95,7 +92,6 @@ class VerticalStepProgress extends StepProgressWidget {
     required super.stepSize,
     required super.visibilityOptions,
     required super.needsRebuildWidget,
-    super.startWithLine,
     super.onStepLineAnimationCompleted,
     super.controller,
     super.highlightOptions,
@@ -123,7 +119,12 @@ class VerticalStepProgress extends StepProgressWidget {
   ///
   /// Returns a [Widget] that represents the step nodes.
   @override
-  Widget buildStepNodes({required StepLabelAlignment labelAlignment}) {
+  Widget buildStepNodes({
+    required StepLabelAlignment labelAlignment,
+    required double lineSpacing,
+    required Size maxStepSize,
+    required double labelMaxWidth,
+  }) {
     List<Widget> children = List.generate(totalNodeNumbers, (index) {
       final title = nodeTitles?.elementAtOrNull(index);
       final subTitle = nodeSubTitles?.elementAtOrNull(index);
@@ -133,6 +134,7 @@ class VerticalStepProgress extends StepProgressWidget {
         axis: Axis.vertical,
         width: stepSize,
         height: stepSize,
+        labelMaxWidth: labelMaxWidth,
         anyLabelExist: nodeTitles != null || nodeSubTitles != null,
         stepIndex: getNodeIndexInParentWidget(index),
         title: title,
@@ -146,12 +148,17 @@ class VerticalStepProgress extends StepProgressWidget {
     if (reversed) {
       children = children.reversed.toList();
     }
-    return Column(
-      mainAxisAlignment: startWithLine
-          ? MainAxisAlignment.spaceEvenly
-          : MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: children,
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        vertical: isStartWithLine ? maxStepSize.height / 2 : 0,
+      ),
+      child: Column(
+        mainAxisAlignment: isStartWithLine
+            ? MainAxisAlignment.spaceEvenly
+            : MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: children,
+      ),
     );
   }
 
@@ -170,7 +177,7 @@ class VerticalStepProgress extends StepProgressWidget {
   @override
   Widget buildStepLines({
     required StepLineStyle style,
-    required double maxStepSize,
+    required Size maxStepSize,
     ValueNotifier<RenderBox?>? boxNotifier,
   }) {
     Widget buildWidget() {
@@ -200,7 +207,7 @@ class VerticalStepProgress extends StepProgressWidget {
 
     return Padding(
       padding: EdgeInsets.symmetric(
-        vertical: startWithLine ? 0 : maxStepSize / 2,
+        vertical: isStartWithLine ? 0 : stepSize / 2,
         horizontal: style.lineThickness >= stepSize
             ? 0
             : stepSize / 2 - style.lineThickness / 2,
@@ -217,7 +224,6 @@ class VerticalStepProgress extends StepProgressWidget {
       return const SizedBox.shrink();
     }
     final theme = StepProgressTheme.of(context)!.data;
-    final maxStepHeight = maxStepSize(theme.nodeLabelStyle, context);
     //
     List<Widget> children = List.generate(totalSteps - 1, (index) {
       return Expanded(
@@ -236,7 +242,9 @@ class VerticalStepProgress extends StepProgressWidget {
     }
     //
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: maxStepHeight / 2),
+      padding: EdgeInsets.symmetric(
+        vertical: maxStepHeight(theme.nodeLabelStyle, context) / 2,
+      ),
       child: Column(children: children),
     );
   }
@@ -260,25 +268,6 @@ class VerticalStepProgress extends StepProgressWidget {
     final height =
         !constraints.hasBoundedHeight ? totalSteps * 1.45 * stepSize : null;
     return BoxConstraints.tightFor(height: height);
-  }
-
-  @override
-  double maxStepSize(StepLabelStyle labelStyle, BuildContext context) {
-    final labelPadding = labelStyle.padding;
-    final labelMargin = labelStyle.margin;
-    final labelMaxHeight =
-        // labelMaxHeight +
-        labelPadding.top +
-            labelPadding.bottom +
-            labelMargin.top +
-            labelMargin.bottom;
-
-    // Calculate the maximum size for the step node.
-    return (hasNodeLabels &&
-            labelMaxHeight.isFinite &&
-            labelMaxHeight > stepSize)
-        ? labelMaxHeight
-        : stepSize;
   }
 
   @override

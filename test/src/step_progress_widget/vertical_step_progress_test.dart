@@ -24,7 +24,7 @@ void main() {
               totalSteps: 5,
               currentStep: 1,
               stepSize: 30,
-              visibilityOptions: StepProgressVisibilityOptions.both,
+              visibilityOptions: StepProgressVisibilityOptions.nodeThenLine,
               nodeTitles: const [
                 'Step 1',
                 'Step 2',
@@ -98,7 +98,7 @@ void main() {
             totalSteps: 5,
             currentStep: -1,
             stepSize: 30,
-            visibilityOptions: StepProgressVisibilityOptions.both,
+            visibilityOptions: StepProgressVisibilityOptions.nodeThenLine,
             nodeTitles: List.generate(5, (index) => 'Step ${index + 1}'),
             nodeSubTitles: List.generate(
               5,
@@ -145,7 +145,7 @@ void main() {
             totalSteps: totalSteps,
             currentStep: currentStep,
             stepSize: 30,
-            visibilityOptions: StepProgressVisibilityOptions.both,
+            visibilityOptions: StepProgressVisibilityOptions.nodeThenLine,
             nodeTitles: List.generate(
               totalSteps,
               (index) => 'Step ${index + 1}',
@@ -199,7 +199,7 @@ void main() {
             totalSteps: 5,
             currentStep: 3,
             stepSize: 40,
-            visibilityOptions: StepProgressVisibilityOptions.both,
+            visibilityOptions: StepProgressVisibilityOptions.nodeThenLine,
             nodeTitles: List.generate(5, (index) => 'Step ${index + 1}'),
             nodeSubTitles: List.generate(5, (index) => 'Detail ${index + 1}'),
             onStepNodeTapped: (_) {},
@@ -245,7 +245,7 @@ void main() {
             totalSteps: 4,
             currentStep: 1,
             stepSize: 30,
-            visibilityOptions: StepProgressVisibilityOptions.both,
+            visibilityOptions: StepProgressVisibilityOptions.nodeThenLine,
             nodeTitles: const [
               'Only Title 1',
               'Only Title 2',
@@ -302,7 +302,7 @@ void main() {
                   totalSteps: totalSteps,
                   currentStep: currentStep,
                   stepSize: 50,
-                  visibilityOptions: StepProgressVisibilityOptions.both,
+                  visibilityOptions: StepProgressVisibilityOptions.nodeThenLine,
                   lineTitles: lineTitles,
                   needsRebuildWidget: () {
                     setState(() {});
@@ -341,7 +341,7 @@ void main() {
                   totalSteps: totalSteps,
                   currentStep: currentStep,
                   stepSize: 50,
-                  visibilityOptions: StepProgressVisibilityOptions.both,
+                  visibilityOptions: StepProgressVisibilityOptions.nodeThenLine,
                   lineSubTitles: lineSubTitles,
                   needsRebuildWidget: () {
                     setState(() {});
@@ -383,7 +383,7 @@ void main() {
                   totalSteps: totalSteps,
                   currentStep: currentStep,
                   stepSize: 50,
-                  visibilityOptions: StepProgressVisibilityOptions.both,
+                  visibilityOptions: StepProgressVisibilityOptions.nodeThenLine,
                   lineLabelBuilder: customLineLabel,
                   needsRebuildWidget: () {
                     setState(() {});
@@ -425,7 +425,8 @@ void main() {
                       totalSteps: totalSteps,
                       currentStep: currentStep,
                       stepSize: 50,
-                      visibilityOptions: StepProgressVisibilityOptions.both,
+                      visibilityOptions:
+                          StepProgressVisibilityOptions.nodeThenLine,
                       lineTitles: lineTitles,
                       needsRebuildWidget: () {
                         setState(() {});
@@ -467,7 +468,7 @@ void main() {
             totalSteps: 4,
             currentStep: 2,
             stepSize: 30,
-            visibilityOptions: StepProgressVisibilityOptions.both,
+            visibilityOptions: StepProgressVisibilityOptions.nodeThenLine,
             nodeTitles: List.generate(4, (i) => 'Step ${i + 1}'),
             nodeSubTitles: List.generate(4, (i) => 'Desc ${i + 1}'),
             onStepNodeTapped: (_) {},
@@ -510,7 +511,7 @@ void main() {
             totalSteps: 3,
             currentStep: 1,
             stepSize: 30,
-            visibilityOptions: StepProgressVisibilityOptions.both,
+            visibilityOptions: StepProgressVisibilityOptions.nodeThenLine,
             nodeTitles: List.generate(3, (i) => 'Step ${i + 1}'),
             nodeSubTitles: List.generate(3, (i) => 'Desc ${i + 1}'),
             onStepNodeTapped: (_) {},
@@ -545,7 +546,7 @@ void main() {
             totalSteps: 5,
             currentStep: 4,
             stepSize: 30,
-            visibilityOptions: StepProgressVisibilityOptions.both,
+            visibilityOptions: StepProgressVisibilityOptions.nodeThenLine,
             nodeTitles: List.generate(5, (i) => 'Step ${i + 1}'),
             nodeSubTitles: List.generate(5, (i) => 'Desc ${i + 1}'),
             onStepNodeTapped: (_) {},
@@ -573,5 +574,119 @@ void main() {
 
       expect(calledIndices, equals([1, 2, 3, 4]));
     });
+
+    testWidgets(
+      'VerticalStepProgress with showLineThenNode renders lines before nodes',
+      (tester) async {
+        const int totalSteps = 4;
+        const int currentStep = 2;
+        const double stepSize = 40;
+        const visibilityOptions = StepProgressVisibilityOptions.lineThenNode;
+
+        await tester.pumpWidget(
+          TestThemeWrapper(
+            child: Scaffold(
+              body: VerticalStepProgress(
+                totalSteps: totalSteps,
+                currentStep: currentStep,
+                stepSize: stepSize,
+                visibilityOptions: visibilityOptions,
+                needsRebuildWidget: () {},
+              ),
+            ),
+          ),
+        );
+
+        // There should be totalSteps StepLine widgets and totalSteps-1
+        // StepGenerator widgets
+        final stepLineFinder = find.byType(StepLine);
+        final stepGeneratorFinder = find.byType(StepGenerator);
+
+        expect(stepLineFinder, findsNWidgets(totalSteps));
+        expect(stepGeneratorFinder, findsNWidgets(totalSteps - 1));
+
+        // Check that the first widget is a StepLine (lines come before nodes)
+        final allWidgets = tester
+            .widgetList(find.descendant(
+              of: find.byType(VerticalStepProgress),
+              matching: find.byWidgetPredicate(
+                  (widget) => widget is StepLine || widget is StepGenerator),
+            ))
+            .toList();
+
+        expect(allWidgets.first, isA<StepLine>());
+        expect(allWidgets.last, isA<StepGenerator>());
+      },
+    );
+
+    testWidgets(
+      'VerticalStepProgress with showLineThenNode triggers onStepLineTapped',
+      (tester) async {
+        const int totalSteps = 3;
+        const int currentStep = 1;
+        const double stepSize = 40;
+        const visibilityOptions = StepProgressVisibilityOptions.lineThenNode;
+        int tappedLineIndex = -1;
+
+        await tester.pumpWidget(
+          TestThemeWrapper(
+            child: Scaffold(
+              body: VerticalStepProgress(
+                totalSteps: totalSteps,
+                currentStep: currentStep,
+                stepSize: stepSize,
+                visibilityOptions: visibilityOptions,
+                onStepLineTapped: (index) {
+                  tappedLineIndex = index;
+                },
+                needsRebuildWidget: () {},
+              ),
+            ),
+          ),
+        );
+
+        // Tap the first StepLine
+        final stepLineFinder = find.byType(StepLine).first;
+        await tester.tap(stepLineFinder);
+        await tester.pumpAndSettle();
+
+        expect(tappedLineIndex, equals(0));
+      },
+    );
+
+    testWidgets(
+      'VerticalStepProgress with showLineThenNode triggers onStepNodeTapped',
+      (tester) async {
+        const int totalSteps = 3;
+        const int currentStep = 1;
+        const double stepSize = 40;
+        const visibilityOptions = StepProgressVisibilityOptions.lineThenNode;
+        int tappedNodeIndex = -1;
+
+        await tester.pumpWidget(
+          TestThemeWrapper(
+            child: Scaffold(
+              body: VerticalStepProgress(
+                totalSteps: totalSteps,
+                currentStep: currentStep,
+                stepSize: stepSize,
+                visibilityOptions: visibilityOptions,
+                onStepNodeTapped: (index) {
+                  tappedNodeIndex = index;
+                },
+                needsRebuildWidget: () {},
+              ),
+            ),
+          ),
+        );
+
+        // Tap the first StepGenerator (node)
+        final stepGeneratorFinder = find.byType(StepGenerator).first;
+        await tester.tap(stepGeneratorFinder);
+        await tester.pumpAndSettle();
+
+        expect(tappedNodeIndex, equals(0));
+      },
+    );
   });
 }
