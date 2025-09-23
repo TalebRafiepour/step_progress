@@ -688,5 +688,86 @@ void main() {
         expect(tappedNodeIndex, equals(0));
       },
     );
+
+    testWidgets(
+      'VerticalStepProgress renders node titles and subtitles correctly',
+      (tester) async {
+        const int totalSteps = 3;
+        const int currentStep = 1;
+        const double stepSize = 40;
+        const visibilityOptions = StepProgressVisibilityOptions.nodeThenLine;
+
+        final nodeTitles = ['Title 1', 'Title 2', 'Title 3'];
+        final nodeSubTitles = ['Sub 1', 'Sub 2', 'Sub 3'];
+
+        await tester.pumpWidget(
+          TestThemeWrapper(
+            child: Scaffold(
+              body: VerticalStepProgress(
+                totalSteps: totalSteps,
+                currentStep: currentStep,
+                stepSize: stepSize,
+                visibilityOptions: visibilityOptions,
+                nodeTitles: nodeTitles,
+                nodeSubTitles: nodeSubTitles,
+                needsRebuildWidget: () {},
+              ),
+            ),
+          ),
+        );
+
+        // Verify each node title is rendered
+        for (final title in nodeTitles) {
+          expect(find.text(title), findsOneWidget);
+        }
+
+        // Verify each node subtitle is rendered
+        for (final subtitle in nodeSubTitles) {
+          expect(find.text(subtitle), findsOneWidget);
+        }
+      },
+    );
+
+    testWidgets(
+      'VerticalStepProgress with StepProgressVisibilityOptions.lineOnly renders'
+      ' only step lines',
+      (tester) async {
+        const int totalSteps = 4;
+        const int currentStep = -1;
+        const double stepSize = 40;
+        const visibilityOptions = StepProgressVisibilityOptions.lineOnly;
+
+        await tester.pumpWidget(
+          TestThemeWrapper(
+            child: Scaffold(
+              body: VerticalStepProgress(
+                totalSteps: totalSteps,
+                currentStep: currentStep,
+                stepSize: stepSize,
+                visibilityOptions: visibilityOptions,
+                nodeTitles: const ['A', 'B', 'C', 'D'],
+                nodeSubTitles: const ['a', 'b', 'c', 'd'],
+                needsRebuildWidget: () {},
+              ),
+            ),
+          ),
+        );
+
+        // Should render only step lines, no step nodes.
+        final stepLineFinder = find.byType(StepLine);
+        final stepGeneratorFinder = find.byType(StepGenerator);
+
+        expect(stepLineFinder, findsNWidgets(totalSteps));
+        expect(stepGeneratorFinder, findsNothing);
+
+        // Node titles and subtitles should not be rendered.
+        for (final title in ['A', 'B', 'C', 'D']) {
+          expect(find.text(title), findsNothing);
+        }
+        for (final subtitle in ['a', 'b', 'c', 'd']) {
+          expect(find.text(subtitle), findsNothing);
+        }
+      },
+    );
   });
 }
