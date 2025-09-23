@@ -13,7 +13,7 @@ class ExampleTwentyTwo extends StatelessWidget {
       ),
       body: StepProgress(
         totalSteps: 6,
-        stepSize: 20,
+        stepNodeSize: 20,
         padding: const EdgeInsets.symmetric(vertical: 24),
         visibilityOptions: StepProgressVisibilityOptions.lineThenNode,
         theme: const StepProgressThemeData(

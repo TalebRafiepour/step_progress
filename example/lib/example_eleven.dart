@@ -16,7 +16,7 @@ class ExampleEleven extends StatelessWidget {
         children: [
           StepProgress(
             totalSteps: 4,
-            stepSize: 24,
+            stepNodeSize: 24,
             controller: stepProgressController,
             nodeTitles: const [
               'Step 1',

@@ -55,7 +55,8 @@ typedef OnStepNodeTapped = void Function(int index);
 /// The [currentStep] parameter specifies the current step in the progress
 /// indicator. It defaults to 0.
 ///
-/// The [stepSize] parameter specifies the size of each step. It defaults to 34.
+/// The [stepNodeSize] parameter specifies the size of each step. It defaults
+/// to 34.
 ///
 /// The [theme] parameter specifies the theme data for the step progress
 /// indicator. It defaults to [StepProgressThemeData].
@@ -120,7 +121,7 @@ class StepProgress extends StatefulWidget {
     this.controller,
     this.currentStep = -1,
     super.key,
-    this.stepSize = 34,
+    this.stepNodeSize = 34,
     this.width,
     this.height,
     this.theme = const StepProgressThemeData(),
@@ -183,7 +184,7 @@ class StepProgress extends StatefulWidget {
   final StepProgressHighlightOptions highlightOptions;
 
   /// Size of each step indicator
-  final double stepSize;
+  final double stepNodeSize;
 
   /// The width of the step progress widget.
   final double? width;
@@ -383,7 +384,7 @@ class _StepProgressState extends State<StepProgress>
                 nodeSubTitles: widget.nodeSubTitles,
                 lineTitles: widget.lineTitles,
                 lineSubTitles: widget.lineSubTitles,
-                stepSize: widget.stepSize,
+                stepSize: widget.stepNodeSize,
                 onStepNodeTapped: widget.onStepNodeTapped,
                 onStepLineTapped: widget.onStepLineTapped,
                 visibilityOptions: widget.visibilityOptions,
@@ -404,7 +405,7 @@ class _StepProgressState extends State<StepProgress>
                 nodeSubTitles: widget.nodeSubTitles,
                 lineTitles: widget.lineTitles,
                 lineSubTitles: widget.lineSubTitles,
-                stepSize: widget.stepSize,
+                stepSize: widget.stepNodeSize,
                 onStepNodeTapped: widget.onStepNodeTapped,
                 onStepLineTapped: widget.onStepLineTapped,
                 visibilityOptions: widget.visibilityOptions,

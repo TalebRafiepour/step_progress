@@ -16,7 +16,7 @@ class ExampleTwelve extends StatelessWidget {
         children: [
           StepProgress(
             totalSteps: 4,
-            stepSize: 24,
+            stepNodeSize: 24,
             height: 390,
             axis: Axis.vertical,
             controller: stepProgressController,

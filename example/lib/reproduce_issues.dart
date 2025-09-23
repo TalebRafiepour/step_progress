@@ -16,7 +16,7 @@ class ReproduceIssues extends StatelessWidget {
         children: [
           StepProgress(
             totalSteps: 3,
-            stepSize: 10,
+            stepNodeSize: 10,
             controller: stepProgressController,
             padding: const EdgeInsets.all(18),
             nodeTitles: const [

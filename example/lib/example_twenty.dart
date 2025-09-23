@@ -21,7 +21,7 @@ class ExampleTwenty extends StatelessWidget {
       ),
       body: StepProgress(
         totalSteps: 5,
-        stepSize: 75,
+        stepNodeSize: 75,
         padding: const EdgeInsets.all(10),
         controller: stepProgressController,
         visibilityOptions: StepProgressVisibilityOptions.nodeOnly,

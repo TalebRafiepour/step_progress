@@ -19,7 +19,7 @@
   
 - **Theming and Customization**:
   - **Comprehensive Theme**: Easily customize the look and feel using `StepProgressThemeData`, controlling colors, text styles, and border properties.
-  - **Step Sizing**: Adjust the size of step nodes with `stepSize`.
+  - **Step Sizing**: Adjust the size of step nodes with `stepNodeSize`.
   - **Titles and Subtitles**: Add descriptive labels to each step nodes and lines for enhanced user understanding.
   - **Visibility Control**: Show or hide titles, subtitles, and connecting lines using `StepProgressVisibilityOptions`.
   - **Custom Icons**: Utilize custom icons for step nodes using `nodeIconBuilder`.
@@ -349,7 +349,7 @@ StepProgress(
 ```dart
 StepProgress(
   totalSteps: 4,
-  stepSize: 24,
+  stepNodeSize: 24,
   controller: stepProgressController,
   nodeTitles: const [
     'Step 1',
@@ -389,7 +389,7 @@ StepProgress(
 ```dart
 StepProgress(
   totalSteps: 4,
-  stepSize: 24,
+  stepNodeSize: 24,
   height: 390,
   axis: Axis.vertical,
   controller: stepProgressController,
@@ -430,7 +430,7 @@ StepProgress(
 ```dart
 StepProgress(
   totalSteps: 4,
-  stepSize: 28,
+  stepNodeSize: 28,
   height: 390,
   axis: Axis.vertical,
   controller: stepProgressController,
@@ -697,7 +697,7 @@ const nodeIcons = [
 ```dart
 StepProgress(
   totalSteps: 5,
-  stepSize: 75,
+  stepNodeSize: 75,
   padding: const EdgeInsets.all(10),
   controller: stepProgressController,
   visibilityOptions: StepProgressVisibilityOptions.nodeOnly,
@@ -754,7 +754,7 @@ StepProgress(
 ```dart
 StepProgress(
   totalSteps: 6,
-  stepSize: 20,
+  stepNodeSize: 20,
   padding: const EdgeInsets.symmetric(vertical: 24),
   visibilityOptions: StepProgressVisibilityOptions.lineThenNode,
   theme: const StepProgressThemeData(
