@@ -1,3 +1,10 @@
+# 2.7.0
+
+- **Property Renaming**: Renamed the `stepSize` property to `stepNodeSize` for improved clarity and consistency.
+- **Enhanced Visibility Options**: Updated the `StepProgressVisibilityOptions` enum to include the new `lineThenNode` state, allowing the line to appear before the node. This provides greater flexibility and customization, in addition to the default `nodeThenLine` behavior.
+- **Testing**: Updated and added new widget tests to ensure compatibility with the latest changes.
+
+
 # 2.6.2
 
 - **Bug Fix**: Resolved an issue where `autoProgress` did not advance correctly when the previous step exceeded the current step.
