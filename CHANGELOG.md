@@ -1,3 +1,9 @@
+# 2.7.1
+- **Bug Fix**: Resolved an issue where node labels were not displaying correctly when using the `nodeLabelBuilder` callback for custom node label creation.
+- **Enhanced Flexibility**: Added the `hasEqualNodeAndLineCount` property, a boolean that when set to `true` ensures equal count of lines and nodes in the widget for improved visual consistency.
+- **Testing**: Added comprehensive tests for the new functionality to ensure reliability and proper behavior.
+- **Documentation**: Updated the `README.md` file with examples and information about the new features.
+
 # 2.7.0
 
 - **Property Renaming**: Renamed the `stepSize` property to `stepNodeSize` for improved clarity and consistency.
