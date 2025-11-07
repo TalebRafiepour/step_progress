@@ -18,6 +18,7 @@ import 'package:example/example_three.dart';
 import 'package:example/example_twelve.dart';
 import 'package:example/example_twenty.dart';
 import 'package:example/example_twenty_one.dart';
+import 'package:example/example_twenty_three.dart';
 import 'package:example/example_twenty_two.dart';
 import 'package:example/example_two.dart';
 import 'package:example/reproduce_issues.dart';
@@ -303,6 +304,19 @@ class HomePage extends StatelessWidget {
                 },
                 child: const Text(
                   '22-LineFirstMode',
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const ExampleTwentyThree(),
+                    ),
+                  );
+                },
+                child: const Text(
+                  '23-Customized-LineFirstMode-EqualLineAndNode',
                 ),
               ),
               ElevatedButton(

@@ -157,12 +157,12 @@ class StepProgress extends StatefulWidget {
           'nodeSubTitles must be equals to or less than total steps',
         ),
         assert(
-          lineTitles == null || lineTitles.length < totalSteps,
-          'lineTitles must be less than total steps',
+          lineTitles == null || lineTitles.length <= totalSteps,
+          'lineTitles must be equals to or less than total steps',
         ),
         assert(
-          lineSubTitles == null || lineSubTitles.length < totalSteps,
-          'lineSubTitles must be less than total steps',
+          lineSubTitles == null || lineSubTitles.length <= totalSteps,
+          'lineSubTitles must be equals to or less than total steps',
         );
 
   /// List of Titles for each step in the progress

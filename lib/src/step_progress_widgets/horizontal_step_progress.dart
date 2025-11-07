@@ -187,16 +187,21 @@ class HorizontalStepProgress extends StepProgressWidget {
       return const SizedBox.shrink();
     }
     final theme = StepProgressTheme.of(context)!.data;
+    final lineLabelAlignment = theme.lineLabelAlignment ?? Alignment.topCenter;
+    final lineSpacing = theme.stepLineSpacing;
     //
-    List<Widget> children = List.generate(totalSteps - 1, (index) {
+    List<Widget> children = List.generate(totalLineNumbers, (index) {
       return Expanded(
-        child: StepLabel(
-          style: theme.lineLabelStyle,
-          alignment: theme.lineLabelAlignment ?? Alignment.topCenter,
-          isActive: currentStep > index,
-          customLabel: lineLabelBuilder?.call(index, currentStep),
-          title: lineTitles?.elementAtOrNull(index),
-          subTitle: lineSubTitles?.elementAtOrNull(index),
+        child: Padding(
+          padding: EdgeInsetsGeometry.symmetric(horizontal: lineSpacing),
+          child: StepLabel(
+            style: theme.lineLabelStyle,
+            alignment: lineLabelAlignment,
+            isActive: currentStep > index,
+            customLabel: lineLabelBuilder?.call(index, currentStep),
+            title: lineTitles?.elementAtOrNull(index),
+            subTitle: lineSubTitles?.elementAtOrNull(index),
+          ),
         ),
       );
     });
@@ -210,7 +215,12 @@ class HorizontalStepProgress extends StepProgressWidget {
             ? 0
             : maxStepWidth(theme.nodeLabelStyle, context) / 2,
       ),
-      child: Row(children: children),
+      child: Row(
+        crossAxisAlignment: lineLabelAlignment.y > -1.0
+            ? CrossAxisAlignment.start
+            : CrossAxisAlignment.end,
+        children: children,
+      ),
     );
   }
 

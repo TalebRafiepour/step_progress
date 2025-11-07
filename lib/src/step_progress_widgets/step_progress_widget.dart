@@ -91,12 +91,12 @@ abstract class StepProgressWidget extends StatelessWidget {
           'nodeSubTitles lenght must be equals to or less than total steps',
         ),
         assert(
-          lineTitles == null || lineTitles.length < totalSteps,
-          'lineTitles lenght must be less than total steps',
+          lineTitles == null || lineTitles.length <= totalSteps,
+          'lineTitles lenght must be equals to or less than total steps',
         ),
         assert(
-          lineSubTitles == null || lineSubTitles.length < totalSteps,
-          'lineSubTitles lenght must be less than total steps',
+          lineSubTitles == null || lineSubTitles.length <= totalSteps,
+          'lineSubTitles lenght must be equals to or less than total steps',
         );
 
   /// The total number of steps in the progress indicator.
