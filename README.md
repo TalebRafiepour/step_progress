@@ -767,6 +767,42 @@ StepProgress(
 ```
 </details>
 
+### Example 23: LineFirst mode (horizontal)
+![StepProgress-horizontal-line-first-mode-with-same-node-and-line-count](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/step_progress/sample-23-stepprogress-customized-firstlinemode-samenodeandlinecount.gif)
+
+<details>
+  <summary>Show Implementation</summary>
+
+```dart
+StepProgress(
+  totalSteps: 3,
+  stepNodeSize: 30,
+  hasEqualNodeAndLineCount: true, // enable equal node and line count
+  padding: const EdgeInsets.symmetric(vertical: 24),
+  visibilityOptions: StepProgressVisibilityOptions.lineThenNode,
+  lineTitles: const [
+    'Download Audacity application',
+    'Connect to cloud storage',
+    'Never lose your work in Audacity'
+  ],
+  theme: const StepProgressThemeData(
+    stepLineSpacing: 20,
+    lineLabelAlignment: Alignment.bottomCenter,
+    lineLabelStyle: StepLabelStyle(
+      defualtColor: Colors.black87,
+      activeColor: Colors.black87,
+      margin: EdgeInsets.only(top: 10),
+      titleStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+    ),
+    stepNodeStyle: StepNodeStyle(
+      shape: StepNodeShape.circle,
+    ),
+  ),
+  controller: stepProgressController,
+),
+```
+</details>
+
 ## Installation
 
 To use StepProgress, add it to your `pubspec.yaml` file:
