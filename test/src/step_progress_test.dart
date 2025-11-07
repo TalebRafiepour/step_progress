@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:step_progress/src/step_line/step_line.dart';
 import 'package:step_progress/src/step_node/step_node.dart';
 import 'package:step_progress/src/step_progress_widgets/horizontal_step_progress.dart';
 import 'package:step_progress/src/step_progress_widgets/vertical_step_progress.dart';
@@ -599,6 +600,583 @@ void main() {
         findsOneWidget,
       ); // Only one text widget should exist
     });
+  });
+
+  group('StepProgress Widget - hasEqualNodeAndLineCount Tests', () {
+    testWidgets(
+      'Should render equal number of nodes and lines when '
+      'hasEqualNodeAndLineCount is true with nodeThenLine',
+      (tester) async {
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: StepProgress(
+                totalSteps: 4,
+                currentStep: 1,
+                hasEqualNodeAndLineCount: true,
+                visibilityOptions: StepProgressVisibilityOptions.nodeThenLine,
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        // When hasEqualNodeAndLineCount is true, both nodes and lines should
+        // equal totalSteps
+        expect(find.byType(StepNode), findsNWidgets(4));
+        expect(find.byType(StepLine), findsNWidgets(4));
+      },
+    );
+
+    testWidgets(
+      'Should render equal number of nodes and lines when '
+      'hasEqualNodeAndLineCount is true with lineThenNode',
+      (tester) async {
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: StepProgress(
+                totalSteps: 3,
+                currentStep: 0,
+                hasEqualNodeAndLineCount: true,
+                visibilityOptions: StepProgressVisibilityOptions.lineThenNode,
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        // When hasEqualNodeAndLineCount is true, both nodes and lines should
+        // equal totalSteps
+        expect(find.byType(StepNode), findsNWidgets(3));
+        expect(find.byType(StepLine), findsNWidgets(3));
+      },
+    );
+
+    testWidgets(
+      'Should work with horizontal axis when hasEqualNodeAndLineCount is true',
+      (tester) async {
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: StepProgress(
+                totalSteps: 5,
+                currentStep: 2,
+                hasEqualNodeAndLineCount: true,
+                axis: Axis.horizontal,
+                visibilityOptions: StepProgressVisibilityOptions.nodeThenLine,
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        expect(find.byType(HorizontalStepProgress), findsOneWidget);
+        expect(find.byType(StepNode), findsNWidgets(5));
+        expect(find.byType(StepLine), findsNWidgets(5));
+      },
+    );
+
+    testWidgets(
+      'Should work with vertical axis when hasEqualNodeAndLineCount is true',
+      (tester) async {
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: StepProgress(
+                totalSteps: 4,
+                currentStep: 1,
+                hasEqualNodeAndLineCount: true,
+                axis: Axis.vertical,
+                visibilityOptions: StepProgressVisibilityOptions.lineThenNode,
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        expect(find.byType(VerticalStepProgress), findsOneWidget);
+        expect(find.byType(StepNode), findsNWidgets(4));
+        expect(find.byType(StepLine), findsNWidgets(4));
+      },
+    );
+
+    testWidgets(
+      'Should render node titles correctly when hasEqualNodeAndLineCount true',
+      (tester) async {
+        const nodeTitles = ['Node 1', 'Node 2', 'Node 3'];
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: StepProgress(
+                totalSteps: 3,
+                currentStep: 1,
+                hasEqualNodeAndLineCount: true,
+                nodeTitles: nodeTitles,
+                visibilityOptions: StepProgressVisibilityOptions.nodeThenLine,
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        // Verify each node title is rendered
+        for (final title in nodeTitles) {
+          expect(find.text(title), findsOneWidget);
+        }
+
+        expect(find.byType(StepNode), findsNWidgets(3));
+        expect(find.byType(StepLine), findsNWidgets(3));
+      },
+    );
+
+    testWidgets(
+      'Should render line titles correctly when hasEqualNodeAndLineCount true',
+      (tester) async {
+        const lineTitles = ['Line 1', 'Line 2', 'Line 3'];
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: StepProgress(
+                totalSteps: 3,
+                currentStep: 1,
+                hasEqualNodeAndLineCount: true,
+                lineTitles: lineTitles,
+                visibilityOptions: StepProgressVisibilityOptions.lineThenNode,
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        // Verify each line title is rendered
+        for (final title in lineTitles) {
+          expect(find.text(title), findsOneWidget);
+        }
+
+        expect(find.byType(StepNode), findsNWidgets(3));
+        expect(find.byType(StepLine), findsNWidgets(3));
+      },
+    );
+
+    testWidgets(
+      'Should work with both node and line titles when '
+      'hasEqualNodeAndLineCount is true',
+      (tester) async {
+        const nodeTitles = ['Node A', 'Node B', 'Node C', 'Node D'];
+        const lineTitles = ['Line X', 'Line Y', 'Line Z', 'Line W'];
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: StepProgress(
+                totalSteps: 4,
+                currentStep: 2,
+                hasEqualNodeAndLineCount: true,
+                nodeTitles: nodeTitles,
+                lineTitles: lineTitles,
+                visibilityOptions: StepProgressVisibilityOptions.nodeThenLine,
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        // Verify both node and line titles are rendered
+        for (final nodeTitle in nodeTitles) {
+          expect(find.text(nodeTitle), findsOneWidget);
+        }
+        for (final lineTitle in lineTitles) {
+          expect(find.text(lineTitle), findsOneWidget);
+        }
+
+        expect(find.byType(StepNode), findsNWidgets(4));
+        expect(find.byType(StepLine), findsNWidgets(4));
+      },
+    );
+
+    testWidgets(
+      'Should work with nodeSubTitles and lineSubTitles when '
+      'hasEqualNodeAndLineCount is true',
+      (tester) async {
+        const nodeSubTitles = ['Sub A', 'Sub B', 'Sub C'];
+        const lineSubTitles = ['Line Sub 1', 'Line Sub 2', 'Line Sub 3'];
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: StepProgress(
+                totalSteps: 3,
+                currentStep: 1,
+                hasEqualNodeAndLineCount: true,
+                nodeSubTitles: nodeSubTitles,
+                lineSubTitles: lineSubTitles,
+                visibilityOptions: StepProgressVisibilityOptions.lineThenNode,
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        // Verify both node and line subtitles are rendered
+        for (final nodeSubTitle in nodeSubTitles) {
+          expect(find.text(nodeSubTitle), findsOneWidget);
+        }
+        for (final lineSubTitle in lineSubTitles) {
+          expect(find.text(lineSubTitle), findsOneWidget);
+        }
+
+        expect(find.byType(StepNode), findsNWidgets(3));
+        expect(find.byType(StepLine), findsNWidgets(3));
+      },
+    );
+
+    testWidgets(
+      'Should work with custom nodeLabelBuilder when '
+      'hasEqualNodeAndLineCount is true',
+      (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: StepProgress(
+                totalSteps: 3,
+                currentStep: 1,
+                hasEqualNodeAndLineCount: true,
+                nodeLabelBuilder: (index, completedStepIndex) {
+                  return Container(
+                    key: Key('custom_node_$index'),
+                    child: Text('Custom Node $index'),
+                  );
+                },
+                visibilityOptions: StepProgressVisibilityOptions.nodeThenLine,
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        // Verify custom node labels are rendered
+        for (var i = 0; i < 3; i++) {
+          expect(find.byKey(Key('custom_node_$i')), findsOneWidget);
+          expect(find.text('Custom Node $i'), findsOneWidget);
+        }
+
+        expect(find.byType(StepNode), findsNWidgets(3));
+        expect(find.byType(StepLine), findsNWidgets(3));
+      },
+    );
+
+    testWidgets(
+      'Should work with custom lineLabelBuilder when '
+      'hasEqualNodeAndLineCount is true',
+      (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: StepProgress(
+                totalSteps: 4,
+                currentStep: 2,
+                hasEqualNodeAndLineCount: true,
+                lineLabelBuilder: (index, completedStepIndex) {
+                  return Container(
+                    key: Key('custom_line_$index'),
+                    child: Text('Custom Line $index'),
+                  );
+                },
+                visibilityOptions: StepProgressVisibilityOptions.lineThenNode,
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        // Verify custom line labels are rendered
+        for (var i = 0; i < 4; i++) {
+          expect(find.byKey(Key('custom_line_$i')), findsOneWidget);
+          expect(find.text('Custom Line $i'), findsOneWidget);
+        }
+
+        expect(find.byType(StepNode), findsNWidgets(4));
+        expect(find.byType(StepLine), findsNWidgets(4));
+      },
+    );
+
+    testWidgets(
+      'Should work with reversed order when hasEqualNodeAndLineCount is true',
+      (tester) async {
+        const nodeTitles = ['First', 'Second', 'Third'];
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: StepProgress(
+                totalSteps: 3,
+                currentStep: 1,
+                hasEqualNodeAndLineCount: true,
+                reversed: true,
+                nodeTitles: nodeTitles,
+                visibilityOptions: StepProgressVisibilityOptions.nodeThenLine,
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        // Verify content is rendered
+        for (final title in nodeTitles) {
+          expect(find.text(title), findsOneWidget);
+        }
+
+        expect(find.byType(StepNode), findsNWidgets(3));
+        expect(find.byType(StepLine), findsNWidgets(3));
+      },
+    );
+
+    testWidgets(
+      'Should handle nodeOnly visibility option when '
+      'hasEqualNodeAndLineCount is true',
+      (tester) async {
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: StepProgress(
+                totalSteps: 4,
+                currentStep: 2,
+                hasEqualNodeAndLineCount: true,
+                visibilityOptions: StepProgressVisibilityOptions.nodeOnly,
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        // When visibility is nodeOnly, should render nodes but not lines
+        expect(find.byType(StepNode), findsNWidgets(4));
+        expect(find.byType(StepLine), findsNothing);
+      },
+    );
+
+    testWidgets(
+      'Should handle lineOnly visibility option when '
+      'hasEqualNodeAndLineCount is true',
+      (tester) async {
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: StepProgress(
+                totalSteps: 5,
+                currentStep: 3,
+                hasEqualNodeAndLineCount: true,
+                visibilityOptions: StepProgressVisibilityOptions.lineOnly,
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        // When visibility is lineOnly, should render lines but not nodes
+        expect(find.byType(StepLine), findsNWidgets(5));
+        expect(find.byType(StepNode), findsNothing);
+      },
+    );
+
+    testWidgets(
+      'Should work with controller when hasEqualNodeAndLineCount is true',
+      (tester) async {
+        final controller =
+            StepProgressController(initialStep: 0, totalSteps: 3);
+        int? changedStep;
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: StepProgress(
+                totalSteps: 3,
+                controller: controller,
+                hasEqualNodeAndLineCount: true,
+                onStepChanged: (newStep) {
+                  changedStep = newStep;
+                },
+                visibilityOptions: StepProgressVisibilityOptions.nodeThenLine,
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        // Update the controller currentStep
+        controller.setCurrentStep(2);
+        await tester.pumpAndSettle();
+
+        // The onStepChanged callback should have been called with the new value
+        expect(changedStep, equals(2));
+        expect(find.byType(StepNode), findsNWidgets(3));
+        expect(find.byType(StepLine), findsNWidgets(3));
+      },
+    );
+
+    testWidgets(
+      'Should work with step tapping when hasEqualNodeAndLineCount is true',
+      (tester) async {
+        int tappedNodeIndex = -1;
+        int tappedLineIndex = -1;
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: StepProgress(
+                totalSteps: 4,
+                currentStep: 1,
+                hasEqualNodeAndLineCount: true,
+                onStepNodeTapped: (index) {
+                  tappedNodeIndex = index;
+                },
+                onStepLineTapped: (index) {
+                  tappedLineIndex = index;
+                },
+                visibilityOptions: StepProgressVisibilityOptions.nodeThenLine,
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        // Try to tap on a step node
+        await tester.tap(find.byType(StepNode).first);
+        await tester.pumpAndSettle();
+        expect(tappedNodeIndex, isNot(-1));
+
+        // Try to tap on a step line
+        await tester.tap(find.byType(StepLine).first);
+        await tester.pumpAndSettle();
+        expect(tappedLineIndex, isNot(-1));
+
+        expect(find.byType(StepNode), findsNWidgets(4));
+        expect(find.byType(StepLine), findsNWidgets(4));
+      },
+    );
+
+    testWidgets(
+      'Should work with autoStartProgress when hasEqualNodeAndLineCount true',
+      (tester) async {
+        int? changedStep;
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: StepProgress(
+                totalSteps: 4,
+                currentStep: 0,
+                hasEqualNodeAndLineCount: true,
+                autoStartProgress: true,
+                onStepChanged: (step) {
+                  changedStep = step;
+                },
+                visibilityOptions: StepProgressVisibilityOptions.lineThenNode,
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        // Should auto-advance to end of steps (3)
+        expect(changedStep, equals(3));
+        expect(find.byType(StepNode), findsNWidgets(4));
+        expect(find.byType(StepLine), findsNWidgets(4));
+      },
+    );
+
+    testWidgets(
+      'Should handle large number of steps when hasEqualNodeAndLineCount true',
+      (tester) async {
+        const int largeStepCount = 10;
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: StepProgress(
+                  totalSteps: largeStepCount,
+                  currentStep: 5,
+                  width: largeStepCount * 60,
+                  hasEqualNodeAndLineCount: true,
+                  visibilityOptions: StepProgressVisibilityOptions.nodeThenLine,
+                ),
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        // Should render equal numbers of nodes and lines
+        expect(find.byType(StepNode), findsNWidgets(largeStepCount));
+        expect(find.byType(StepLine), findsNWidgets(largeStepCount));
+      },
+    );
+
+    testWidgets(
+      'Should maintain state consistency when switching visibility options '
+      'with hasEqualNodeAndLineCount true',
+      (tester) async {
+        Widget buildStepProgress(StepProgressVisibilityOptions visibility) {
+          return MaterialApp(
+            home: Scaffold(
+              body: StepProgress(
+                totalSteps: 3,
+                currentStep: 1,
+                hasEqualNodeAndLineCount: true,
+                visibilityOptions: visibility,
+              ),
+            ),
+          );
+        }
+
+        // Test nodeThenLine
+        await tester.pumpWidget(
+          buildStepProgress(StepProgressVisibilityOptions.nodeThenLine),
+        );
+        await tester.pumpAndSettle();
+        expect(find.byType(StepNode), findsNWidgets(3));
+        expect(find.byType(StepLine), findsNWidgets(3));
+
+        // Switch to lineThenNode
+        await tester.pumpWidget(
+          buildStepProgress(StepProgressVisibilityOptions.lineThenNode),
+        );
+        await tester.pumpAndSettle();
+        expect(find.byType(StepNode), findsNWidgets(3));
+        expect(find.byType(StepLine), findsNWidgets(3));
+
+        // Switch to nodeOnly
+        await tester.pumpWidget(
+          buildStepProgress(StepProgressVisibilityOptions.nodeOnly),
+        );
+        await tester.pumpAndSettle();
+        expect(find.byType(StepNode), findsNWidgets(3));
+        expect(find.byType(StepLine), findsNothing);
+
+        // Switch to lineOnly
+        await tester.pumpWidget(
+          buildStepProgress(StepProgressVisibilityOptions.lineOnly),
+        );
+        await tester.pumpAndSettle();
+        expect(find.byType(StepLine), findsNWidgets(3));
+        expect(find.byType(StepNode), findsNothing);
+      },
+    );
   });
 
   group(
