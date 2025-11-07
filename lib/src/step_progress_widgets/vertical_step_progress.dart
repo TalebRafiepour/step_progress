@@ -28,6 +28,16 @@ import 'package:step_progress/src/step_progress_widgets/step_progress_widget.dar
 /// various elements within the step progress widget, such as step titles and
 /// subtitles.
 ///
+/// The [hasEqualNodeAndLineCount] parameter determines whether the number of
+/// nodes and lines should be equal. When set to true, the widget ensures that
+/// the node count matches the line count for balanced visual representation.
+///
+/// The [controller] parameter allows you to provide a custom controller for
+/// managing the step progress state and animations.
+///
+/// The [onStepLineAnimationCompleted] callback is triggered when a step line
+/// animation completes, providing the index of the completed step.
+///
 /// The [reversed] parameter allows you to reverse the order of the steps.
 ///
 /// The [highlightOptions] parameter allows you to customize the highlighting
@@ -58,6 +68,11 @@ import 'package:step_progress/src/step_progress_widgets/step_progress_widget.dar
 ///   currentStep: 2,
 ///   stepSize: 30.0,
 ///   visibilityOptions: StepProgressVisibilityOptions.both,
+///   hasEqualNodeAndLineCount: false,
+///   controller: myStepController,
+///   onStepLineAnimationCompleted: (index) {
+///     print('Animation completed for step: $index');
+///   },
 ///   reversed: false,
 ///   isAutoStepChange: true,
 ///   lineTitles: ['Line1', 'Line2', 'Line3', 'Line4' ],
@@ -92,6 +107,7 @@ class VerticalStepProgress extends StepProgressWidget {
     required super.stepSize,
     required super.visibilityOptions,
     required super.needsRebuildWidget,
+    super.hasEqualNodeAndLineCount,
     super.onStepLineAnimationCompleted,
     super.controller,
     super.highlightOptions,
@@ -145,17 +161,36 @@ class VerticalStepProgress extends StepProgressWidget {
         onTap: () => onStepNodeTapped?.call(index),
       );
     });
+
+    if (hasEqualNodeAndLineCount &&
+        (visibilityOptions != StepProgressVisibilityOptions.nodeOnly)) {
+      children.insert(
+        isStartWithLine ? 0 : children.length,
+        SizedBox(
+          width: stepSize,
+          height: stepSize,
+        ),
+      );
+    }
+
     if (reversed) {
       children = children.reversed.toList();
     }
+    //
+    final verticalPadding = (isStartWithLine && !hasEqualNodeAndLineCount)
+        ? maxStepSize.height / 2.0
+        : 0.0;
+    //
+    final mainAxisAlignment = (isStartWithLine && !hasEqualNodeAndLineCount)
+        ? MainAxisAlignment.spaceEvenly
+        : MainAxisAlignment.spaceBetween;
+
     return Padding(
       padding: EdgeInsets.symmetric(
-        vertical: isStartWithLine ? maxStepSize.height / 2 : 0,
+        vertical: verticalPadding,
       ),
       child: Column(
-        mainAxisAlignment: isStartWithLine
-            ? MainAxisAlignment.spaceEvenly
-            : MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: mainAxisAlignment,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: children,
       ),
@@ -205,12 +240,17 @@ class VerticalStepProgress extends StepProgressWidget {
       );
     }
 
+    final verticalSpacing =
+        (isStartWithLine && !hasEqualNodeAndLineCount) ? 0.0 : stepSize / 2.0;
+
+    final horizontalSpacing = style.lineThickness >= stepSize
+        ? 0.0
+        : stepSize / 2.0 - style.lineThickness / 2.0;
+
     return Padding(
       padding: EdgeInsets.symmetric(
-        vertical: isStartWithLine ? 0 : stepSize / 2,
-        horizontal: style.lineThickness >= stepSize
-            ? 0
-            : stepSize / 2 - style.lineThickness / 2,
+        vertical: verticalSpacing,
+        horizontal: horizontalSpacing,
       ),
       child: boxNotifier == null
           ? buildWidget()
@@ -246,10 +286,11 @@ class VerticalStepProgress extends StepProgressWidget {
     if (reversed) {
       children = children.reversed.toList();
     }
+    final verticalSpacing = maxStepHeight(theme.nodeLabelStyle, context) / 2.0;
     //
     return Padding(
       padding: EdgeInsets.symmetric(
-        vertical: maxStepHeight(theme.nodeLabelStyle, context) / 2,
+        vertical: verticalSpacing,
       ),
       child: Column(
         crossAxisAlignment: lineLabelAlignment.x > -1

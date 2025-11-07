@@ -58,6 +58,8 @@ typedef OnStepLineAnimationCompleted = void Function({
 ///   step progress widget.
 /// - [controller]: Optional controller to manage and update the step progress
 /// state.
+/// - [hasEqualNodeAndLineCount]: Indicates whether the number of nodes and
+///   lines are equal in the step progress widget.
 abstract class StepProgressWidget extends StatelessWidget {
   const StepProgressWidget({
     required this.totalSteps,
@@ -66,6 +68,7 @@ abstract class StepProgressWidget extends StatelessWidget {
     required this.axis,
     required this.visibilityOptions,
     required this.needsRebuildWidget,
+    this.hasEqualNodeAndLineCount = false,
     this.highlightOptions =
         StepProgressHighlightOptions.highlightCompletedNodesAndLines,
     this.controller,
@@ -110,6 +113,9 @@ abstract class StepProgressWidget extends StatelessWidget {
 
   /// The size of each step in the progress indicator.
   final double stepSize;
+
+  /// Indicates whether the number of nodes equals the number of lines.
+  final bool hasEqualNodeAndLineCount;
 
   /// The titles for each step node, if any.
   final List<String>? nodeTitles;
@@ -172,36 +178,55 @@ abstract class StepProgressWidget extends StatelessWidget {
   /// Determines if a step line at the given index should be highlighted
   /// based on the current step and highlight options.
   bool isHighlightedStepLine(int index) {
-    if (highlightOptions ==
+    final shouldHighlightCompleted = highlightOptions ==
             StepProgressHighlightOptions.highlightCompletedLines ||
         highlightOptions ==
-            StepProgressHighlightOptions.highlightCompletedNodesAndLines) {
-      return isStartWithLine ? index <= currentStep : index < currentStep;
-    } else if (highlightOptions ==
-            StepProgressHighlightOptions.highlightCurrentLine ||
-        highlightOptions ==
-            StepProgressHighlightOptions.highlightCurrentNodeAndLine) {
-      return isStartWithLine ? index == currentStep : index == currentStep - 1;
-    } else {
-      return false;
+            StepProgressHighlightOptions.highlightCompletedNodesAndLines;
+
+    final shouldHighlightCurrent =
+        highlightOptions == StepProgressHighlightOptions.highlightCurrentLine ||
+            highlightOptions ==
+                StepProgressHighlightOptions.highlightCurrentNodeAndLine;
+
+    final isStartWithLineOrEqualCount =
+        isStartWithLine || hasEqualNodeAndLineCount;
+
+    if (shouldHighlightCompleted) {
+      return isStartWithLineOrEqualCount
+          ? index <= currentStep
+          : index < currentStep;
     }
+
+    if (shouldHighlightCurrent) {
+      return isStartWithLineOrEqualCount
+          ? index == currentStep
+          : index == currentStep - 1;
+    }
+
+    return false;
   }
 
   /// Determines if a step node at a given index should be highlighted.
   /// The highlighting behavior depends on the specified highlight options.
   bool isHighlightedStepNode(int index) {
-    if (highlightOptions ==
-            StepProgressHighlightOptions.highlightCompletedNodes ||
-        highlightOptions ==
-            StepProgressHighlightOptions.highlightCompletedNodesAndLines) {
-      return isStartWithLine ? index < currentStep : index <= currentStep;
-    } else if (highlightOptions ==
-            StepProgressHighlightOptions.highlightCurrentNode ||
-        highlightOptions ==
-            StepProgressHighlightOptions.highlightCurrentNodeAndLine) {
-      return isStartWithLine ? index == currentStep - 1 : index == currentStep;
-    } else {
-      return false;
+    final isStartWithLineAndUnequalCount =
+        isStartWithLine && !hasEqualNodeAndLineCount;
+
+    switch (highlightOptions) {
+      case StepProgressHighlightOptions.highlightCompletedNodes:
+      case StepProgressHighlightOptions.highlightCompletedNodesAndLines:
+        return isStartWithLineAndUnequalCount
+            ? index < currentStep
+            : index <= currentStep;
+
+      case StepProgressHighlightOptions.highlightCurrentNode:
+      case StepProgressHighlightOptions.highlightCurrentNodeAndLine:
+        return isStartWithLineAndUnequalCount
+            ? index == currentStep - 1
+            : index == currentStep;
+      case StepProgressHighlightOptions.highlightCurrentLine:
+      case StepProgressHighlightOptions.highlightCompletedLines:
+        return false;
     }
   }
 
@@ -278,13 +303,23 @@ abstract class StepProgressWidget extends StatelessWidget {
   /// If [isStartWithLine] is `true`, the total number of lines equals
   /// [totalSteps].Otherwise, it is one less than [totalSteps], as lines
   /// connect steps.
-  int get totalLineNumbers => isStartWithLine ? totalSteps : totalSteps - 1;
+  int get totalLineNumbers {
+    if (hasEqualNodeAndLineCount) {
+      return totalSteps;
+    }
+    return isStartWithLine ? totalSteps : totalSteps - 1;
+  }
 
   /// Returns the total number of nodes to display in the step progress widget.
   ///
   /// If [isStartWithLine] is `true`, the total number of nodes is one less
   /// than [totalSteps], otherwise it is equal to [totalSteps].
-  int get totalNodeNumbers => isStartWithLine ? totalSteps - 1 : totalSteps;
+  int get totalNodeNumbers {
+    if (hasEqualNodeAndLineCount) {
+      return totalSteps;
+    }
+    return isStartWithLine ? totalSteps - 1 : totalSteps;
+  }
 
   /// Returns the line index within the parent widget based on the [index] and
   /// the [isStartWithLine] flag.
@@ -475,6 +510,10 @@ abstract class StepProgressWidget extends StatelessWidget {
 
     if (labelStyle.maxWidth.isFinite) {
       return labelStyle.maxWidth;
+    }
+
+    if (nodeLabelBuilder != null) {
+      return double.infinity;
     }
 
     double widestTitleWidth = 0;

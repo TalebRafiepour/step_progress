@@ -25,8 +25,15 @@ import 'package:step_progress/step_progress.dart';
 /// rebuilt.
 ///
 /// Optional parameters include:
+/// - [hasEqualNodeAndLineCount]: Determines whether nodes and lines have equal
+///  counts.
+/// - [onStepLineAnimationCompleted]: A callback function that is called when
+/// step line animation completes.
+/// - [controller]: A controller to manage step progress state.
 /// - [highlightOptions]: Options to customize the highlighting behavior of
 /// steps and lines.
+/// - [isAutoStepChange]: A boolean that determines if the step change should
+/// occur automatically.
 /// - [reversed]: A boolean to reverse the order of steps.
 /// - [nodeTitles]: A list of titles for each step node.
 /// - [nodeSubTitles]: A list of subtitles for each step node.
@@ -42,8 +49,6 @@ import 'package:step_progress/step_progress.dart';
 /// step nodes.
 /// - [lineLabelBuilder]: A builder for creating custom label widgets for step
 /// lines.
-/// - [isAutoStepChange]: A boolean that determines if the step change should
-/// occur automatically.
 /// - [key]: An optional key for the widget.
 class HorizontalStepProgress extends StepProgressWidget {
   const HorizontalStepProgress({
@@ -52,6 +57,7 @@ class HorizontalStepProgress extends StepProgressWidget {
     required super.stepSize,
     required super.visibilityOptions,
     required super.needsRebuildWidget,
+    super.hasEqualNodeAndLineCount,
     super.onStepLineAnimationCompleted,
     super.controller,
     super.highlightOptions,
@@ -116,18 +122,33 @@ class HorizontalStepProgress extends StepProgressWidget {
       );
     });
 
+    if (hasEqualNodeAndLineCount &&
+        (visibilityOptions != StepProgressVisibilityOptions.nodeOnly)) {
+      children.insert(
+        isStartWithLine ? 0 : children.length,
+        SizedBox(
+          width: stepSize,
+          height: stepSize,
+        ),
+      );
+    }
+
     if (reversed) {
       children = children.reversed.toList();
     }
 
+    final horizontalPadding = (isStartWithLine && !hasEqualNodeAndLineCount)
+        ? maxStepSize.width / 2.0
+        : 0.0;
+
+    final mainAxisAlignment = (isStartWithLine && !hasEqualNodeAndLineCount)
+        ? MainAxisAlignment.spaceEvenly
+        : MainAxisAlignment.spaceBetween;
+
     return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: isStartWithLine ? maxStepSize.width / 2 : 0,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       child: Row(
-        mainAxisAlignment: isStartWithLine
-            ? MainAxisAlignment.spaceEvenly
-            : MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: mainAxisAlignment,
         crossAxisAlignment: crossAxisAlignment(),
         children: children,
       ),
@@ -168,12 +189,21 @@ class HorizontalStepProgress extends StepProgressWidget {
       return Row(children: children);
     }
 
+    // Determine vertical spacing based on line thickness and step size.
+    final verticalSpacing = style.lineThickness >= stepSize
+        ? 0.0
+        : stepSize / 2.0 - style.lineThickness / 2.0;
+
+    // Determine horizontal spacing based on starting element and counts.
+    final horizontalSpacing = (isStartWithLine && !hasEqualNodeAndLineCount)
+        ? 0.0
+        : maxStepSize.width / 2.0;
+
+    //
     return Padding(
       padding: EdgeInsets.symmetric(
-        vertical: style.lineThickness >= stepSize
-            ? 0
-            : stepSize / 2 - style.lineThickness / 2,
-        horizontal: isStartWithLine ? 0 : maxStepSize.width / 2,
+        vertical: verticalSpacing,
+        horizontal: horizontalSpacing,
       ),
       child: boxNotifier == null
           ? buildWidget()
@@ -209,11 +239,12 @@ class HorizontalStepProgress extends StepProgressWidget {
       children = children.reversed.toList();
     }
     //
+    final horizontalPadding = isStartWithLine
+        ? maxStepWidth(theme.nodeLabelStyle, context) / 2.0
+        : 0.0;
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: isStartWithLine
-            ? 0
-            : maxStepWidth(theme.nodeLabelStyle, context) / 2,
+        horizontal: horizontalPadding,
       ),
       child: Row(
         crossAxisAlignment: lineLabelAlignment.y > -1.0

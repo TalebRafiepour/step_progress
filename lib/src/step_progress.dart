@@ -53,7 +53,7 @@ typedef OnStepNodeTapped = void Function(int index);
 /// The [controller] parameter can be used to control the progress of the steps.
 ///
 /// The [currentStep] parameter specifies the current step in the progress
-/// indicator. It defaults to 0.
+/// indicator. It defaults to -1.
 ///
 /// The [stepNodeSize] parameter specifies the size of each step. It defaults
 /// to 34.
@@ -81,7 +81,8 @@ typedef OnStepNodeTapped = void Function(int index);
 /// step line segment.
 ///
 /// The [visibilityOptions] parameter can be used to control the visibility of
-/// step progress elements.
+/// step progress elements. It defaults to
+/// [StepProgressVisibilityOptions.nodeThenLine].
 ///
 /// The [highlightOptions] parameter specifies the highlight behavior for the
 /// step progress indicator. It defaults to
@@ -115,6 +116,9 @@ typedef OnStepNodeTapped = void Function(int index);
 /// The [autoStartProgress] parameter determines whether the progress should
 /// automatically start when the widget is initialized. It defaults to false.
 ///
+/// The [hasEqualNodeAndLineCount] parameter determines whether nodes and lines
+/// have equal counts. It defaults to false.
+///
 class StepProgress extends StatefulWidget {
   const StepProgress({
     required this.totalSteps,
@@ -129,6 +133,7 @@ class StepProgress extends StatefulWidget {
     this.padding = EdgeInsets.zero,
     this.axis = Axis.horizontal,
     this.reversed = false,
+    this.hasEqualNodeAndLineCount = false,
     this.autoStartProgress = false,
     this.visibilityOptions = StepProgressVisibilityOptions.nodeThenLine,
     this.highlightOptions =
@@ -236,6 +241,9 @@ class StepProgress extends StatefulWidget {
 
   /// Whether the progress should start automatically when the widget is built.
   final bool autoStartProgress;
+
+  /// Determines whether nodes and lines have equal counts.
+  final bool hasEqualNodeAndLineCount;
 
   @override
   _StepProgressState createState() {
@@ -374,6 +382,7 @@ class _StepProgressState extends State<StepProgress>
             ? HorizontalStepProgress(
                 controller: widget.controller,
                 totalSteps: widget.totalSteps,
+                hasEqualNodeAndLineCount: widget.hasEqualNodeAndLineCount,
                 currentStep: _currentStep,
                 isAutoStepChange: widget.autoStartProgress,
                 reversed: widget.reversed,
@@ -395,6 +404,7 @@ class _StepProgressState extends State<StepProgress>
             : VerticalStepProgress(
                 controller: widget.controller,
                 totalSteps: widget.totalSteps,
+                hasEqualNodeAndLineCount: widget.hasEqualNodeAndLineCount,
                 currentStep: _currentStep,
                 isAutoStepChange: widget.autoStartProgress,
                 reversed: widget.reversed,
